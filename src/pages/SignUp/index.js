@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import logo from "../../assets/logo.png";
+import logo2 from "../../assets/logo2.png";
 import "../SignIn/signin.css";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/auth";
@@ -21,11 +21,10 @@ export default function SignUp() {
 
 	return (
 		<div className="container-center">
+			<div className="login-area">
+				<img src={logo2} alt="Logo" />
+			</div>
 			<div className="login">
-				<div className="login-area">
-					<img src={logo} alt="Logo" />
-				</div>
-
 				<form onSubmit={handleSubmit}>
 					<h1>Nova Conta</h1>
 					<input
