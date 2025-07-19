@@ -26,7 +26,7 @@ export default function SignUp() {
 			</div>
 			<div className="login">
 				<form onSubmit={handleSubmit}>
-					<h1>Nova Conta</h1>
+					<h1>crie sua conta!</h1>
 					<input
 						text="name"
 						placeholder="seu nome"
@@ -49,11 +49,11 @@ export default function SignUp() {
 					/>
 
 					<button type="submit">
-						{loadingAuth ? "Carregando.." : "Cadastrar"}
+						{loadingAuth ? "carregando.." : "cadastrar"}
 					</button>
 				</form>
 
-				<Link to="/">Já possui uma conta? Logue aqui!</Link>
+				<Link to="/">já tenho uma conta!</Link>
 			</div>
 		</div>
 	);

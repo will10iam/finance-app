@@ -4,18 +4,18 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background-color: #000;
+	background-image: url("../../assets/login_bg.png");
 	padding: 0 12px;
 }
 
 .login {
-	background-color: #131010ff;
-	width: 600px;
+	background-color: #000;
+	width: 400px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	border-radius: 10px;
+	border-radius: 15px;
 }
 
 .login-area {
@@ -26,7 +26,7 @@
 }
 
 .login-area img {
-	width: 150px;
+	width: 100px;
 	height: 100px;
 	padding: 20px;
 }
@@ -41,30 +41,32 @@ form {
 form h1 {
 	text-align: center;
 	margin-bottom: 1rem;
-	color: #181c2e;
+	color: #e2e2e2ff;
 }
 
 .login input {
-	margin-bottom: 1rem;
-	height: 35px;
+	margin-bottom: 0.7rem;
+	height: 25px;
 	border-radius: 4px;
 	padding: 10px;
 	font-size: 15px;
 	background-color: transparent;
 	border: 1px solid #2e2c2cff;
+	color: #e2e2e2ff;
 }
 
 form button {
-	height: 35px;
+	height: 30px;
 	border: 0;
 	border-radius: 4px;
-	background-color: #181c2e;
-	color: #fff;
-	font-size: 1.3rem;
+	background-color: #cf9414ff;
+	color: #131010ff;
+	font-size: 1.1rem;
 }
 
 .login a {
 	margin: 1.5rem 0;
-	color: #000;
+	color: #e2e2e2ff;
 	cursor: pointer;
+	font-size: 0.9rem;
 }
