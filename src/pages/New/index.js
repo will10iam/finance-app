@@ -85,7 +85,7 @@ export default function New() {
 				setStatus(snapshot.data().status);
 
 				let index = lista.findIndex(
-					(item) => item.id === snapshot.data().clienteID
+					(item) => item.id === snapshot.data().categoriaID
 				);
 				setCategoriaSelected(index);
 				setIdCategoria(true);
@@ -123,7 +123,11 @@ export default function New() {
 				//complemento: complemento,
 				status: status,
 				descricao: descricao,
-				valor: parseFloat(valor.replace(/[R$\s.]/g, "").replace(",", ".")),
+				valor: parseFloat(
+					String(valor)
+						.replace(/[R$\s.]/g, "")
+						.replace(",", ".")
+				),
 				dataRecebimento: dataRecebimento,
 				userID: user.uid,
 			})
@@ -131,7 +135,7 @@ export default function New() {
 					toast.success("Atualizado com sucesso");
 					setCategoriaSelected(0);
 					//setComplemento("");
-					navigate("/dashboard");
+					navigate("/receitas");
 				})
 				.catch((error) => {
 					toast.error("Opa! Alguma coisa deu errado.");
@@ -149,7 +153,11 @@ export default function New() {
 			//complemento: complemento,
 			status: status,
 			descricao: descricao,
-			valor: parseFloat(valor.replace(/[R$\s.]/g, "").replace(",", ".")),
+			valor: parseFloat(
+				String(valor)
+					.replace(/[R$\s.]/g, "")
+					.replace(",", ".")
+			),
 			dataRecebimento: dataRecebimento,
 			userID: user.uid,
 		})
@@ -245,20 +253,20 @@ export default function New() {
 							<input
 								type="radio"
 								name="radio"
-								value="Pendente"
+								value="À Receber"
 								onChange={handleOptionChange}
-								checked={status === "Pendente"}
+								checked={status === "À Receber"}
 							/>
-							<span>Pendente</span>
+							<span>À Receber</span>
 
 							<input
 								type="radio"
 								name="radio"
-								value="Recebida"
+								value="Recebido"
 								onChange={handleOptionChange}
-								checked={status === "Recebida"}
+								checked={status === "Recebido"}
 							/>
-							<span>Recebida</span>
+							<span>Recebido</span>
 
 							{/* <input
 								type="radio"

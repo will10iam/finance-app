@@ -23,9 +23,9 @@ export default function Sidebar() {
 					/>
 				</div>
 
-				<Link to="/dashboard">
+				<Link to="/receitas">
 					<FiHome color="#FFF" size={24} />
-					Chamados
+					Receitas
 				</Link>
 				<Link to="/categorias">
 					<FiUser color="#FFF" size={24} />

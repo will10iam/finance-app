@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
-import Dashboard from "../pages/Dashboard";
+import Receitas from "../pages/Receitas";
 import Private from "./Private";
 import Profile from "../pages/Profile";
 import Categoria from "../pages/Categoria";
@@ -14,10 +14,10 @@ function RoutesApp() {
 			<Route path="/" element={<SignIn />} />
 			<Route path="/register" element={<SignUp />} />
 			<Route
-				path="/dashboard"
+				path="/receitas"
 				element={
 					<Private>
-						<Dashboard />
+						<Receitas />
 					</Private>
 				}
 			/>

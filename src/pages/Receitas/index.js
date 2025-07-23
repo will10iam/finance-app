@@ -30,7 +30,7 @@ export default function Receitas() {
 	const [detail, setDetail] = useState();
 
 	useEffect(() => {
-		async function loadChamados() {
+		async function loadReceitas() {
 			const q = query(listRef, orderBy("created", "desc"), limit(1));
 
 			const querySnapshot = await getDocs(q);
@@ -40,7 +40,7 @@ export default function Receitas() {
 			setLoading(false);
 		}
 
-		loadChamados();
+		loadReceitas();
 		return () => {};
 	}, []);
 
@@ -56,6 +56,9 @@ export default function Receitas() {
 					tipo: doc.data().tipo,
 					descricao: doc.data().descricao,
 					descricaoID: doc.data().descricaoID,
+					valor: doc.data().valor,
+					categoria: doc.data().categoria,
+					dataRecebimento: doc.data().dataRecebimento,
 					created: doc.data().created,
 					createdFormat: format(doc.data().created.toDate(), "dd/MM/yyyy"),
 					// complemento: doc.data().complemento,
@@ -140,7 +143,9 @@ export default function Receitas() {
 										<th scope="col">Valor</th>
 										<th scope="col">Categoria</th>
 										<th scope="col">Data Recebida</th>
-										<th scope="col">#</th>
+										<th scope="col">Status</th>
+										<th scope="col">Cadastrado em</th>
+										<th scope="col">Ações</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -151,15 +156,17 @@ export default function Receitas() {
 												<td data-label="Descrição">{item.descricao}</td>
 												<td data-label="Valor">{item.valor}</td>
 												<td data-label="Categoria">{item.categoria}</td>
-												<td data-label="Data Recebida">{item.dataRecebida}</td>
-												<td data-label="#">
+												<td data-label="Data Recebida">
+													{item.dataRecebimento}
+												</td>
+												<td data-label="Status">
 													<span
 														className="badge"
 														style={{
 															backgroundColor:
-																item.status === "Em Aberto"
-																	? "#f63535ff"
-																	: item.status === "Paga"
+																item.status === "À receber"
+																	? "#f6d935ff"
+																	: item.status === "Recebido"
 																	? "#35f645ff"
 																	: "#999",
 														}}
