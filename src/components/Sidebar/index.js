@@ -27,6 +27,10 @@ export default function Sidebar() {
 					<FiHome color="#FFF" size={24} />
 					Receitas
 				</Link>
+				<Link to="/despesas">
+					<FiHome color="#FFF" size={24} />
+					Despesas
+				</Link>
 				<Link to="/categorias">
 					<FiUser color="#FFF" size={24} />
 					Categoria

@@ -3,7 +3,8 @@ import Sidebar from "../../components/Sidebar";
 import Title from "../../components/Title";
 import "./index.css";
 import { FiEdit2, FiPlus, FiSearch } from "react-icons/fi";
-import { GiTakeMyMoney } from "react-icons/gi";
+import { RiBillLine } from "react-icons/ri";
+
 import { Link } from "react-router-dom";
 import { db } from "../../services/firebaseConection";
 import {
@@ -17,10 +18,10 @@ import {
 import { format } from "date-fns";
 import Modal from "../../components/Modal";
 
-const listRef = collection(db, "receitas");
+const listRef = collection(db, "despesas");
 
-export default function Receitas() {
-	const [receitas, setReceitas] = useState([]);
+export default function Despesas() {
+	const [despesas, setDespesas] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [isEmpty, setIsEmpty] = useState(false);
 	const [lastDocs, setLastDocs] = useState();
@@ -30,17 +31,17 @@ export default function Receitas() {
 	const [detail, setDetail] = useState();
 
 	useEffect(() => {
-		async function loadReceitas() {
+		async function loadDespesas() {
 			const q = query(listRef, orderBy("created", "desc"), limit(1));
 
 			const querySnapshot = await getDocs(q);
-			setReceitas([]);
+			setDespesas([]);
 			await updateState(querySnapshot);
 
 			setLoading(false);
 		}
 
-		loadReceitas();
+		loadDespesas();
 		return () => {};
 	}, []);
 
@@ -58,17 +59,18 @@ export default function Receitas() {
 					descricaoID: doc.data().descricaoID,
 					valor: doc.data().valor,
 					categoria: doc.data().categoria,
-					dataRecebimento: doc.data().dataRecebimento,
+					dataVencimento: doc.data().dataVencimento,
+					dataPagamento: doc.data().dataPagamento,
 					created: doc.data().created,
 					createdFormat: format(doc.data().created.toDate(), "dd/MM/yyyy"),
 					// complemento: doc.data().complemento,
 					status: doc.data().status,
 				});
+				console.log(doc.data().tipo);
 			});
-
 			const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
 
-			setReceitas((receitas) => [...receitas, ...lista]);
+			setDespesas((despesas) => [...despesas, ...lista]);
 			setLastDocs(lastDoc);
 		} else {
 			setIsEmpty(true);
@@ -100,12 +102,12 @@ export default function Receitas() {
 			<div>
 				<Sidebar />
 				<div className="content">
-					<Title name="Receitas">
-						<GiTakeMyMoney size={25} />
+					<Title name="Despesas">
+						<RiBillLine size={25} />
 					</Title>
 
 					<div className="container dashboard">
-						<span>Buscando receitas do casal...</span>
+						<span>Buscando despesas do casal...</span>
 					</div>
 				</div>
 			</div>
@@ -116,23 +118,23 @@ export default function Receitas() {
 		<>
 			<Sidebar />
 			<div className="content">
-				<Title name="Receitas">
-					<GiTakeMyMoney size={25} />
+				<Title name="Despesas">
+					<RiBillLine size={25} />
 				</Title>
 				<>
-					{receitas.length === 0 ? (
+					{despesas.length === 0 ? (
 						<div className="container dashboard">
-							<span>Nenhuma receita encontrada...</span>
-							<Link to="/newReceita" className="new">
+							<span>Nenhuma despesa encontrada...</span>
+							<Link to="/newDespesa" className="new">
 								<FiPlus color="#FFF" size={25} />
-								Add Receita
+								Add Despesa
 							</Link>
 						</div>
 					) : (
 						<>
-							<Link to="/newReceita" className="new">
+							<Link to="/newDespesa" className="new">
 								<FiPlus color="#FFF" size={25} />
-								Add Receita
+								Add Despesa
 							</Link>
 
 							<table>
@@ -142,31 +144,35 @@ export default function Receitas() {
 										<th scope="col">Descrição</th>
 										<th scope="col">Valor</th>
 										<th scope="col">Categoria</th>
-										<th scope="col">Data Recebida</th>
+										<th scope="col">Data Vencimento</th>
+										<th scope="col">Data Pagamento</th>
 										<th scope="col">Status</th>
 										<th scope="col">Cadastrado em</th>
 										<th scope="col">Ações</th>
 									</tr>
 								</thead>
 								<tbody>
-									{receitas.map((item, index) => {
+									{despesas.map((item, index) => {
 										return (
 											<tr key={index}>
 												<td data-label="Tipo">{item.tipo}</td>
 												<td data-label="Descrição">{item.descricao}</td>
 												<td data-label="Valor">{item.valor}</td>
 												<td data-label="Categoria">{item.categoria}</td>
-												<td data-label="Data Recebida">
-													{item.dataRecebimento}
+												<td data-label="Data Vencimento">
+													{item.dataVencimento}
+												</td>
+												<td data-label="Data Pagamento">
+													{item.dataPagamento}
 												</td>
 												<td data-label="Status">
 													<span
 														className="badge"
 														style={{
 															backgroundColor:
-																item.status === "À receber"
-																	? "#f6d935ff"
-																	: item.status === "Recebido"
+																item.status === "Em Aberto"
+																	? "#f63b35ff"
+																	: item.status === "Paga"
 																	? "#35f645ff"
 																	: "#999",
 														}}
@@ -184,7 +190,7 @@ export default function Receitas() {
 														<FiSearch color="#FFF" size={17} />
 													</button>
 													<Link
-														to={`/newReceita/${item.id}`}
+														to={`/newDespesa/${item.id}`}
 														className="action"
 														style={{ backgroundColor: "#f6a935" }}
 													>
@@ -197,7 +203,7 @@ export default function Receitas() {
 								</tbody>
 							</table>
 
-							{loadingMore && <h3>Buscando mais receitas..</h3>}
+							{loadingMore && <h3>Buscando mais despesas..</h3>}
 							{!loadingMore && !isEmpty && (
 								<button className="btn-more" onClick={handleMore}>
 									Buscar mais

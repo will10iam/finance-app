@@ -32,13 +32,14 @@ export default function New() {
 	const [loadCategoria, setLoadCategoria] = useState(true);
 
 	//const [complemento, setComplemento] = useState("");
-	const [tipo, setTipo] = useState("Receita");
+	const [tipo, setTipo] = useState("");
 	const [status, setStatus] = useState("Pendente");
 	const [idCategoria, setIdCategoria] = useState(false);
 
 	const [descricao, setDescricao] = useState("");
 	const [valor, setValor] = useState("");
-	const [dataRecebimento, setDataRecebimento] = useState("");
+	const [dataPagamento, setDataPagamento] = useState("");
+	const [dataVencimento, setDataVencimento] = useState("");
 
 	useEffect(() => {
 		async function loadCategorias() {
@@ -77,7 +78,7 @@ export default function New() {
 	}, [id]);
 
 	async function loadId(lista) {
-		const docRef = doc(db, "receitas", id);
+		const docRef = doc(db, "despesas", id);
 		await getDoc(docRef)
 			.then((snapshot) => {
 				setTipo(snapshot.data().tipo);
@@ -91,7 +92,8 @@ export default function New() {
 				setIdCategoria(true);
 				setDescricao(snapshot.data().descricao);
 				setValor(snapshot.data().valor);
-				setDataRecebimento(snapshot.data().dataRecebimento);
+				setDataPagamento(snapshot.data().dataPagamento);
+				setDataVencimento(snapshot.data().dataVencimento);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -115,7 +117,7 @@ export default function New() {
 		e.preventDefault();
 
 		if (idCategoria) {
-			const docRef = doc(db, "receitas", id);
+			const docRef = doc(db, "despesas", id);
 			await updateDoc(docRef, {
 				categoria: categorias[categoriaSelected].nomeCategoria,
 				categoriaID: categorias[categoriaSelected].id,
@@ -128,14 +130,15 @@ export default function New() {
 						.replace(/[R$\s.]/g, "")
 						.replace(",", ".")
 				),
-				dataRecebimento: dataRecebimento,
+				dataPagamento: dataPagamento,
+				dataVencimento: dataVencimento,
 				userID: user.uid,
 			})
 				.then(() => {
 					toast.success("Atualizado com sucesso");
 					setCategoriaSelected(0);
 					//setComplemento("");
-					navigate("/receitas");
+					navigate("/despesas");
 				})
 				.catch((error) => {
 					toast.error("Opa! Alguma coisa deu errado.");
@@ -145,7 +148,7 @@ export default function New() {
 			return;
 		}
 
-		await addDoc(collection(db, "receitas"), {
+		await addDoc(collection(db, "despesas"), {
 			created: new Date(),
 			categoria: categorias[categoriaSelected].nomeCategoria,
 			categoriaID: categorias[categoriaSelected].id,
@@ -158,18 +161,17 @@ export default function New() {
 					.replace(/[R$\s.]/g, "")
 					.replace(",", ".")
 			),
-			dataRecebimento: dataRecebimento,
+			dataPagamento: dataPagamento,
+			dataVencimento: dataVencimento,
 			userID: user.uid,
 		})
 			.then(() => {
-				toast.success("CHAMADO REGISTRADO COM SUCESSO");
+				toast.success("Despesa registrada com sucesso!");
 				//setComplemento("");
 				setCategoriaSelected(0);
 			})
 			.catch((error) => {
-				toast.error(
-					"ERRO AO REGISTRAR, VERIFIQUE OS CAMPOS E TENTE NOVAMENTE!"
-				);
+				toast.error("Opa! Alguma coisa deu errado. Verifique os campos.");
 				console.log(error);
 			});
 	}
@@ -193,7 +195,7 @@ export default function New() {
 			<Sidebar />
 
 			<div className="content">
-				<Title name={id ? "Editando receita" : "Nova Receita"}>
+				<Title name={id ? "Editando despesa" : "Nova Despesa"}>
 					<span>
 						{id ? <FiEdit size={25} /> : <LiaMoneyBillWaveSolid size={25} />}
 					</span>
@@ -203,14 +205,14 @@ export default function New() {
 					<form className="form-profile" onSubmit={handleRegister}>
 						<label>Tipo</label>
 						<select value={tipo} onChange={handleChangeSelect}>
-							<option value="Criação de Site">Receita</option>
-							<option value="Criação de Artes">Despesa</option>
+							<option value="Receita">Receita</option>
+							<option value="Despesa">Despesa</option>
 						</select>
 
 						<label>Descrição</label>
 						<input
 							type="text"
-							placeholder="Descrição da receita"
+							placeholder="Descrição da despesa"
 							value={descricao}
 							onChange={(e) => setDescricao(e.target.value)}
 						/>
@@ -241,11 +243,18 @@ export default function New() {
 							</select>
 						)}
 
-						<label>Data de Recebimento</label>
+						<label>Data de Pagamento</label>
 						<input
 							type="date"
-							value={dataRecebimento}
-							onChange={(e) => setDataRecebimento(e.target.value)}
+							value={dataPagamento}
+							onChange={(e) => setDataPagamento(e.target.value)}
+						/>
+
+						<label>Data de Vencimento</label>
+						<input
+							type="date"
+							value={dataVencimento}
+							onChange={(e) => setDataVencimento(e.target.value)}
 						/>
 
 						<label>Status</label>
@@ -253,20 +262,20 @@ export default function New() {
 							<input
 								type="radio"
 								name="radio"
-								value="À Receber"
+								value="Pendente"
 								onChange={handleOptionChange}
-								checked={status === "À Receber"}
+								checked={status === "Pendente"}
 							/>
-							<span>À Receber</span>
+							<span>Pendente</span>
 
 							<input
 								type="radio"
 								name="radio"
-								value="Recebido"
+								value="Paga"
 								onChange={handleOptionChange}
-								checked={status === "Recebido"}
+								checked={status === "Paga"}
 							/>
-							<span>Recebido</span>
+							<span>Paga</span>
 
 							{/* <input
 								type="radio"

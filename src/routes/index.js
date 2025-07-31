@@ -3,10 +3,12 @@ import { Routes, Route } from "react-router-dom";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import Receitas from "../pages/Receitas";
+import Despesas from "../pages/Despesas";
 import Private from "./Private";
 import Profile from "../pages/Profile";
 import Categoria from "../pages/Categoria";
-import New from "../pages/New";
+import NewReceita from "../pages/NewReceita";
+import NewDespesa from "../pages/NewDespesa";
 
 function RoutesApp() {
 	return (
@@ -18,6 +20,14 @@ function RoutesApp() {
 				element={
 					<Private>
 						<Receitas />
+					</Private>
+				}
+			/>
+			<Route
+				path="/despesas"
+				element={
+					<Private>
+						<Despesas />
 					</Private>
 				}
 			/>
@@ -38,19 +48,37 @@ function RoutesApp() {
 				}
 			/>
 			<Route
-				path="/new"
+				path="/newReceita"
 				element={
 					<Private>
-						<New />
+						<NewReceita />
 					</Private>
 				}
 			/>
 
 			<Route
-				path="/new/:id"
+				path="/newReceita/:id"
 				element={
 					<Private>
-						<New />
+						<NewReceita />
+					</Private>
+				}
+			/>
+
+			<Route
+				path="/newDespesa"
+				element={
+					<Private>
+						<NewDespesa />
+					</Private>
+				}
+			/>
+
+			<Route
+				path="/newDespesa/:id"
+				element={
+					<Private>
+						<NewDespesa />
 					</Private>
 				}
 			/>
