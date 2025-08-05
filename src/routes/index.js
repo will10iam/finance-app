@@ -9,6 +9,7 @@ import Profile from "../pages/Profile";
 import Categoria from "../pages/Categoria";
 import NewReceita from "../pages/NewReceita";
 import NewDespesa from "../pages/NewDespesa";
+import Dashboard from "../pages/Dashboard";
 
 function RoutesApp() {
 	return (
@@ -44,6 +45,15 @@ function RoutesApp() {
 				element={
 					<Private>
 						<Categoria />
+					</Private>
+				}
+			/>
+
+			<Route
+				path="/dashboard"
+				element={
+					<Private>
+						<Dashboard />
 					</Private>
 				}
 			/>
