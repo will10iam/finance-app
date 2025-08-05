@@ -98,7 +98,7 @@ export default function Receitas() {
 	if (loading) {
 		return (
 			<div>
-				<Sidebar />
+				{/* <Sidebar /> */}
 				<div className="content">
 					<Title name="Receitas">
 						<GiTakeMyMoney size={25} />

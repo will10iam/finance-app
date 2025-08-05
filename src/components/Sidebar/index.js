@@ -24,6 +24,11 @@ export default function Sidebar() {
 					/>
 				</div>
 
+				<Link to="/dashboard">
+					<FiSettings color="#FFF" size={24} />
+					Dashboard
+				</Link>
+
 				{/* <div className="dropdown">
 					<button className="dropdown-toggle" onClick={() => setOpen(!open)}>
 						<FiPlus color="#FFF" size={24} />
@@ -41,12 +46,12 @@ export default function Sidebar() {
 				<nav className="dropdown">
 					<button className="dropdown-toggle" onClick={() => setOpen(!open)}>
 						<FiPlus color="#FFF" size={24} />
-						Cadastros
+						Lançamentos
 					</button>
 					{open && (
 						<p className="dropdown-menu">
 							<Link to="/receitas">Receitas</Link>
-							<Link to="/newDespesa">Despesas</Link>
+							<Link to="/despesas">Despesas</Link>
 							<Link to="/categorias">Categorias</Link>
 						</p>
 					)}
