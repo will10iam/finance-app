@@ -1,0 +1,43 @@
+.title {
+	margin-left: 20px;
+}
+
+.dashboard {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: 1rem;
+	padding: 1rem;
+}
+
+.card {
+	padding: 1rem;
+	border-radius: 8px;
+	color: #fff;
+	font-weight: bold;
+	text-align: center;
+}
+
+.receitas {
+	background-color: #2ecc71;
+}
+
+.despesas {
+	background-color: #e74c3c;
+}
+
+.saldo.positivo {
+	background-color: #27ae60;
+}
+
+.saldo.negativo {
+	background-color: #c0392b;
+}
+
+.card h3 {
+	font-size: 1rem;
+	margin-bottom: 0.5rem;
+}
+
+.card p {
+	font-size: 1.2rem;
+}
