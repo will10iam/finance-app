@@ -154,7 +154,7 @@ export default function Receitas() {
 											<tr key={index}>
 												<td data-label="Tipo">{item.tipo}</td>
 												<td data-label="Descrição">{item.descricao}</td>
-												<td data-label="Valor">{item.valor}</td>
+												<td data-label="Valor">R${item.valor}</td>
 												<td data-label="Categoria">{item.categoria}</td>
 												<td data-label="Data Recebida">
 													{item.dataRecebimento}

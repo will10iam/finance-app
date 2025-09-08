@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import Title from "../../components/Title";
 import "./index.css";
-import { FiEdit2, FiPlus, FiSearch } from "react-icons/fi";
+import { FiEdit2, FiPlus, FiSearch, FiTrash } from "react-icons/fi";
 import { RiBillLine } from "react-icons/ri";
 
 import { Link } from "react-router-dom";
@@ -14,6 +14,8 @@ import {
 	getDocs,
 	startAfter,
 	query,
+	deleteDoc,
+	doc,
 } from "firebase/firestore";
 import { format } from "date-fns";
 import Modal from "../../components/Modal";
@@ -29,6 +31,9 @@ export default function Despesas() {
 
 	const [showPostModal, setShowPostModal] = useState(false);
 	const [detail, setDetail] = useState();
+
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [deleteItem, setDeleteItem] = useState(null);
 
 	useEffect(() => {
 		async function loadDespesas() {
@@ -92,9 +97,29 @@ export default function Despesas() {
 		await updateState(querySnapshot);
 	}
 
+	async function handleDelete() {
+		if (!deleteItem) return;
+
+		try {
+			await deleteDoc(doc(db, "despesas", deleteItem.id));
+
+			//remove da lista sem precisar recarregar tudo
+			setDespesas((prev) => prev.filter((d) => d.id !== deleteItem.id));
+			setShowDeleteModal(false);
+			setDeleteItem(null);
+		} catch (error) {
+			console.error("Erro ao deletar despesa: ", error);
+		}
+	}
+
 	function toggleModal(item) {
 		setShowPostModal(!showPostModal);
 		setDetail(item);
+	}
+
+	function toggleModalDelete(item) {
+		setDeleteItem(item);
+		setShowDeleteModal(true);
 	}
 
 	if (loading) {
@@ -157,7 +182,7 @@ export default function Despesas() {
 											<tr key={index}>
 												<td data-label="Tipo">{item.tipo}</td>
 												<td data-label="Descrição">{item.descricao}</td>
-												<td data-label="Valor">{item.valor}</td>
+												<td data-label="Valor">R${item.valor}</td>
 												<td data-label="Categoria">{item.categoria}</td>
 												<td data-label="Data Vencimento">
 													{item.dataVencimento}
@@ -171,10 +196,10 @@ export default function Despesas() {
 														style={{
 															backgroundColor:
 																item.status === "Em Aberto"
-																	? "#f63b35ff"
+																	? "#999"
 																	: item.status === "Paga"
 																	? "#35f645ff"
-																	: "#999",
+																	: "#f63b35ff",
 														}}
 													>
 														{item.status}
@@ -196,6 +221,13 @@ export default function Despesas() {
 													>
 														<FiEdit2 color="#FFF" size={17} />
 													</Link>
+													<button
+														className="action"
+														style={{ backgroundColor: "#f63535" }}
+														onClick={() => toggleModalDelete(item)}
+													>
+														<FiTrash color="#FFF" size={17} />
+													</button>
 												</td>
 											</tr>
 										);
@@ -219,6 +251,29 @@ export default function Despesas() {
 					conteudo={detail}
 					close={() => setShowPostModal(!showPostModal)}
 				/>
+			)}
+
+			{showDeleteModal && (
+				<div className="modal">
+					<div className="modal-content">
+						<h3>Confirmar exclusão</h3>
+						<p>
+							Tem certeza que deseja excluir a despesa{" "}
+							<b>{deleteItem?.descricao}</b>?
+						</p>
+						<div className="modal-actions">
+							<button
+								onClick={handleDelete}
+								style={{ backgroundColor: "#f63535", color: "#fff" }}
+							>
+								Sim, excluir
+							</button>
+							<button onClick={() => setShowDeleteModal(false)}>
+								Cancelar
+							</button>
+						</div>
+					</div>
+				</div>
 			)}
 		</>
 	);

@@ -6,6 +6,13 @@ import { db } from "../../services/firebaseConection";
 import { collection, getDocs } from "firebase/firestore";
 import Sidebar from "../../components/Sidebar";
 
+// Função auxiliar para converter string de data "dd/MM/yyyy" em objeto Date
+function parseDate(dateString) {
+	if (!dateString) return null;
+	const [year, month, day] = dateString.split("-");
+	return new Date(Number(year), Number(month) - 1, Number(day));
+}
+
 export default function Dashboard() {
 	const [loading, setLoading] = useState(true);
 	const [receitas, setReceitas] = useState([]);
@@ -27,25 +34,48 @@ export default function Dashboard() {
 		loadData();
 	}, []);
 
+	function getDespesaStatus(despesa, hoje) {
+		const vencimento = parseDate(despesa.dataVencimento);
+
+		if (despesa.status === "Paga") {
+			return "Paga";
+		}
+
+		if (vencimento < hoje) {
+			return "Atrasada";
+		}
+
+		return "Em Aberto";
+	}
+
 	const resumo = useMemo(() => {
 		const hoje = new Date();
+		hoje.setHours(0, 0, 0, 0);
+
+		//Receitas
 		const totalRecebidas = receitas
 			.filter(
-				(r) => r.status === "Recebido" || new Date(r.dataRecebimento) <= hoje
+				(r) => r.status === "Recebido" || parseDate(r.dataRecebimento) <= hoje
 			)
-			.reduce((acc, r) => acc + Number(r.valor), 0);
+			.reduce((acc, r) => acc + parseFloat(r.valor), 0);
 
 		const totalAReceber = receitas
-			.filter((r) => new Date(r.dataRecebimento) > hoje)
-			.reduce((acc, r) => acc + Number(r.valor), 0);
+			.filter(
+				(r) => r.status !== "Recebido" && parseDate(r.dataRecebimento) >= hoje
+			)
+			.reduce((acc, r) => acc + parseFloat(r.valor), 0);
 
+		//Despesas
 		const totalPagas = despesas
-			.filter((d) => d.status === "Pago" || new Date(d.dataPagamento) <= hoje)
-			.reduce((acc, d) => acc + Number(d.valor), 0);
+			.filter((d) => getDespesaStatus(d, hoje) === "Paga")
+			.reduce((acc, d) => acc + parseFloat(d.valor), 0);
 
 		const totalAPagar = despesas
-			.filter((d) => new Date(d.dataPagamento) > hoje)
-			.reduce((acc, d) => acc + Number(d.valor), 0);
+			.filter((d) => {
+				const status = getDespesaStatus(d, hoje);
+				return status === "Atrasada" || status === "Em Aberto";
+			})
+			.reduce((acc, d) => acc + parseFloat(d.valor), 0);
 
 		const saldo = totalRecebidas - totalPagas;
 

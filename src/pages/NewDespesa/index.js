@@ -33,7 +33,7 @@ export default function New() {
 
 	//const [complemento, setComplemento] = useState("");
 	const [tipo, setTipo] = useState("");
-	const [status, setStatus] = useState("Pendente");
+	const [status, setStatus] = useState("Em Aberto");
 	const [idCategoria, setIdCategoria] = useState(false);
 
 	const [descricao, setDescricao] = useState("");
@@ -262,11 +262,11 @@ export default function New() {
 							<input
 								type="radio"
 								name="radio"
-								value="Pendente"
+								value="Em Aberto"
 								onChange={handleOptionChange}
-								checked={status === "Pendente"}
+								checked={status === "Em Aberto"}
 							/>
-							<span>Pendente</span>
+							<span>Em Aberto</span>
 
 							<input
 								type="radio"
