@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import avatarImg from "../../assets/avatar.png";
+import logo2 from "../../assets/logo2.png";
 import "./index.css";
 import { AuthContext } from "../../contexts/auth";
 import { FiHome, FiSettings, FiUser, FiPlus } from "react-icons/fi";
@@ -18,10 +18,7 @@ export default function Sidebar() {
 		<>
 			<div className="sidebar">
 				<div>
-					<img
-						src={user.avatarUrl === null ? avatarImg : user.avatarUrl}
-						alt=""
-					/>
+					<img src={logo2} alt="" />
 				</div>
 
 				<Link to="/dashboard">
@@ -64,10 +61,10 @@ export default function Sidebar() {
 					<FiUser color="#FFF" size={24} />
 					Categoria
 				</Link> */}
-				<Link to="/profile">
+				{/* <Link to="/profile">
 					<FiSettings color="#FFF" size={24} />
 					Perfil
-				</Link>
+				</Link> */}
 
 				<Link to="/">
 					<button onClick={handleLogOut}>

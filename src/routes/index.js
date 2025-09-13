@@ -5,7 +5,7 @@ import SignUp from "../pages/SignUp";
 import Receitas from "../pages/Receitas";
 import Despesas from "../pages/Despesas";
 import Private from "./Private";
-import Profile from "../pages/Profile";
+/* import Profile from "../pages/Profile"; */
 import Categoria from "../pages/Categoria";
 import NewReceita from "../pages/NewReceita";
 import NewDespesa from "../pages/NewDespesa";
@@ -32,14 +32,14 @@ function RoutesApp() {
 					</Private>
 				}
 			/>
-			<Route
+			{/* <Route
 				path="/profile"
 				element={
 					<Private>
 						<Profile />
 					</Private>
 				}
-			/>
+			/> */}
 			<Route
 				path="/categorias"
 				element={

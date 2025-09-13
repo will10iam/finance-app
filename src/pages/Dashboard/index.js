@@ -13,10 +13,17 @@ function parseDate(dateString) {
 	return new Date(Number(year), Number(month) - 1, Number(day));
 }
 
+// Filtro simplificado pelo mês (YYYY-MM)
+function isInFilteredMonth(dataString, mesFiltro) {
+	if (!mesFiltro) return true; // sem filtro, traz tudo
+	return dataString?.slice(0, 7) === mesFiltro;
+}
+
 export default function Dashboard() {
 	const [loading, setLoading] = useState(true);
 	const [receitas, setReceitas] = useState([]);
 	const [despesas, setDespesas] = useState([]);
+	const [mesFiltro, setMesFiltro] = useState("");
 	// const hoje = new Date();
 
 	useEffect(() => {
@@ -52,25 +59,32 @@ export default function Dashboard() {
 		const hoje = new Date();
 		hoje.setHours(0, 0, 0, 0);
 
+		const receitasFiltradas = receitas.filter((r) =>
+			isInFilteredMonth(r.dataRecebimento, mesFiltro)
+		);
+		const despesasFiltradas = despesas.filter((d) =>
+			isInFilteredMonth(d.dataVencimento, mesFiltro)
+		);
+
 		//Receitas
-		const totalRecebidas = receitas
+		const totalRecebidas = receitasFiltradas
 			.filter(
 				(r) => r.status === "Recebido" || parseDate(r.dataRecebimento) <= hoje
 			)
 			.reduce((acc, r) => acc + parseFloat(r.valor), 0);
 
-		const totalAReceber = receitas
+		const totalAReceber = receitasFiltradas
 			.filter(
 				(r) => r.status !== "Recebido" && parseDate(r.dataRecebimento) >= hoje
 			)
 			.reduce((acc, r) => acc + parseFloat(r.valor), 0);
 
 		//Despesas
-		const totalPagas = despesas
+		const totalPagas = despesasFiltradas
 			.filter((d) => getDespesaStatus(d, hoje) === "Paga")
 			.reduce((acc, d) => acc + parseFloat(d.valor), 0);
 
-		const totalAPagar = despesas
+		const totalAPagar = despesasFiltradas
 			.filter((d) => {
 				const status = getDespesaStatus(d, hoje);
 				return status === "Atrasada" || status === "Em Aberto";
@@ -80,7 +94,7 @@ export default function Dashboard() {
 		const saldo = totalRecebidas - totalPagas;
 
 		return { totalRecebidas, totalAReceber, totalPagas, totalAPagar, saldo };
-	}, [receitas, despesas]);
+	}, [receitas, despesas, mesFiltro]);
 
 	/* if (loading) {
 		return (
@@ -99,6 +113,14 @@ export default function Dashboard() {
 		<>
 			<Sidebar />
 			<div className="content">
+				<div className="filtro-mes">
+					<label>Filtrar por mês:</label>
+					<input
+						type="month"
+						value={mesFiltro}
+						onChange={(e) => setMesFiltro(e.target.value)}
+					/>
+				</div>
 				<div className="dashboard">
 					<div className="card receitas">
 						<h3>Receitas Recebidas</h3>

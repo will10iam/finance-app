@@ -35,6 +35,8 @@ export default function Despesas() {
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [deleteItem, setDeleteItem] = useState(null);
 
+	const [mesFiltro, setMesFiltro] = useState("");
+
 	useEffect(() => {
 		async function loadDespesas() {
 			const q = query(listRef, orderBy("created", "desc"), limit(1));
@@ -143,6 +145,14 @@ export default function Despesas() {
 		<>
 			<Sidebar />
 			<div className="content">
+				<div className="filtro">
+					<label>Filtrar por mês:</label>
+					<input
+						type="month"
+						value={mesFiltro}
+						onChange={(e) => setMesFiltro(e.target.value)}
+					/>
+				</div>
 				<Title name="Despesas">
 					<RiBillLine size={25} />
 				</Title>
@@ -177,61 +187,68 @@ export default function Despesas() {
 									</tr>
 								</thead>
 								<tbody>
-									{despesas.map((item, index) => {
-										return (
-											<tr key={index}>
-												<td data-label="Tipo">{item.tipo}</td>
-												<td data-label="Descrição">{item.descricao}</td>
-												<td data-label="Valor">R${item.valor}</td>
-												<td data-label="Categoria">{item.categoria}</td>
-												<td data-label="Data Vencimento">
-													{item.dataVencimento}
-												</td>
-												<td data-label="Data Pagamento">
-													{item.dataPagamento}
-												</td>
-												<td data-label="Status">
-													<span
-														className="badge"
-														style={{
-															backgroundColor:
-																item.status === "Em Aberto"
-																	? "#999"
-																	: item.status === "Paga"
-																	? "#35f645ff"
-																	: "#f63b35ff",
-														}}
-													>
-														{item.status}
-													</span>
-												</td>
-												<td data-label="Cadastrado">{item.createdFormat}</td>
-												<td data-label="#">
-													<button
-														className="action"
-														style={{ backgroundColor: "#3583f6" }}
-														onClick={() => toggleModal(item)}
-													>
-														<FiSearch color="#FFF" size={17} />
-													</button>
-													<Link
-														to={`/newDespesa/${item.id}`}
-														className="action"
-														style={{ backgroundColor: "#f6a935" }}
-													>
-														<FiEdit2 color="#FFF" size={17} />
-													</Link>
-													<button
-														className="action"
-														style={{ backgroundColor: "#f63535" }}
-														onClick={() => toggleModalDelete(item)}
-													>
-														<FiTrash color="#FFF" size={17} />
-													</button>
-												</td>
-											</tr>
-										);
-									})}
+									{despesas
+										.filter((item) => {
+											if (!mesFiltro) return true;
+											const [anoFiltro, mesFiltroNum] = mesFiltro.split("-");
+											const [anoItem, mesItem] = item.dataVencimento.split("-");
+											return anoItem === anoFiltro && mesItem === mesFiltroNum;
+										})
+										.map((item, index) => {
+											return (
+												<tr key={index}>
+													<td data-label="Tipo">{item.tipo}</td>
+													<td data-label="Descrição">{item.descricao}</td>
+													<td data-label="Valor">R${item.valor}</td>
+													<td data-label="Categoria">{item.categoria}</td>
+													<td data-label="Data Vencimento">
+														{item.dataVencimento}
+													</td>
+													<td data-label="Data Pagamento">
+														{item.dataPagamento}
+													</td>
+													<td data-label="Status">
+														<span
+															className="badge"
+															style={{
+																backgroundColor:
+																	item.status === "Em Aberto"
+																		? "#999"
+																		: item.status === "Paga"
+																		? "#35f645ff"
+																		: "#f63b35ff",
+															}}
+														>
+															{item.status}
+														</span>
+													</td>
+													<td data-label="Cadastrado">{item.createdFormat}</td>
+													<td data-label="#">
+														<button
+															className="action"
+															style={{ backgroundColor: "#3583f6" }}
+															onClick={() => toggleModal(item)}
+														>
+															<FiSearch color="#FFF" size={17} />
+														</button>
+														<Link
+															to={`/newDespesa/${item.id}`}
+															className="action"
+															style={{ backgroundColor: "#f6a935" }}
+														>
+															<FiEdit2 color="#FFF" size={17} />
+														</Link>
+														<button
+															className="action"
+															style={{ backgroundColor: "#f63535" }}
+															onClick={() => toggleModalDelete(item)}
+														>
+															<FiTrash color="#FFF" size={17} />
+														</button>
+													</td>
+												</tr>
+											);
+										})}
 								</tbody>
 							</table>
 

@@ -29,6 +29,8 @@ export default function Receitas() {
 	const [showPostModal, setShowPostModal] = useState(false);
 	const [detail, setDetail] = useState();
 
+	const [mesFiltro, setMesFiltro] = useState("");
+
 	useEffect(() => {
 		async function loadReceitas() {
 			const q = query(listRef, orderBy("created", "desc"), limit(1));
@@ -116,6 +118,14 @@ export default function Receitas() {
 		<>
 			<Sidebar />
 			<div className="content">
+				<div className="filtro">
+					<label>Filtrar por mês:</label>
+					<input
+						type="month"
+						value={mesFiltro}
+						onChange={(e) => setMesFiltro(e.target.value)}
+					/>
+				</div>
 				<Title name="Receitas">
 					<GiTakeMyMoney size={25} />
 				</Title>
@@ -149,51 +159,60 @@ export default function Receitas() {
 									</tr>
 								</thead>
 								<tbody>
-									{receitas.map((item, index) => {
-										return (
-											<tr key={index}>
-												<td data-label="Tipo">{item.tipo}</td>
-												<td data-label="Descrição">{item.descricao}</td>
-												<td data-label="Valor">R${item.valor}</td>
-												<td data-label="Categoria">{item.categoria}</td>
-												<td data-label="Data Recebida">
-													{item.dataRecebimento}
-												</td>
-												<td data-label="Status">
-													<span
-														className="badge"
-														style={{
-															backgroundColor:
-																item.status === "À receber"
-																	? "#f6d935ff"
-																	: item.status === "Recebido"
-																	? "#35f645ff"
-																	: "#999",
-														}}
-													>
-														{item.status}
-													</span>
-												</td>
-												<td data-label="Cadastrado">{item.createdFormat}</td>
-												<td data-label="#">
-													<button
-														className="action"
-														style={{ backgroundColor: "#3583f6" }}
-														onClick={() => toggleModal(item)}
-													>
-														<FiSearch color="#FFF" size={17} />
-													</button>
-													<Link
-														to={`/newReceita/${item.id}`}
-														className="action"
-														style={{ backgroundColor: "#f6a935" }}
-													>
-														<FiEdit2 color="#FFF" size={17} />
-													</Link>
-												</td>
-											</tr>
-										);
-									})}
+									{receitas
+										.filter((item) => {
+											if (!mesFiltro) return true;
+											const [anoFiltro, mesFiltroNum] = mesFiltro.split("-");
+											const [anoItem, mesItem] =
+												item.dataRecebimento.split("-");
+
+											return anoItem === anoFiltro && mesItem === mesFiltroNum;
+										})
+										.map((item, index) => {
+											return (
+												<tr key={index}>
+													<td data-label="Tipo">{item.tipo}</td>
+													<td data-label="Descrição">{item.descricao}</td>
+													<td data-label="Valor">R${item.valor}</td>
+													<td data-label="Categoria">{item.categoria}</td>
+													<td data-label="Data Recebida">
+														{item.dataRecebimento}
+													</td>
+													<td data-label="Status">
+														<span
+															className="badge"
+															style={{
+																backgroundColor:
+																	item.status === "À receber"
+																		? "#f6d935ff"
+																		: item.status === "Recebido"
+																		? "#35f645ff"
+																		: "#999",
+															}}
+														>
+															{item.status}
+														</span>
+													</td>
+													<td data-label="Cadastrado">{item.createdFormat}</td>
+													<td data-label="#">
+														<button
+															className="action"
+															style={{ backgroundColor: "#3583f6" }}
+															onClick={() => toggleModal(item)}
+														>
+															<FiSearch color="#FFF" size={17} />
+														</button>
+														<Link
+															to={`/newReceita/${item.id}`}
+															className="action"
+															style={{ backgroundColor: "#f6a935" }}
+														>
+															<FiEdit2 color="#FFF" size={17} />
+														</Link>
+													</td>
+												</tr>
+											);
+										})}
 								</tbody>
 							</table>
 
