@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import Title from "../../components/Title";
 import "./index.css";
-import { FiEdit2, FiPlus, FiSearch } from "react-icons/fi";
+import { FiEdit2, FiPlus, FiSearch, FiTrash } from "react-icons/fi";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import { db } from "../../services/firebaseConection";
@@ -13,6 +13,8 @@ import {
 	getDocs,
 	startAfter,
 	query,
+	deleteDoc,
+	doc,
 } from "firebase/firestore";
 import { format } from "date-fns";
 import Modal from "../../components/Modal";
@@ -29,11 +31,14 @@ export default function Receitas() {
 	const [showPostModal, setShowPostModal] = useState(false);
 	const [detail, setDetail] = useState();
 
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [deleteItem, setDeleteItem] = useState(null);
+
 	const [mesFiltro, setMesFiltro] = useState("");
 
 	useEffect(() => {
 		async function loadReceitas() {
-			const q = query(listRef, orderBy("created", "desc"), limit(1));
+			const q = query(listRef, orderBy("created", "desc"), limit(20));
 
 			const querySnapshot = await getDocs(q);
 			setReceitas([]);
@@ -92,9 +97,28 @@ export default function Receitas() {
 		await updateState(querySnapshot);
 	}
 
+	async function handleDelete() {
+		if (!deleteItem) return;
+
+		try {
+			await deleteDoc(doc(db, "receitas", deleteItem.id));
+
+			setReceitas((prev) => prev.filter((r) => r.id !== deleteItem.id));
+			setShowDeleteModal(false);
+			setDeleteItem(null);
+		} catch (error) {
+			console.log("Erro ao deletar receita", error);
+		}
+	}
+
 	function toggleModal(item) {
 		setShowPostModal(!showPostModal);
 		setDetail(item);
+	}
+
+	function toggleModalDelete(item) {
+		setDeleteItem(item);
+		setShowDeleteModal(true);
 	}
 
 	if (loading) {
@@ -209,6 +233,13 @@ export default function Receitas() {
 														>
 															<FiEdit2 color="#FFF" size={17} />
 														</Link>
+														<button
+															className="action"
+															style={{ backgroundColor: "#f63535" }}
+															onClick={() => toggleModalDelete(item)}
+														>
+															<FiTrash color="#FFF" size={17} />
+														</button>
 													</td>
 												</tr>
 											);
@@ -232,6 +263,29 @@ export default function Receitas() {
 					conteudo={detail}
 					close={() => setShowPostModal(!showPostModal)}
 				/>
+			)}
+
+			{showDeleteModal && (
+				<div className="modal">
+					<div className="modal-content">
+						<h3>Confirmar exclusão</h3>
+						<p>
+							Tem certeza que deseja excluir esta receita?
+							<b>{deleteItem?.descricao}</b>
+						</p>
+						<div className="modal-actions">
+							<button
+								onClick={handleDelete}
+								style={{ backgroundColor: "#f63535", color: "#fff" }}
+							>
+								Sim, excluir
+							</button>
+							<button onClick={() => setShowDeleteModal(false)}>
+								Cancelar
+							</button>
+						</div>
+					</div>
+				</div>
 			)}
 		</>
 	);

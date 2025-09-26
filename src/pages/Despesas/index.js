@@ -39,7 +39,7 @@ export default function Despesas() {
 
 	useEffect(() => {
 		async function loadDespesas() {
-			const q = query(listRef, orderBy("created", "desc"), limit(1));
+			const q = query(listRef, orderBy("created", "desc"), limit(15));
 
 			const querySnapshot = await getDocs(q);
 			setDespesas([]);
@@ -93,7 +93,7 @@ export default function Despesas() {
 			listRef,
 			orderBy("created", "desc"),
 			startAfter(lastDocs),
-			limit(1)
+			limit(20)
 		);
 		const querySnapshot = await getDocs(q);
 		await updateState(querySnapshot);

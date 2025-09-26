@@ -90,7 +90,7 @@ export default function New() {
 				setCategoriaSelected(index);
 				setIdCategoria(true);
 				setDescricao(snapshot.data().descricao);
-				setValor(snapshot.data().valor);
+				setValor(formatarMoeda(snapshot.data().valor.toString()));
 				setDataRecebimento(snapshot.data().dataRecebimento);
 			})
 			.catch((error) => {
@@ -126,7 +126,7 @@ export default function New() {
 				valor: parseFloat(
 					String(valor)
 						.replace(/[R$\s.]/g, "")
-						.replace(",", ".")
+						
 				),
 				dataRecebimento: dataRecebimento,
 				userID: user.uid,
@@ -156,7 +156,7 @@ export default function New() {
 			valor: parseFloat(
 				String(valor)
 					.replace(/[R$\s.]/g, "")
-					.replace(",", ".")
+					
 			),
 			dataRecebimento: dataRecebimento,
 			userID: user.uid,
