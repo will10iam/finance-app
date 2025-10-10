@@ -3,16 +3,11 @@ import { Link } from "react-router-dom";
 import logo2 from "../../assets/logo2.png";
 import "./index.css";
 import { AuthContext } from "../../contexts/auth";
-import { FiHome, FiSettings, FiUser, FiPlus } from "react-icons/fi";
-import { AiOutlinePoweroff } from "react-icons/ai";
+import { FiSettings, FiPlus } from "react-icons/fi";
 
 export default function Sidebar() {
-	const { user, logout } = useContext(AuthContext);
+	const { user } = useContext(AuthContext);
 	const [open, setOpen] = useState(false);
-
-	async function handleLogOut() {
-		await logout();
-	}
 
 	return (
 		<>
@@ -65,13 +60,6 @@ export default function Sidebar() {
 					<FiSettings color="#FFF" size={24} />
 					Perfil
 				</Link> */}
-
-				<Link to="/">
-					<button onClick={handleLogOut}>
-						<AiOutlinePoweroff color="#FFF" size={24} />
-					</button>
-					Sair
-				</Link>
 			</div>
 		</>
 	);

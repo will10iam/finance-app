@@ -5,6 +5,15 @@ import { MdDashboard } from "react-icons/md";
 import { db } from "../../services/firebaseConection";
 import { collection, getDocs } from "firebase/firestore";
 import Sidebar from "../../components/Sidebar";
+import LogOutButton from "../../components/LogOutButton";
+import DropdownMes from "../../components/DropdownMes";
+import {
+	CurrencyCircleDollarIcon,
+	HandArrowDownIcon,
+	CheckFatIcon,
+	TargetIcon,
+	HandCoinsIcon,
+} from "@phosphor-icons/react";
 
 // Função auxiliar para converter string de data "dd/MM/yyyy" em objeto Date
 function parseDate(dateString) {
@@ -111,46 +120,61 @@ export default function Dashboard() {
 	} */
 	return (
 		<>
-			<Sidebar />
+			{/* <Sidebar />
+			<LogOutButton /> */}
 			<div className="content">
-				<div className="filtro-mes">
+				{/* <div className="filtro-mes">
 					<label>Filtrar por mês:</label>
 					<input
 						type="month"
 						value={mesFiltro}
 						onChange={(e) => setMesFiltro(e.target.value)}
 					/>
+				</div> */}
+				<Title name="Dashboard">
+					<MdDashboard size={25} />
+				</Title>
+				<div className="filtro-mes">
+					<DropdownMes mesFiltro={mesFiltro} setMesFiltro={setMesFiltro} />
 				</div>
 				<div className="dashboard">
 					<div className="card receitas">
-						<h3>Receitas Recebidas</h3>
+						<CurrencyCircleDollarIcon
+							size={40}
+							weight="duotone"
+							color="#6DC956"
+						/>
+						<h3>Total Recebidas</h3>
 						<p>R$ {resumo.totalRecebidas.toFixed(2)}</p>
 					</div>
 
 					<div className="card receitas">
-						<h3>Receitas a Receber</h3>
+						<HandArrowDownIcon size={40} weight="duotone" color="#F8C4B4" />
+						<h3>Total à Receber</h3>
 						<p>R$ {resumo.totalAReceber.toFixed(2)}</p>
 					</div>
 
 					<div className="card despesas">
-						<h3>Despesas Pagas</h3>
+						<CheckFatIcon size={40} weight="duotone" color="#6DC956" />
+						<h3>Total Pagas</h3>
 						<p>R$ {resumo.totalPagas.toFixed(2)}</p>
 					</div>
 
 					<div className="card despesas">
-						<h3>Despesas a Pagar</h3>
+						<TargetIcon size={40} weight="duotone" color="#f3de23ff" />
+						<h3>Total à Pagar</h3>
 						<p>R$ {resumo.totalAPagar.toFixed(2)}</p>
 					</div>
-
-					<div
+				</div>
+				{/* <div
 						className={`card saldo ${
 							resumo.saldo >= 0 ? "positivo" : "negativo"
 						}`}
 					>
+						<HandCoinsIcon size={40} weight="duotone" color="#f3de23ff" />
 						<h3>Saldo</h3>
 						<p>R$ {resumo.saldo.toFixed(2)}</p>
-					</div>
-				</div>
+					</div> */}
 			</div>
 		</>
 	);

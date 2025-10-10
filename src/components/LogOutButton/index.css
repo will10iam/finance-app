@@ -1,0 +1,16 @@
+.logout-button {
+	width: 100px;
+	margin-left: 1330px;
+}
+
+.logout-button button {
+	background-color: transparent;
+	border: transparent;
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+.logout-button button:hover {
+	transition: ease-in-out 0.4s;
+	transform: scale(1.05);
+}
