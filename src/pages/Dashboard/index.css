@@ -3,8 +3,15 @@
 }
 
 .dashboard {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.cards {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	grid-template-columns: 200px 200px;
+	align-content: start;
 	gap: 1rem;
 }
 
@@ -21,6 +28,63 @@
 
 .despesas {
 	background-color: #1e1f25;
+}
+
+.bank-cards {
+	display: flex;
+	align-content: start;
+	gap: 1rem;
+	margin-top: 1rem;
+	background-color: #1e1e1e;
+	padding: 1rem;
+	border-radius: 8px;
+}
+
+.nubank {
+	background-color: #9d03d9;
+	padding: 1rem;
+	border-radius: 8px;
+	height: 150px;
+}
+
+.nubank h3 {
+	color: #fff;
+	font-size: 0.8rem;
+}
+.nubank p {
+	color: #fff;
+	font-size: 1.3rem;
+}
+
+.nubank img {
+	width: 100px;
+	height: 100px;
+	margin-top: -30px;
+	margin-bottom: 30px;
+	margin-left: -25px;
+}
+
+.bbrasil {
+	background-color: #f9dc30;
+	padding: 1rem;
+	border-radius: 8px;
+}
+
+.bbrasil h3 {
+	color: #1e437f;
+	font-size: 0.8rem;
+}
+.bbrasil p {
+	color: #1e437f;
+	font-size: 1.3rem;
+}
+
+.bbrasil img {
+	width: 100px;
+	height: 100px;
+	margin-top: -30px;
+	margin-bottom: 30px;
+	margin-left: -25px;
 }
 
 .saldo.positivo {

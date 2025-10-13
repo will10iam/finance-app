@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import "./index.css";
+import nubank from "../../assets/nu.svg";
+import bbrasil from "../../assets/bb.svg";
 import Title from "../../components/Title";
 import { MdDashboard } from "react-icons/md";
 import { db } from "../../services/firebaseConection";
@@ -13,7 +15,9 @@ import {
 	CheckFatIcon,
 	TargetIcon,
 	HandCoinsIcon,
+	InvoiceIcon,
 } from "@phosphor-icons/react";
+import { Link } from "react-router-dom";
 
 // Função auxiliar para converter string de data "dd/MM/yyyy" em objeto Date
 function parseDate(dateString) {
@@ -122,7 +126,13 @@ export default function Dashboard() {
 		<>
 			{/* <Sidebar />
 			<LogOutButton /> */}
-			<div className="content">
+			<Title name="Dashboard">
+				<MdDashboard size={25} />
+			</Title>
+			<div className="filtro-mes">
+				<DropdownMes mesFiltro={mesFiltro} setMesFiltro={setMesFiltro} />
+			</div>
+			<div className="dashboard">
 				{/* <div className="filtro-mes">
 					<label>Filtrar por mês:</label>
 					<input
@@ -131,39 +141,50 @@ export default function Dashboard() {
 						onChange={(e) => setMesFiltro(e.target.value)}
 					/>
 				</div> */}
-				<Title name="Dashboard">
-					<MdDashboard size={25} />
-				</Title>
-				<div className="filtro-mes">
-					<DropdownMes mesFiltro={mesFiltro} setMesFiltro={setMesFiltro} />
-				</div>
-				<div className="dashboard">
-					<div className="card receitas">
-						<CurrencyCircleDollarIcon
-							size={40}
-							weight="duotone"
-							color="#6DC956"
-						/>
-						<h3>Total Recebidas</h3>
-						<p>R$ {resumo.totalRecebidas.toFixed(2)}</p>
-					</div>
 
-					<div className="card receitas">
+				<div className="cards">
+					<Link to="/receitas">
+						<div className="card receitas">
+							<CurrencyCircleDollarIcon
+								size={40}
+								weight="duotone"
+								color="#6DC956"
+							/>
+							<h3>Receitas</h3>
+							<p>R$ {resumo.totalRecebidas.toFixed(2)}</p>
+						</div>
+					</Link>
+
+					{/* <div className="card receitas">
 						<HandArrowDownIcon size={40} weight="duotone" color="#F8C4B4" />
 						<h3>Total à Receber</h3>
 						<p>R$ {resumo.totalAReceber.toFixed(2)}</p>
-					</div>
+					</div> */}
 
-					<div className="card despesas">
+					{/* <div className="card despesas">
 						<CheckFatIcon size={40} weight="duotone" color="#6DC956" />
 						<h3>Total Pagas</h3>
 						<p>R$ {resumo.totalPagas.toFixed(2)}</p>
-					</div>
+					</div> */}
 
-					<div className="card despesas">
-						<TargetIcon size={40} weight="duotone" color="#f3de23ff" />
-						<h3>Total à Pagar</h3>
-						<p>R$ {resumo.totalAPagar.toFixed(2)}</p>
+					<Link to="/despesas">
+						<div className="card despesas">
+							<InvoiceIcon size={40} weight="duotone" color="#ee5d4aff" />
+							<h3>Despesas</h3>
+							<p>R$ {resumo.totalAPagar.toFixed(2)}</p>
+						</div>
+					</Link>
+				</div>
+				<div className="bank-cards">
+					<div className="nubank">
+						<img src={nubank} alt="logo nu" />
+						<h3>Will</h3>
+						<p>R$2.131,60</p>
+					</div>
+					<div className="bbrasil">
+						<img src={bbrasil} alt="logo bb" />
+						<h3>Amália</h3>
+						<p>R$1.538,45</p>
 					</div>
 				</div>
 				{/* <div
