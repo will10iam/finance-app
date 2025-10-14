@@ -5,7 +5,7 @@
 .dashboard {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: space-evenly;
 }
 
 .cards {
@@ -109,8 +109,9 @@
 .filtro-mes {
 	display: flex;
 	align-items: center;
-	gap: 10px;
 	margin-bottom: 20px;
+	margin-top: 10px;
+	margin-left: 20px;
 	font-size: 1rem;
 	color: #fff;
 }

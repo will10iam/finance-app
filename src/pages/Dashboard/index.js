@@ -9,6 +9,7 @@ import { collection, getDocs } from "firebase/firestore";
 import Sidebar from "../../components/Sidebar";
 import LogOutButton from "../../components/LogOutButton";
 import DropdownMes from "../../components/DropdownMes";
+import Navbar from "../../components/NavBar";
 import {
 	CurrencyCircleDollarIcon,
 	HandArrowDownIcon,
@@ -126,12 +127,14 @@ export default function Dashboard() {
 		<>
 			{/* <Sidebar />
 			<LogOutButton /> */}
-			<Title name="Dashboard">
+			{/* <Title name="Dashboard">
 				<MdDashboard size={25} />
-			</Title>
+				</Title> */}
+			<Navbar />
 			<div className="filtro-mes">
 				<DropdownMes mesFiltro={mesFiltro} setMesFiltro={setMesFiltro} />
 			</div>
+
 			<div className="dashboard">
 				{/* <div className="filtro-mes">
 					<label>Filtrar por mês:</label>
