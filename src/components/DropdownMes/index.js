@@ -22,7 +22,8 @@ export default function DropdownMes({ mesFiltro, setMesFiltro }) {
 
 	// Nome exibido (ex: OUTUBRO)
 	const mesAtualNome =
-		meses.find((m) => m.valor === mesFiltro)?.nome.toUpperCase() || "TODOS";
+		meses.find((m) => m.valor === mesFiltro)?.nome.toLocaleUpperCase() ||
+		"Todos";
 
 	const handleSelect = (valor) => {
 		setMesFiltro(valor);

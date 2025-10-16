@@ -9,6 +9,7 @@ import { collection, getDocs } from "firebase/firestore";
 import Sidebar from "../../components/Sidebar";
 import LogOutButton from "../../components/LogOutButton";
 import DropdownMes from "../../components/DropdownMes";
+import ProgressBar from "../../components/ProgressBar";
 import Navbar from "../../components/NavBar";
 import {
 	CurrencyCircleDollarIcon,
@@ -155,6 +156,19 @@ export default function Dashboard() {
 							/>
 							<h3>Receitas</h3>
 							<p>R$ {resumo.totalRecebidas.toFixed(2)}</p>
+
+							<div className="progress-section">
+								<ProgressBar
+									label="Já recebeu"
+									percentage={
+										(resumo.totalRecebidas /
+											(resumo.totalRecebidas + resumo.totalAReceber || 1)) *
+										100
+									}
+									color="#6DC956"
+									remainingValue={resumo.totalAReceber}
+								/>
+							</div>
 						</div>
 					</Link>
 
@@ -175,6 +189,19 @@ export default function Dashboard() {
 							<InvoiceIcon size={40} weight="duotone" color="#ee5d4aff" />
 							<h3>Despesas</h3>
 							<p>R$ {resumo.totalAPagar.toFixed(2)}</p>
+
+							<div>
+								<ProgressBar
+									label="Já foi Pago"
+									percentage={
+										(resumo.totalPagas /
+											(resumo.totalPagas + resumo.totalAPagar || 1)) *
+										100
+									}
+									color="#f3de23"
+									remainingValue={resumo.totalAPagar}
+								/>
+							</div>
 						</div>
 					</Link>
 				</div>

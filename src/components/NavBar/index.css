@@ -1,6 +1,6 @@
 .navbar {
-	background-color: #1e1f25;
-	border-radius: 0 0 20px 20px;
+	background-color: #1e1f254d;
+	border-radius: 0 0 15px 15px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -31,4 +31,5 @@
 .transactions a:hover {
 	transition: ease-in-out 0.4s;
 	transform: scale(1.05);
+	color: #03d999ff;
 }
