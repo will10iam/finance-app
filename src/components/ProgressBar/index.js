@@ -28,7 +28,7 @@ export default function ProgressBar({
 			{showRemaining && (
 				<div className="progress-remaining">
 					<div className="progress-header">
-						<span>Falta receber/pagar</span>
+						<span>R$ {remainingValue.toFixed(2)}</span>
 						<span>{remainingPercent.toFixed(0)}%</span>
 					</div>
 					<div className="progress-bar">
@@ -41,9 +41,7 @@ export default function ProgressBar({
 						></div>
 					</div>
 					<div className="remaining-info">
-						<small>
-							Restante: <strong>{remainingValue.toFixed(2)}</strong>
-						</small>
+						<small>Ainda falta</small>
 					</div>
 				</div>
 			)}

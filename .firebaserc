@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "ticke-60122"
-  }
+    "default": "app-finance-e5e30",
+    "72finn": "app-finance-e5e30"
+  },
+  "targets": {},
+  "etags": {}
 }

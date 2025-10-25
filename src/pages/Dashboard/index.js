@@ -2,21 +2,23 @@ import React, { useState, useEffect, useMemo } from "react";
 import "./index.css";
 import nubank from "../../assets/nu.svg";
 import bbrasil from "../../assets/bb.svg";
-import Title from "../../components/Title";
-import { MdDashboard } from "react-icons/md";
+import c6bank from "../../assets/c6.svg";
 import { db } from "../../services/firebaseConection";
 import { collection, getDocs } from "firebase/firestore";
+/* import Title from "../../components/Title";
+import { MdDashboard } from "react-icons/md";
 import Sidebar from "../../components/Sidebar";
-import LogOutButton from "../../components/LogOutButton";
+import SecondSidebar from "../../components/SecondSidebar";
+import LogOutButton from "../../components/LogOutButton"; */
 import DropdownMes from "../../components/DropdownMes";
 import ProgressBar from "../../components/ProgressBar";
 import Navbar from "../../components/NavBar";
 import {
 	CurrencyCircleDollarIcon,
-	HandArrowDownIcon,
+	/* HandArrowDownIcon,
 	CheckFatIcon,
 	TargetIcon,
-	HandCoinsIcon,
+	HandCoinsIcon, */
 	InvoiceIcon,
 } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
@@ -39,6 +41,8 @@ export default function Dashboard() {
 	const [receitas, setReceitas] = useState([]);
 	const [despesas, setDespesas] = useState([]);
 	const [mesFiltro, setMesFiltro] = useState("");
+	const [saldoNubank, setSaldoNubank] = useState(0);
+
 	// const hoje = new Date();
 
 	useEffect(() => {
@@ -53,6 +57,7 @@ export default function Dashboard() {
 				despesasSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
 			);
 		}
+
 		loadData();
 	}, []);
 
@@ -126,6 +131,7 @@ export default function Dashboard() {
 	} */
 	return (
 		<>
+			{/* <SecondSidebar /> */}
 			{/* <Sidebar />
 			<LogOutButton /> */}
 			{/* <Title name="Dashboard">
@@ -155,7 +161,9 @@ export default function Dashboard() {
 								color="#6DC956"
 							/>
 							<h3>Receitas</h3>
-							<p>R$ {resumo.totalRecebidas.toFixed(2)}</p>
+							<p>
+								R$ {(resumo.totalRecebidas + resumo.totalAReceber).toFixed(2)}
+							</p>
 
 							<div className="progress-section">
 								<ProgressBar
@@ -188,7 +196,7 @@ export default function Dashboard() {
 						<div className="card despesas">
 							<InvoiceIcon size={40} weight="duotone" color="#ee5d4aff" />
 							<h3>Despesas</h3>
-							<p>R$ {resumo.totalAPagar.toFixed(2)}</p>
+							<p>R$ {(resumo.totalAPagar + resumo.totalPagas).toFixed(2)}</p>
 
 							<div>
 								<ProgressBar
@@ -198,7 +206,7 @@ export default function Dashboard() {
 											(resumo.totalPagas + resumo.totalAPagar || 1)) *
 										100
 									}
-									color="#f3de23"
+									color="#ee5d4aff"
 									remainingValue={resumo.totalAPagar}
 								/>
 							</div>
@@ -209,12 +217,17 @@ export default function Dashboard() {
 					<div className="nubank">
 						<img src={nubank} alt="logo nu" />
 						<h3>Will</h3>
-						<p>R$2.131,60</p>
+						<p>R$155,56</p>
 					</div>
 					<div className="bbrasil">
 						<img src={bbrasil} alt="logo bb" />
 						<h3>Amália</h3>
-						<p>R$1.538,45</p>
+						<p>R$0,00</p>
+					</div>
+					<div className="c6bank">
+						<img src={c6bank} alt="logo c6" />
+						<h3>Amália</h3>
+						<p>R$142,62</p>
 					</div>
 				</div>
 				{/* <div
