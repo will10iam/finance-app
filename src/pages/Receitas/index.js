@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import Title from "../../components/Title";
+import NavBar from "../../components/NavBar";
+import DropdownMes from "../../components/DropdownMes";
 import "./index.css";
 import { FiEdit2, FiPlus, FiSearch, FiTrash } from "react-icons/fi";
+import { GoArrowDownRight } from "react-icons/go";
+import { FaRegTrashAlt, FaRegEdit } from "react-icons/fa";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import { db } from "../../services/firebaseConection";
@@ -140,36 +144,85 @@ export default function Receitas() {
 
 	return (
 		<>
-			<Sidebar />
+			{/* 	<Sidebar /> */}
+			<NavBar />
 			<div className="content">
-				<div className="filtro">
+				{/* <div className="filtro">
 					<label>Filtrar por mês:</label>
 					<input
 						type="month"
 						value={mesFiltro}
 						onChange={(e) => setMesFiltro(e.target.value)}
 					/>
-				</div>
+				</div */}
 				<Title name="Receitas">
-					<GiTakeMyMoney size={25} />
+					<GiTakeMyMoney size={30} />
 				</Title>
+
+				<div className="filtro-mes">
+					<DropdownMes mesFiltro={mesFiltro} setMesFiltro={setMesFiltro} />
+					<Link to="/newReceita" className="add_button">
+						<FiPlus color="#FFF" size={25} />
+						Nova Receita
+					</Link>
+				</div>
 				<>
 					{receitas.length === 0 ? (
 						<div className="container dashboard">
 							<span>Nenhuma receita encontrada...</span>
-							<Link to="/newReceita" className="new">
+							{/* <Link to="/newReceita" className="new">
 								<FiPlus color="#FFF" size={25} />
 								Add Receita
-							</Link>
+							</Link> */}
 						</div>
 					) : (
 						<>
-							<Link to="/newReceita" className="new">
+							{/* <Link to="/newReceita" className="new">
 								<FiPlus color="#FFF" size={25} />
 								Add Receita
-							</Link>
+							</Link> */}
+							{receitas
+								.filter((item) => {
+									if (!mesFiltro) return true;
+									const [anoFiltro, mesFiltroNum] = mesFiltro.split("-");
+									const [anoItem, mesItem] = item.dataRecebimento.split("-");
 
-							<table>
+									return anoItem === anoFiltro && mesItem === mesFiltroNum;
+								})
+								.map((item, index) => {
+									return (
+										<div className="cardReceitas" key={index}>
+											<div className="cardReceitas_content">
+												<div className="cardReceitas_icon">
+													<GoArrowDownRight color="#059669" size={25} />
+												</div>
+												<div className="cardReceitas_info">
+													<div className="cardReceitas_title">
+														<p>{item.descricao}</p>
+														<span>{item.categoria}</span>
+													</div>
+													<h3>{item.dataRecebimento}</h3>
+												</div>
+												<div className="cardReceitas_value">
+													<h2>+ R$ {item.valor}</h2>
+												</div>
+												<div
+													className="cardReceitas_actions"
+													onClick={() => toggleModalDelete(item)}
+												>
+													<FaRegTrashAlt size={20} />
+												</div>
+												<Link
+													to={`/newReceita/${item.id}`}
+													className="cardReceitas_actions"
+												>
+													<FaRegEdit color="#FFF" size={20} />
+												</Link>
+											</div>
+										</div>
+									);
+								})}
+							{/* <table>
 								<thead>
 									<tr>
 										<th scope="col">Tipo</th>
@@ -245,8 +298,7 @@ export default function Receitas() {
 											);
 										})}
 								</tbody>
-							</table>
-
+							</table> */}
 							{loadingMore && <h3>Buscando mais receitas..</h3>}
 							{!loadingMore && !isEmpty && (
 								<button className="btn-more" onClick={handleMore}>

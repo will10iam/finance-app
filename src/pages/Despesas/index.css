@@ -1,7 +1,11 @@
+.content {
+	padding: 20px;
+}
+
 .new {
 	float: right;
-	margin-bottom: 1.5em;
-	background-color: #83bf02;
+	margin-top: -8em;
+	background-color: #5fd204;
 	padding: 0.5em;
 	border-radius: 5px;
 	display: flex;
@@ -19,6 +23,30 @@
 
 .new:hover {
 	background-color: #5fd204;
+	transform: scale(1.1);
+}
+
+.add_button {
+	margin-left: 1em;
+	margin-top: -0.9em;
+	padding: 0.2em 0.6em;
+	background-color: #d20404ff;
+	border: 0;
+	border-radius: 5px;
+	font-size: 1em;
+	color: #fff;
+	cursor: pointer;
+	transition: ease-in-out 0.3s;
+	display: flex;
+	align-items: center;
+	font-weight: 600;
+}
+
+.add_button svg {
+	margin-right: 5px;
+}
+
+.add_button:hover {
 	transform: scale(1.1);
 }
 

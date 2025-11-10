@@ -10,6 +10,7 @@ import Categoria from "../pages/Categoria";
 import NewReceita from "../pages/NewReceita";
 import NewDespesa from "../pages/NewDespesa";
 import Dashboard from "../pages/Dashboard";
+import Testes from "../pages/Testes";
 
 function RoutesApp() {
 	return (
@@ -89,6 +90,15 @@ function RoutesApp() {
 				element={
 					<Private>
 						<NewDespesa />
+					</Private>
+				}
+			/>
+
+			<Route
+				path="/testes"
+				element={
+					<Private>
+						<Testes />
 					</Private>
 				}
 			/>
