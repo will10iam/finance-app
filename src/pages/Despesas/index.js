@@ -127,6 +127,19 @@ export default function Despesas() {
 		setShowDeleteModal(true);
 	}
 
+	function formatarValorBRL(valor) {
+		return valor.toLocaleString("pt-BR", {
+			style: "currency",
+			currency: "BRL",
+		});
+	}
+
+	function formatarDataBR(dataString) {
+		if (!dataString) return "";
+		const [ano, mes, dia] = dataString.split("-");
+		return `${dia}/${mes}/${ano}`;
+	}
+
 	if (loading) {
 		return (
 			<div>
@@ -202,23 +215,19 @@ export default function Despesas() {
 														<p>{item.descricao}</p>
 														<span>{item.categoria}</span>
 													</div>
-													<h3>{item.dataRecebimento}</h3>
+													<h3>{formatarDataBR(item.dataVencimento)}</h3>
 												</div>
 												<div className="cardReceitas_value">
-													<h2>- R$ {item.valor}</h2>
+													<h2>- {formatarValorBRL(item.valor)}</h2>
 												</div>
-												<div
-													className="cardReceitas_actions"
-													onClick={() => toggleModalDelete(item)}
-												>
-													<FaRegTrashAlt size={20} />
+												<div className="cardReceitas_actions">
+													<div onClick={() => toggleModalDelete(item)}>
+														<FaRegTrashAlt size={20} />
+													</div>
+													<Link to={`/newDespesa/${item.id}`}>
+														<FaRegEdit color="#FFF" size={20} />
+													</Link>
 												</div>
-												<Link
-													to={`/newReceita/${item.id}`}
-													className="cardReceitas_actions"
-												>
-													<FaRegEdit color="#FFF" size={20} />
-												</Link>
 											</div>
 										</div>
 									);

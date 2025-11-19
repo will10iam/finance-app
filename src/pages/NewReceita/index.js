@@ -111,8 +111,22 @@ export default function New() {
 		setCategoriaSelected(e.target.value);
 	}
 
+	function moedaParaNumero(valor) {
+		if (!valor) return 0;
+
+		return parseFloat(
+			valor
+				.replace("R$", "")
+				.replace(/\s/g, "")
+				.replace(/\./g, "")
+				.replace(",", ".")
+		);
+	}
+
 	async function handleRegister(e) {
 		e.preventDefault();
+
+		const valorConvertido = moedaParaNumero(valor);
 
 		if (idCategoria) {
 			const docRef = doc(db, "receitas", id);
@@ -123,11 +137,7 @@ export default function New() {
 				//complemento: complemento,
 				status: status,
 				descricao: descricao,
-				valor: parseFloat(
-					String(valor)
-						.replace(/[R$\s.]/g, "")
-						
-				),
+				valor: valorConvertido,
 				dataRecebimento: dataRecebimento,
 				userID: user.uid,
 			})
@@ -153,11 +163,7 @@ export default function New() {
 			//complemento: complemento,
 			status: status,
 			descricao: descricao,
-			valor: parseFloat(
-				String(valor)
-					.replace(/[R$\s.]/g, "")
-					
-			),
+			valor: valorConvertido,
 			dataRecebimento: dataRecebimento,
 			userID: user.uid,
 		})
@@ -179,11 +185,15 @@ export default function New() {
 		// Remove tudo que não for número
 		const valorNumerico = valorDigitado.replace(/\D/g, "");
 
+		if (!valorNumerico) {
+			return "R$ 0,00";
+		}
+
 		// Converte para número e divide por 100 para colocar os centavos
-		const valorFloat = parseFloat(valorNumerico) / 100;
+		const valorFloat = (parseInt(valorNumerico, 10) / 100).toFixed(2);
 
 		// Formata como BRL
-		return valorFloat.toLocaleString("pt-BR", {
+		return Number(valorFloat).toLocaleString("pt-BR", {
 			style: "currency",
 			currency: "BRL",
 		});

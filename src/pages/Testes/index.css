@@ -47,12 +47,16 @@
 .cardReceitas_value {
 	color: #1ef5b1ff;
 	font-size: 15px;
-	margin-right: 50px;
+	width: 120px;
+	margin-right: 30px;
 	margin-left: -20px;
 }
 
 .cardReceitas_actions {
-	margin-left: 1px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
 	margin-top: 10px;
 	cursor: pointer;
+	width: 50px;
 }
