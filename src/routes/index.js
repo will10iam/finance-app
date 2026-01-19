@@ -11,6 +11,7 @@ import NewReceita from "../pages/NewReceita";
 import NewDespesa from "../pages/NewDespesa";
 import Dashboard from "../pages/Dashboard";
 import Testes from "../pages/Testes";
+import Transacoes from "../pages/Transações";
 
 function RoutesApp() {
 	return (
@@ -99,6 +100,15 @@ function RoutesApp() {
 				element={
 					<Private>
 						<Testes />
+					</Private>
+				}
+			/>
+
+			<Route
+				path="/transacoes"
+				element={
+					<Private>
+						<Transacoes />
 					</Private>
 				}
 			/>

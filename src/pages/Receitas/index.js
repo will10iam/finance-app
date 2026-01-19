@@ -95,7 +95,7 @@ export default function Receitas() {
 			listRef,
 			orderBy("created", "desc"),
 			startAfter(lastDocs),
-			limit(1)
+			limit(1),
 		);
 		const querySnapshot = await getDocs(q);
 		await updateState(querySnapshot);
@@ -168,16 +168,20 @@ export default function Receitas() {
 						onChange={(e) => setMesFiltro(e.target.value)}
 					/>
 				</div */}
-				<Title name="Receitas">
+				{/* <Title name="Receitas">
 					<GiTakeMyMoney size={30} />
-				</Title>
+				</Title> */}
 
-				<div className="filtro-mes">
-					<DropdownMes mesFiltro={mesFiltro} setMesFiltro={setMesFiltro} />
-					<Link to="/newReceita" className="add_button">
-						<FiPlus color="#FFF" size={25} />
-						Nova Receita
-					</Link>
+				<div className="buttons">
+					<div className="filtro-mes">
+						<DropdownMes mesFiltro={mesFiltro} setMesFiltro={setMesFiltro} />
+					</div>
+					<div>
+						<Link to="/newReceita" className="add_button">
+							<FiPlus color="#FFF" size={25} />
+							Nova Receita
+						</Link>
+					</div>
 				</div>
 				<>
 					{receitas.length === 0 ? (
