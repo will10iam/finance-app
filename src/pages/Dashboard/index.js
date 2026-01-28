@@ -13,6 +13,7 @@ import LogOutButton from "../../components/LogOutButton"; */
 import DropdownMes from "../../components/DropdownMes";
 import ProgressBar from "../../components/ProgressBar";
 import Navbar from "../../components/NavBar";
+import LastTransactions from "../../components/LastTransactions";
 import {
 	CurrencyCircleDollarIcon,
 	/* HandArrowDownIcon,
@@ -20,8 +21,10 @@ import {
 	TargetIcon,
 	HandCoinsIcon, */
 	InvoiceIcon,
+	ArticleIcon,
 } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
+import { GoArrowDownRight } from "react-icons/go";
 
 // Função auxiliar para converter string de data "dd/MM/yyyy" em objeto Date
 function parseDate(dateString) {
@@ -51,10 +54,10 @@ export default function Dashboard() {
 			const despesasSnap = await getDocs(collection(db, "despesas"));
 
 			setReceitas(
-				receitasSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+				receitasSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
 			);
 			setDespesas(
-				despesasSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+				despesasSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
 			);
 		}
 
@@ -80,22 +83,22 @@ export default function Dashboard() {
 		hoje.setHours(0, 0, 0, 0);
 
 		const receitasFiltradas = receitas.filter((r) =>
-			isInFilteredMonth(r.dataRecebimento, mesFiltro)
+			isInFilteredMonth(r.dataRecebimento, mesFiltro),
 		);
 		const despesasFiltradas = despesas.filter((d) =>
-			isInFilteredMonth(d.dataVencimento, mesFiltro)
+			isInFilteredMonth(d.dataVencimento, mesFiltro),
 		);
 
 		//Receitas
 		const totalRecebidas = receitasFiltradas
 			.filter(
-				(r) => r.status === "Recebido" || parseDate(r.dataRecebimento) <= hoje
+				(r) => r.status === "Recebido" || parseDate(r.dataRecebimento) <= hoje,
 			)
 			.reduce((acc, r) => acc + parseFloat(r.valor), 0);
 
 		const totalAReceber = receitasFiltradas
 			.filter(
-				(r) => r.status !== "Recebido" && parseDate(r.dataRecebimento) >= hoje
+				(r) => r.status !== "Recebido" && parseDate(r.dataRecebimento) >= hoje,
 			)
 			.reduce((acc, r) => acc + parseFloat(r.valor), 0);
 
@@ -212,8 +215,29 @@ export default function Dashboard() {
 							</div>
 						</div>
 					</Link>
+
+					<div className="teste">
+						<div className="card transacoes">
+							<ArticleIcon size={40} weight="duotone" color="#4287f5" />
+							<h3>Últimas Transações</h3>
+						</div>
+
+						{/* <div className="last_infos">
+							<GoArrowDownRight size={30} color="#059669" />
+							<div>
+								<p>Categoria</p>
+								<p>Descrição</p>
+							</div>
+							<div>
+								<p>R$0,00</p>
+							</div>
+						</div> */}
+
+						<LastTransactions />
+					</div>
 				</div>
-				<div className="bank-cards">
+
+				{/* <div className="bank-cards">
 					<div className="nubank">
 						<img src={nubank} alt="logo nu" />
 						<h3>Will</h3>
@@ -229,7 +253,7 @@ export default function Dashboard() {
 						<h3>Amália</h3>
 						<p>R$142,62</p>
 					</div>
-				</div>
+				</div> */}
 				{/* <div
 						className={`card saldo ${
 							resumo.saldo >= 0 ? "positivo" : "negativo"
