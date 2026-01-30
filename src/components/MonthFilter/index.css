@@ -1,0 +1,53 @@
+.month-filter {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 32px;
+
+	margin: 32px auto;
+	padding: 24px 40px;
+
+	background: #0e0e0e;
+	border-radius: 12px;
+	width: fit-content;
+}
+
+.month-filter button {
+	background: none;
+	border: none;
+	color: #fff;
+	font-size: 28px;
+	cursor: pointer;
+	transition: opacity 0.2s;
+}
+
+.month-filter button:hover {
+	opacity: 0.6;
+}
+
+.month-filter span {
+	color: #fff;
+	font-size: 32px;
+	font-weight: 500;
+	font-family: "Georgia", serif;
+}
+
+.month-filter span small {
+	display: block;
+	font-size: 14px;
+	opacity: 0.6;
+	text-align: center;
+	margin-top: 4px;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+	.month-filter {
+		padding: 16px 24px;
+		gap: 20px;
+	}
+
+	.month-filter span {
+		font-size: 24px;
+	}
+}

@@ -6,9 +6,30 @@
 .progress-header {
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	font-size: 10px;
 	color: #8a8a8a;
 	margin-bottom: -15px;
+}
+
+.progress-header-right {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.progress-dropdown {
+	background: none;
+	border: none;
+	cursor: pointer;
+	color: #aaa;
+	font-size: 25px;
+	margin-bottom: 30px;
+	transition: transform 0.3s ease;
+}
+
+.progress-dropdown.open {
+	transform: rotate(180deg);
 }
 
 .progress-bar {
@@ -27,6 +48,7 @@
 
 .progress-remaining {
 	margin-top: 10px;
+	animation: fadeDown 0.25s ease;
 	opacity: 0.9;
 }
 
@@ -38,4 +60,15 @@
 	margin-top: 4px;
 	font-size: 0.85rem;
 	color: #555;
+}
+
+@keyframes fadeDown {
+	from {
+		opacity: 0;
+		transform: translateY(-5px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }

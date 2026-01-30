@@ -1,66 +1,46 @@
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import logo2 from "../../assets/logo2.png";
+import { useState } from "react";
 import "./index.css";
-import { AuthContext } from "../../contexts/auth";
-import { FiSettings, FiPlus } from "react-icons/fi";
+import LogOut from "../LogOutButton";
 
-export default function Sidebar() {
-	const { user } = useContext(AuthContext);
-	const [open, setOpen] = useState(false);
+export default function Sidebar({ isOpen, onClose }) {
+	const [openCadastro, setOpenCadastro] = useState(false);
 
 	return (
 		<>
-			<div className="sidebar">
-				<div>
-					<img src={logo2} alt="" />
+			{/* Overlay */}
+			{isOpen && <div className="sidebar-overlay" onClick={onClose} />}
+
+			<aside className={`sidebar ${isOpen ? "open" : ""}`}>
+				<div className="sidebar-header">
+					<h1 className="logo">MeuApp</h1>
 				</div>
 
-				<Link to="/dashboard">
-					<FiSettings color="#FFF" size={24} />
-					Dashboard
-				</Link>
+				<nav className="sidebar-nav">
+					<a href="/dashboard">Dashboard</a>
+					<a href="/transacoes">Transações</a>
 
-				{/* <div className="dropdown">
-					<button className="dropdown-toggle" onClick={() => setOpen(!open)}>
-						<FiPlus color="#FFF" size={24} />
+					<button
+						className="dropdown-toggle"
+						onClick={() => setOpenCadastro(!openCadastro)}
+					>
 						Cadastros
+						<span className={`arrow ${openCadastro ? "open" : ""}`}>▾</span>
 					</button>
 
-					{open && (
+					{openCadastro && (
 						<div className="dropdown-menu">
-							<Link to="/newReceita">Nova Receita</Link>
-							<Link to="/newDespesa">Nova Despesa</Link>
-							<Link to="/categorias">Nova Categoria</Link>
+							<a href="/categorias">Categoria</a>
+							<a href="/newReceita">Nova Receita</a>
+							<a href="/newDespesa">Nova Despesa</a>
+							<a href="/saldos">Saldos</a>
 						</div>
 					)}
-				</div> */}
-				<nav className="dropdown">
-					<button className="dropdown-toggle" onClick={() => setOpen(!open)}>
-						<FiPlus color="#FFF" size={24} />
-						Lançamentos
-					</button>
-					{open && (
-						<p className="dropdown-menu">
-							<Link to="/receitas">Receitas</Link>
-							<Link to="/despesas">Despesas</Link>
-							<Link to="/categorias">Categorias</Link>
-						</p>
-					)}
 				</nav>
-				{/* <Link to="/despesas">
-					<FiHome color="#FFF" size={24} />
-					Despesas
-				</Link>
-				<Link to="/categorias">
-					<FiUser color="#FFF" size={24} />
-					Categoria
-				</Link> */}
-				{/* <Link to="/profile">
-					<FiSettings color="#FFF" size={24} />
-					Perfil
-				</Link> */}
-			</div>
+
+				<div className="sidebar-footer">
+					<LogOut />
+				</div>
+			</aside>
 		</>
 	);
 }

@@ -1,5 +1,4 @@
 import "./index.css";
-import Sidebar from "../../components/Sidebar";
 import Title from "../../components/Title";
 import { FiEdit } from "react-icons/fi";
 import { LiaMoneyBillWaveSolid } from "react-icons/lia";
@@ -85,7 +84,7 @@ export default function New() {
 				setStatus(snapshot.data().status);
 
 				let index = lista.findIndex(
-					(item) => item.id === snapshot.data().categoriaID
+					(item) => item.id === snapshot.data().categoriaID,
 				);
 				setCategoriaSelected(index);
 				setIdCategoria(true);
@@ -119,7 +118,7 @@ export default function New() {
 				.replace("R$", "")
 				.replace(/\s/g, "")
 				.replace(/\./g, "")
-				.replace(",", ".")
+				.replace(",", "."),
 		);
 	}
 
@@ -175,7 +174,7 @@ export default function New() {
 			})
 			.catch((error) => {
 				toast.error(
-					"ERRO AO REGISTRAR, VERIFIQUE OS CAMPOS E TENTE NOVAMENTE!"
+					"ERRO AO REGISTRAR, VERIFIQUE OS CAMPOS E TENTE NOVAMENTE!",
 				);
 				console.log(error);
 			});
@@ -201,8 +200,6 @@ export default function New() {
 
 	return (
 		<div>
-			<Sidebar />
-
 			<div className="content">
 				<Title name={id ? "Editando receita" : "Nova Receita"}>
 					<span>

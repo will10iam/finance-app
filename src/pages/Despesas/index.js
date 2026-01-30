@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Sidebar from "../../components/Sidebar";
+
 import Title from "../../components/Title";
 import NavBar from "../../components/NavBar";
 import DropdownMes from "../../components/DropdownMes";
@@ -21,7 +21,7 @@ import {
 	doc,
 } from "firebase/firestore";
 import { format } from "date-fns";
-/* import Modal from "../../components/Modal"; */
+import Modal from "../../components/Modal";
 
 const listRef = collection(db, "despesas");
 
@@ -32,7 +32,7 @@ export default function Despesas() {
 	const [lastDocs, setLastDocs] = useState();
 	const [loadingMore, setLoadingMore] = useState(false);
 
-	/* const [showPostModal, setShowPostModal] = useState(false); */
+	const [showPostModal, setShowPostModal] = useState(false);
 	const [detail, setDetail] = useState();
 
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -96,7 +96,7 @@ export default function Despesas() {
 			listRef,
 			orderBy("created", "desc"),
 			startAfter(lastDocs),
-			limit(20)
+			limit(20),
 		);
 		const querySnapshot = await getDocs(q);
 		await updateState(querySnapshot);
@@ -143,7 +143,6 @@ export default function Despesas() {
 	if (loading) {
 		return (
 			<div>
-				<Sidebar />
 				<div className="content">
 					<Title name="Despesas">
 						<RiBillLine size={25} />
@@ -226,14 +225,14 @@ export default function Despesas() {
 				</>
 			</div>
 
-			{/* {showPostModal && (
+			{showPostModal && (
 				<Modal
 					conteudo={detail}
 					close={() => setShowPostModal(!showPostModal)}
 				/>
 			)}
 
-			 {showDeleteModal && (
+			{showDeleteModal && (
 				<div className="modal">
 					<div className="modal-content">
 						<h3>Confirmar exclusão</h3>
@@ -254,7 +253,7 @@ export default function Despesas() {
 						</div>
 					</div>
 				</div>
-			)} */}
+			)}
 		</>
 	);
 }
