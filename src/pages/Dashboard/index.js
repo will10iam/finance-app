@@ -1,7 +1,9 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import "./index.css";
+import { AuthContext } from "../../contexts/auth";
 import { db } from "../../services/firebaseConection";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, where, orderBy } from "firebase/firestore";
 import ProgressBar from "../../components/ProgressBar";
 import Sidebar from "../../components/Sidebar";
 import MonthFilter from "../../components/MonthFilter";
@@ -11,8 +13,10 @@ import {
 	CurrencyCircleDollarIcon,
 	InvoiceIcon,
 	ArticleIcon,
+	PiggyBankIcon,
+	PencilIcon,
 } from "@phosphor-icons/react";
-/* import { Link } from "react-router-dom"; */
+import { Link } from "react-router-dom";
 
 // Função auxiliar para converter string de data "dd/MM/yyyy" em objeto Date
 function parseDate(dateString) {
@@ -33,6 +37,11 @@ export default function Dashboard() {
 	const [mesFiltro, setMesFiltro] = useState("");
 	const [openReceitas, setOpenReceitas] = useState(false);
 	const [openDespesas, setOpenDespesas] = useState(false);
+	const [saldos, setSaldos] = useState([]);
+
+	const { user } = useContext(AuthContext);
+
+	const navigate = useNavigate();
 
 	// const hoje = new Date();
 
@@ -40,6 +49,11 @@ export default function Dashboard() {
 		async function loadData() {
 			const receitasSnap = await getDocs(collection(db, "receitas"));
 			const despesasSnap = await getDocs(collection(db, "despesas"));
+			const saldosSnap = await getDocs(
+				collection(db, "saldos"),
+				where("userID", "==", user.uid),
+				orderBy("created", "desc"),
+			);
 
 			setReceitas(
 				receitasSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
@@ -47,6 +61,7 @@ export default function Dashboard() {
 			setDespesas(
 				despesasSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
 			);
+			setSaldos(saldosSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
 		}
 
 		loadData();
@@ -77,6 +92,10 @@ export default function Dashboard() {
 			isInFilteredMonth(d.dataVencimento, mesFiltro),
 		);
 
+		const saldosFiltrados = saldos.filter((s) =>
+			isInFilteredMonth(s.dataAtualizacao, mesFiltro),
+		);
+
 		//Receitas
 		const totalRecebidas = receitasFiltradas
 			.filter(
@@ -102,20 +121,45 @@ export default function Dashboard() {
 			})
 			.reduce((acc, d) => acc + parseFloat(d.valor), 0);
 
-		const saldo = totalRecebidas - totalPagas;
+		/* const saldo = totalRecebidas - totalPagas; */
 
-		return { totalRecebidas, totalAReceber, totalPagas, totalAPagar, saldo };
-	}, [receitas, despesas, mesFiltro]);
+		return {
+			totalRecebidas,
+			totalAReceber,
+			totalPagas,
+			totalAPagar,
+			saldosFiltrados,
+		};
+	}, [receitas, despesas, saldos, mesFiltro]);
 
 	return (
 		<>
 			<Sidebar />
 			<MonthFilter value={mesFiltro} onChange={setMesFiltro} />
 
-			<div>
-				<div>
-					<p> Conta Nubank William</p>
-				</div>
+			<div className="saldo">
+				{resumo.saldosFiltrados.length > 0 && (
+					<div className="saldo-cards">
+						{resumo.saldosFiltrados.map((saldo) => (
+							<div className="saldo-card" key={saldo.id}>
+								<div className="saldo-header">
+									<PiggyBankIcon size={28} />
+									<span>{saldo.descricao}</span>
+									<Link to={`/saldos/${saldo.id}`}>
+										<PencilIcon color="#FFF" size={18} />
+									</Link>
+								</div>
+
+								<strong>R$ {saldo.valor.toFixed(2)}</strong>
+
+								<small>
+									Atualizado em{" "}
+									{new Date(saldo.dataAtualizacao).toLocaleDateString("pt-BR")}
+								</small>
+							</div>
+						))}
+					</div>
+				)}
 			</div>
 
 			<div className="dashboard">

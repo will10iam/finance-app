@@ -15,6 +15,7 @@ import Transacoes from "../pages/Transações";
 import Balances from "../pages/Balances";
 
 import Layout from "../components/Layout";
+import EditSaldo from "../pages/EditarSaldo";
 
 function RoutesApp() {
 	return (
@@ -77,6 +78,15 @@ function RoutesApp() {
 					element={
 						<Private>
 							<Balances />
+						</Private>
+					}
+				/>
+
+				<Route
+					path="/saldos/:id"
+					element={
+						<Private>
+							<EditSaldo />
 						</Private>
 					}
 				/>

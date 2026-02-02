@@ -193,3 +193,40 @@
 	color: #e0e0e0;
 	padding: 10px;
 }
+
+.saldo-cards {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	margin: 20px 0 20px;
+}
+
+.saldo-card {
+	background: #111;
+	border-radius: 10px;
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	width: 270px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.saldo-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 500;
+	color: #ccc;
+}
+
+.saldo-card strong {
+	font-size: 1.6rem;
+	color: #6dc956;
+}
+
+.saldo-card small {
+	color: #888;
+	font-size: 0.75rem;
+}
