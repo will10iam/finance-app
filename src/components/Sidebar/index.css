@@ -103,3 +103,21 @@
 .logout:hover {
 	background: #222;
 }
+
+.menu-button {
+	margin: 20px;
+	background: none;
+	border: none;
+	color: #fff;
+	font-size: 20px;
+}
+
+.layout img {
+	width: 120px;
+}
+
+.layout {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}

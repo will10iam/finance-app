@@ -96,7 +96,6 @@ export default function Transacoes() {
 
 	return (
 		<>
-			<NavBar />
 			<div className="content">
 				<Title name="Transações" />
 
