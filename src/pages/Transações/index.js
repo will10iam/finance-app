@@ -96,14 +96,22 @@ export default function Transacoes() {
 	async function handleDelete() {
 		if (!deleteItem) return;
 
-		try {
-			await deleteDoc(doc(db, "receitas", deleteItem.id));
+		const collectionName =
+			deleteItem.tipo === "receita" ? "receitas" : "despesas";
 
-			setReceitas((prev) => prev.filter((r) => r.id !== deleteItem.id));
+		try {
+			await deleteDoc(doc(db, collectionName, deleteItem.id));
+
+			if (collectionName === "receitas") {
+				setReceitas((prev) => prev.filter((r) => r.id !== deleteItem.id));
+			} else {
+				setDespesas((prev) => prev.filter((d) => d.id !== deleteItem.id));
+			}
+
 			setShowDeleteModal(false);
 			setDeleteItem(null);
 		} catch (error) {
-			console.log("Erro ao deletar receita", error);
+			console.log("Erro ao deletar transação", error);
 		}
 	}
 
@@ -115,7 +123,6 @@ export default function Transacoes() {
 	if (carregando) {
 		return (
 			<>
-				<NavBar />
 				<div className="content">
 					<h2>Carregando transações...</h2>
 				</div>
@@ -194,8 +201,7 @@ export default function Transacoes() {
 					<div className="modal-content">
 						<h3>Confirmar exclusão</h3>
 						<p>
-							Tem certeza que deseja excluir esta receita?
-							<b>{deleteItem?.descricao}</b>
+							Tem certeza que deseja excluir esta <b>{deleteItem?.tipo}</b>
 						</p>
 						<div className="modal-actions">
 							<button
