@@ -1,17 +1,26 @@
 import { useEffect, useState } from "react";
 import Title from "../../components/Title";
 import NavBar from "../../components/NavBar";
-import "../Receitas/index.css";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { db } from "../../services/firebaseConection";
 import { format } from "date-fns";
-import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import {
+	FaArrowUp,
+	FaArrowDown,
+	FaRegTrashAlt,
+	FaRegEdit,
+} from "react-icons/fa";
+import "./index.css";
+import { Link } from "react-router-dom";
 
 export default function Transacoes() {
 	const [aba, setAba] = useState("todas");
 	const [receitas, setReceitas] = useState([]);
 	const [despesas, setDespesas] = useState([]);
 	const [carregando, setCarregando] = useState(true);
+
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [deleteItem, setDeleteItem] = useState(null);
 
 	useEffect(() => {
 		async function carregarDados() {
@@ -83,6 +92,26 @@ export default function Transacoes() {
 		return listaTodas;
 	}
 
+	// ---------- FUNÇÃO PARA EXCLUIR TRANSAÇÃO ----------
+	async function handleDelete() {
+		if (!deleteItem) return;
+
+		try {
+			await deleteDoc(doc(db, "receitas", deleteItem.id));
+
+			setReceitas((prev) => prev.filter((r) => r.id !== deleteItem.id));
+			setShowDeleteModal(false);
+			setDeleteItem(null);
+		} catch (error) {
+			console.log("Erro ao deletar receita", error);
+		}
+	}
+
+	function toggleModalDelete(item) {
+		setDeleteItem(item);
+		setShowDeleteModal(true);
+	}
+
 	if (carregando) {
 		return (
 			<>
@@ -137,6 +166,12 @@ export default function Transacoes() {
 								<p className="descricao">{item.descricao}</p>
 								<span className="categoria">{item.categoria}</span>
 								<span className="data">{formatarDataBR(item.data)}</span>
+								<div onClick={() => toggleModalDelete(item)}>
+									<FaRegTrashAlt size={20} />
+								</div>
+								<Link to={`/newReceita/${item.id}`}>
+									<FaRegEdit color="#FFF" size={20} />
+								</Link>
 							</div>
 
 							<div className="valor">
@@ -153,6 +188,29 @@ export default function Transacoes() {
 					))}
 				</div>
 			</div>
+
+			{showDeleteModal && (
+				<div className="modal">
+					<div className="modal-content">
+						<h3>Confirmar exclusão</h3>
+						<p>
+							Tem certeza que deseja excluir esta receita?
+							<b>{deleteItem?.descricao}</b>
+						</p>
+						<div className="modal-actions">
+							<button
+								onClick={handleDelete}
+								style={{ backgroundColor: "#f63535", color: "#fff" }}
+							>
+								Sim, excluir
+							</button>
+							<button onClick={() => setShowDeleteModal(false)}>
+								Cancelar
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
 		</>
 	);
 }

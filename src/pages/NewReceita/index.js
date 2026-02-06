@@ -144,7 +144,7 @@ export default function New() {
 					toast.success("Atualizado com sucesso");
 					setCategoriaSelected(0);
 					//setComplemento("");
-					navigate("/receitas");
+					navigate("/transacoes");
 				})
 				.catch((error) => {
 					toast.error("Opa! Alguma coisa deu errado.");
@@ -170,7 +170,7 @@ export default function New() {
 				toast.success("CHAMADO REGISTRADO COM SUCESSO");
 				//setComplemento("");
 				setCategoriaSelected(0);
-				navigate("/receitas");
+				navigate("/transacoes");
 			})
 			.catch((error) => {
 				toast.error(
