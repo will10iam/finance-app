@@ -12,7 +12,7 @@ import NewDespesa from "../pages/NewDespesa";
 import Dashboard from "../pages/Dashboard";
 import Testes from "../pages/Testes";
 import Transacoes from "../pages/Transações";
-import Balances from "../pages/Balances";
+import Saldos from "../pages/Saldos";
 
 import Layout from "../components/Layout";
 import EditSaldo from "../pages/EditarSaldo";
@@ -77,7 +77,7 @@ function RoutesApp() {
 					path="/saldos"
 					element={
 						<Private>
-							<Balances />
+							<Saldos />
 						</Private>
 					}
 				/>

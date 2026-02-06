@@ -105,11 +105,11 @@
 }
 
 .menu-button {
-	margin: 20px;
+	margin: 20px 0px 0px 35px;
 	background: none;
 	border: none;
 	color: #fff;
-	font-size: 20px;
+	font-size: 25px;
 }
 
 .layout img {

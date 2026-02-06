@@ -6,8 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { PiggyBankIcon } from "@phosphor-icons/react";
 import Title from "../../components/Title";
+import "./index.css";
 
-export default function Balances() {
+export default function Saldos() {
 	const [descricao, setDescricao] = useState("");
 	const [valor, setValor] = useState("");
 	const [dataAtualizacao, setDataAtualizacao] = useState("");
@@ -49,13 +50,14 @@ export default function Balances() {
 
 	return (
 		<>
-			<div className="content">
-				<Title name="Saldos">
-					<PiggyBankIcon size={25} />
-				</Title>
+			<div className="content_title">
+				<Title name="Crie um novo saldo" />
+				{/* <PiggyBankIcon size={25} /> */}
+			</div>
 
-				<div className="container">
-					<form className="form-profile" onSubmit={handleRegister}>
+			<div className="content">
+				<div className="content_form">
+					<form onSubmit={handleRegister} className="forms">
 						<label>Descrição</label>
 						<input
 							type="text"
@@ -80,7 +82,9 @@ export default function Balances() {
 							onChange={(e) => setDataAtualizacao(e.target.value)}
 						/>
 
-						<button type="submit">Salvar</button>
+						<button type="submit" className="content_form_button">
+							Salvar
+						</button>
 					</form>
 				</div>
 			</div>

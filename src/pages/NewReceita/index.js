@@ -200,15 +200,15 @@ export default function New() {
 
 	return (
 		<div>
-			<div className="content">
+			<div className="">
 				<Title name={id ? "Editando receita" : "Nova Receita"}>
 					<span>
 						{id ? <FiEdit size={25} /> : <LiaMoneyBillWaveSolid size={25} />}
 					</span>
 				</Title>
 
-				<div className="container">
-					<form className="form-profile" onSubmit={handleRegister}>
+				<div className="">
+					<form className="" onSubmit={handleRegister}>
 						<label>Tipo</label>
 						<select value={tipo} onChange={handleChangeSelect}>
 							<option value="Receita">Receita</option>
@@ -275,24 +275,7 @@ export default function New() {
 								checked={status === "Recebido"}
 							/>
 							<span>Recebido</span>
-
-							{/* <input
-								type="radio"
-								name="radio"
-								value="Finalizado"
-								onChange={handleOptionChange}
-								checked={status === "Finalizado"}
-							/>
-							<span>Finalizado</span> */}
 						</div>
-
-						{/* <label>Complemento</label>
-						<textarea
-							type="text"
-							placeholder="Descreva seu problema."
-							value={complemento}
-							onChange={(e) => setComplemento(e.target.value)}
-						/> */}
 
 						<button type="submit">Registrar</button>
 					</form>

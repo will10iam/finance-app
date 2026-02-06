@@ -117,11 +117,6 @@ export default function Despesas() {
 		}
 	}
 
-	/* function toggleModal(item) {
-		setShowPostModal(!showPostModal);
-		setDetail(item);
-	} */
-
 	function toggleModalDelete(item) {
 		setDeleteItem(item);
 		setShowDeleteModal(true);

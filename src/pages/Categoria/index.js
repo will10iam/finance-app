@@ -35,13 +35,13 @@ export default function Categoria() {
 		<>
 			{/* <Header /> */}
 
-			<div className="content">
+			<div className="">
 				<Title name="Categorias">
 					<BiSolidCategoryAlt size={25} />
 				</Title>
 
-				<div className="container">
-					<form className="form-profile" onSubmit={handleRegister}>
+				<div className="">
+					<form className="" onSubmit={handleRegister}>
 						<label>Nome da Categoria</label>
 						<input
 							type="text"

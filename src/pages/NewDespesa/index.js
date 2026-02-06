@@ -212,15 +212,17 @@ export default function New() {
 
 	return (
 		<div>
-			<div className="content">
+			<div className="content_title">
 				<Title name={id ? "Editando despesa" : "Nova Despesa"}>
 					<span>
 						{id ? <FiEdit size={25} /> : <LiaMoneyBillWaveSolid size={25} />}
 					</span>
 				</Title>
+			</div>
 
-				<div className="container">
-					<form className="form-profile" onSubmit={handleRegister}>
+			<div className="content">
+				<div className="content_form">
+					<form className="forms" onSubmit={handleRegister}>
 						<label>Tipo</label>
 						<select value={tipo} onChange={handleChangeSelect}>
 							<option value="Receita">Receita</option>
@@ -294,26 +296,11 @@ export default function New() {
 								checked={status === "Paga"}
 							/>
 							<span>Paga</span>
-
-							{/* <input
-								type="radio"
-								name="radio"
-								value="Finalizado"
-								onChange={handleOptionChange}
-								checked={status === "Finalizado"}
-							/>
-							<span>Finalizado</span> */}
 						</div>
 
-						{/* <label>Complemento</label>
-						<textarea
-							type="text"
-							placeholder="Descreva seu problema."
-							value={complemento}
-							onChange={(e) => setComplemento(e.target.value)}
-						/> */}
-
-						<button type="submit">Registrar</button>
+						<button type="submit" className="content_form_button">
+							Registrar
+						</button>
 					</form>
 				</div>
 			</div>
