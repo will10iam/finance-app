@@ -1,7 +1,7 @@
 .content {
 	background-color: #f1f1e5;
-	height: 70vh;
-	border-radius: 20px 20px 0px 0px;
+	height: auto;
+	border-radius: 10px 10px 0px 0px;
 	padding: 30px;
 }
 

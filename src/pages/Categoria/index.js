@@ -1,8 +1,6 @@
 import { useState } from "react";
 
-/* import Header from "../../components/Sidebar"; */
 import Title from "../../components/Title";
-import { BiSolidCategoryAlt } from "react-icons/bi";
 
 import { db } from "../../services/firebaseConection";
 import { addDoc, collection } from "firebase/firestore";
@@ -32,16 +30,13 @@ export default function Categoria() {
 	}
 
 	return (
-		<>
-			{/* <Header /> */}
-
-			<div className="">
-				<Title name="Categorias">
-					<BiSolidCategoryAlt size={25} />
-				</Title>
-
-				<div className="">
-					<form className="" onSubmit={handleRegister}>
+		<div>
+			<div className="content_title">
+				<Title name="Categorias" />
+			</div>
+			<div className="content">
+				<div className="content_form">
+					<form className="forms" onSubmit={handleRegister}>
 						<label>Nome da Categoria</label>
 						<input
 							type="text"
@@ -50,10 +45,12 @@ export default function Categoria() {
 							onChange={(e) => setNome(e.target.value)}
 						/>
 
-						<button type="submit">Salvar</button>
+						<button type="submit" className="content_form_button">
+							Salvar
+						</button>
 					</form>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }

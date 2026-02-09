@@ -200,15 +200,13 @@ export default function New() {
 
 	return (
 		<div>
-			<div className="">
-				<Title name={id ? "Editando receita" : "Nova Receita"}>
-					<span>
-						{id ? <FiEdit size={25} /> : <LiaMoneyBillWaveSolid size={25} />}
-					</span>
-				</Title>
+			<div className="content_title">
+				<Title name={id ? "Editando receita" : "Nova Receita"} />
+			</div>
 
-				<div className="">
-					<form className="" onSubmit={handleRegister}>
+			<div className="content">
+				<div className="content_form">
+					<form className="forms" onSubmit={handleRegister}>
 						<label>Tipo</label>
 						<select value={tipo} onChange={handleChangeSelect}>
 							<option value="Receita">Receita</option>
@@ -258,26 +256,32 @@ export default function New() {
 
 						<label>Status</label>
 						<div className="status">
-							<input
-								type="radio"
-								name="radio"
-								value="À Receber"
-								onChange={handleOptionChange}
-								checked={status === "À Receber"}
-							/>
-							<span>À Receber</span>
+							<label className="status-option">
+								<input
+									type="radio"
+									name="status"
+									value="À Receber"
+									onChange={handleOptionChange}
+									checked={status === "À Receber"}
+								/>
+								<span>À Receber</span>
+							</label>
 
-							<input
-								type="radio"
-								name="radio"
-								value="Recebido"
-								onChange={handleOptionChange}
-								checked={status === "Recebido"}
-							/>
-							<span>Recebido</span>
+							<label className="status-option">
+								<input
+									type="radio"
+									name="status"
+									value="Recebido"
+									onChange={handleOptionChange}
+									checked={status === "Recebido"}
+								/>
+								<span>Recebido</span>
+							</label>
 						</div>
 
-						<button type="submit">Registrar</button>
+						<button type="submit" className="content_form_button">
+							Registrar
+						</button>
 					</form>
 				</div>
 			</div>

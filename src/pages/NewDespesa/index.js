@@ -1,8 +1,6 @@
 import "./index.css";
 
 import Title from "../../components/Title";
-import { FiEdit } from "react-icons/fi";
-import { LiaMoneyBillWaveSolid } from "react-icons/lia";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../contexts/auth";
 import { db } from "../../services/firebaseConection";
@@ -213,11 +211,7 @@ export default function New() {
 	return (
 		<div>
 			<div className="content_title">
-				<Title name={id ? "Editando despesa" : "Nova Despesa"}>
-					<span>
-						{id ? <FiEdit size={25} /> : <LiaMoneyBillWaveSolid size={25} />}
-					</span>
-				</Title>
+				<Title name={id ? "Editando despesa" : "Nova Despesa"} />
 			</div>
 
 			<div className="content">
@@ -279,23 +273,27 @@ export default function New() {
 
 						<label>Status</label>
 						<div className="status">
-							<input
-								type="radio"
-								name="radio"
-								value="Em Aberto"
-								onChange={handleOptionChange}
-								checked={status === "Em Aberto"}
-							/>
-							<span>Em Aberto</span>
+							<label className="status-option">
+								<input
+									type="radio"
+									name="status"
+									value="Em Aberto"
+									onChange={handleOptionChange}
+									checked={status === "Em Aberto"}
+								/>
+								<span>Em Aberto</span>
+							</label>
 
-							<input
-								type="radio"
-								name="radio"
-								value="Paga"
-								onChange={handleOptionChange}
-								checked={status === "Paga"}
-							/>
-							<span>Paga</span>
+							<label className="status-option">
+								<input
+									type="radio"
+									name="status"
+									value="Paga"
+									onChange={handleOptionChange}
+									checked={status === "Paga"}
+								/>
+								<span>Paga</span>
+							</label>
 						</div>
 
 						<button type="submit" className="content_form_button">

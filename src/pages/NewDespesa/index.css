@@ -1,6 +1,6 @@
 .content {
 	background-color: #f1f1e5;
-	height: 70vh;
+	height: 100vh;
 	border-radius: 20px 20px 0px 0px;
 	padding: 30px;
 }
@@ -49,9 +49,48 @@
 	margin-bottom: 5px;
 }
 
+.forms input,
+.forms select {
+	width: 700px;
+	height: 40px;
+	border-radius: 5px;
+	padding: 3px 10px;
+	outline: none;
+	border: 1px solid #c5c5bf;
+	margin-bottom: 10px;
+	box-sizing: border-box;
+}
+
 .forms button {
 	width: 710px;
 	height: 40px;
-
 	margin-bottom: 30px;
+}
+
+.status {
+	width: 700px;
+	display: flex;
+	align-items: center;
+	margin-bottom: 20px;
+	margin-top: 10px;
+}
+
+.status-option {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	font-size: 14px;
+	color: #333;
+}
+
+.status-option input[type="radio"] {
+	width: 14px;
+	height: 14px;
+	accent-color: #071b23; /* cor do radio (moderna) */
+	cursor: pointer;
+}
+
+.status-option span {
+	margin-bottom: 10px;
 }
