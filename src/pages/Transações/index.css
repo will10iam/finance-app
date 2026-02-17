@@ -1,0 +1,241 @@
+/* ===== HEADER DO TOPO ===== */
+.transacoes-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 16px;
+	margin-bottom: 18px;
+}
+
+.transacoes-header-left h1 {
+	font-size: 34px;
+	margin: 0;
+	font-weight: 800;
+	color: #0b1b2a;
+}
+
+.transacoes-header-left p {
+	margin: 8px 0 0;
+	color: #6b7a8a;
+	font-size: 16px;
+}
+
+/* botão verde */
+.btn-nova-transacao {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	background: #12a150;
+	color: #fff;
+	padding: 10px 14px;
+	border-radius: 10px;
+	text-decoration: none;
+	font-weight: 700;
+	box-shadow: 0 8px 18px rgba(18, 161, 80, 0.25);
+}
+
+.btn-nova-transacao:hover {
+	filter: brightness(0.95);
+}
+
+.btn-plus {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	border-radius: 7px;
+	background: rgba(255, 255, 255, 0.2);
+	font-size: 18px;
+	line-height: 1;
+}
+
+/* ===== ABAS ===== */
+.abas-transacoes {
+	display: inline-flex;
+	gap: 8px;
+	background: transparent;
+	padding: 6px 0;
+	margin-bottom: 18px;
+}
+
+.aba {
+	border: none;
+	background: transparent;
+	padding: 10px 14px;
+	border-radius: 12px;
+	cursor: pointer;
+	font-weight: 700;
+	color: #5b6b7a;
+	transition: 0.2s;
+}
+
+.aba:hover {
+	background: rgba(0, 0, 0, 0.04);
+}
+
+.aba.ativa {
+	background: #ffffff;
+	color: #0b1b2a;
+	box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+}
+
+.aba-count {
+	opacity: 0.8;
+	font-weight: 700;
+}
+
+/* ===== MÊS ===== */
+.mes-titulo {
+	margin: 6px 0 18px;
+	font-size: 20px;
+	font-weight: 800;
+	color: #0b1b2a;
+}
+
+/* ===== CARD TRANSAÇÃO ===== */
+.transacao-card {
+	display: grid;
+	grid-template-columns: 44px 1fr;
+	gap: 12px;
+	padding: 14px 14px;
+	border-radius: 14px;
+	background: #ffffff;
+	box-shadow: 0 10px 22px rgba(0, 0, 0, 0.06);
+	margin-bottom: 12px;
+	border: 1px solid rgba(10, 25, 40, 0.06);
+}
+
+.transacao-icon {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	padding-top: 4px;
+}
+
+.icon-receita {
+	color: #0c8b2d;
+	font-size: 22px;
+}
+
+.icon-despesa {
+	color: #b90000;
+	font-size: 22px;
+}
+
+.transacao-body {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.transacao-top {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.transacao-title-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.transacao-title {
+	margin: 0;
+	font-weight: 800;
+	color: #0b1b2a;
+	font-size: 15px;
+	line-height: 1.2;
+}
+
+.badge {
+	display: inline-flex;
+	align-items: center;
+	padding: 4px 8px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+.badge-receita {
+	background: rgba(12, 139, 45, 0.12);
+	color: #0c8b2d;
+}
+
+.badge-despesa {
+	background: rgba(185, 0, 0, 0.1);
+	color: #b90000;
+}
+
+/* ações no topo direito */
+.transacao-actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.icon-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	border-radius: 10px;
+	background: rgba(0, 0, 0, 0.05);
+	border: none;
+	cursor: pointer;
+	color: #0b1b2a;
+	text-decoration: none;
+}
+
+.icon-btn:hover {
+	background: rgba(0, 0, 0, 0.08);
+}
+
+.icon-btn svg {
+	font-size: 14px;
+}
+
+.transacao-meta small {
+	color: #6b7a8a;
+	font-weight: 600;
+}
+
+.transacao-value strong {
+	font-size: 16px;
+	font-weight: 900;
+}
+
+.valor-receita {
+	color: #0c8b2d;
+}
+
+.valor-despesa {
+	color: #b90000;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 600px) {
+	.transacoes-header {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.btn-nova-transacao {
+		justify-content: center;
+		width: 100%;
+	}
+
+	.transacao-card {
+		grid-template-columns: 38px 1fr;
+		padding: 12px;
+	}
+
+	.transacao-title {
+		font-size: 14px;
+	}
+}

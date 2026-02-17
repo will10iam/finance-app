@@ -11,7 +11,7 @@ import {
 	FaRegEdit,
 } from "react-icons/fa";
 import "./index.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Transacoes() {
 	const [aba, setAba] = useState("todas");
@@ -21,6 +21,10 @@ export default function Transacoes() {
 
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [deleteItem, setDeleteItem] = useState(null);
+
+	const [showNewTransactionModal, setShowNewTransactionModal] = useState(false);
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		async function carregarDados() {
@@ -120,6 +124,19 @@ export default function Transacoes() {
 		setShowDeleteModal(true);
 	}
 
+	function toggleNewTransaction() {
+		setShowNewTransactionModal(true);
+	}
+
+	function getMesAnoAtualPTBR() {
+		const hoje = new Date();
+		return hoje.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+	}
+
+	function capitalizar(str) {
+		return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
+	}
+
 	if (carregando) {
 		return (
 			<>
@@ -133,7 +150,18 @@ export default function Transacoes() {
 	return (
 		<>
 			<div className="content">
-				<Title name="Transações" />
+				<div className="transacoes-header">
+					<div className="transacoes-header-left">
+						<Title name="Transações" />
+					</div>
+					<div
+						onClick={() => toggleNewTransaction()}
+						className="btn-nova-transacao"
+					>
+						<span className="btn-plus">+</span>
+						Nova Transação
+					</div>
+				</div>
 
 				{/* ---------- ABAS ---------- */}
 				<div className="abas-transacoes">
@@ -141,55 +169,89 @@ export default function Transacoes() {
 						className={aba === "todas" ? "aba ativa" : "aba"}
 						onClick={() => setAba("todas")}
 					>
-						Todas
+						Todas <span className="aba-count">({listaTodas.length})</span>
 					</button>
 					<button
 						className={aba === "receitas" ? "aba ativa" : "aba"}
 						onClick={() => setAba("receitas")}
 					>
-						Receitas
+						Receitas <span className="aba-count">({listaReceitas.length})</span>
 					</button>
 					<button
 						className={aba === "despesas" ? "aba ativa" : "aba"}
 						onClick={() => setAba("despesas")}
 					>
-						Despesas
+						Despesas <span className="aba-count">({listaDespesas.length})</span>
 					</button>
 				</div>
+
+				<h2 className="mes-titulo">{capitalizar(getMesAnoAtualPTBR())}</h2>
 
 				{/* ---------- LISTAGEM ---------- */}
 				<div className="lista-transacoes">
 					{getListaAtual().map((item) => (
-						<div className="cardTransacao" key={item.id}>
-							<div className="icone">
+						<div className="transacao-card" key={item.id}>
+							<div className="transacao-icon">
 								{item.tipo === "receita" ? (
-									<FaArrowUp color="green" size={22} />
+									<FaArrowUp className="icon-receita" />
 								) : (
-									<FaArrowDown color="red" size={22} />
+									<FaArrowDown className="icon-despesa" />
 								)}
 							</div>
 
-							<div className="info">
-								<p className="descricao">{item.descricao}</p>
-								<span className="categoria">{item.categoria}</span>
-								<span className="data">{formatarDataBR(item.data)}</span>
-								<div onClick={() => toggleModalDelete(item)}>
-									<FaRegTrashAlt size={20} />
-								</div>
-								<Link to={`/newReceita/${item.id}`}>
-									<FaRegEdit color="#FFF" size={20} />
-								</Link>
-							</div>
+							<div className="transacao-body">
+								<div className="transacao-top">
+									<div className="transacao-title-row">
+										<p className="transacao-title">{item.descricao}</p>
+										<span
+											className={`badge ${item.tipo === "receita" ? "badge-receita" : "badge-despesa"}`}
+										>
+											{item.categoria}
+										</span>
+									</div>
 
-							<div className="valor">
-								<h3
-									style={{
-										color: item.tipo === "receita" ? "#0c8b2d" : "#b90000",
-									}}
-								>
-									{item.tipo === "receita" ? "+ " : "- "}
-									{formatarValorBRL(item.valor)}
-								</h3>
+									<div className="transacao-actions">
+										<button
+											type="button"
+											className="icon-btn"
+											onClick={() => toggleModalDelete(item)}
+											aria-label="Excluir"
+											title="Excluir"
+										>
+											<FaRegTrashAlt />
+										</button>
+
+										<Link
+											className="icon-btn"
+											to={
+												item.tipo === "receita"
+													? `/newReceita/${item.id}`
+													: `/newDespesa/${item.id}`
+											}
+											aria-label="Editar"
+											title="Editar"
+										>
+											<FaRegEdit color="#FFF" size={20} />
+										</Link>
+									</div>
+								</div>
+
+								<div className="transacao-meta">
+									<small>{formatarDataBR(item.data)}</small>
+								</div>
+
+								<div className="transacao-value">
+									<strong
+										className={
+											item.tipo === "receita"
+												? "valor-receita"
+												: "valor-despesa"
+										}
+									>
+										{item.tipo === "receita" ? "+ " : "- "}
+										{formatarValorBRL(item.valor)}
+									</strong>
+								</div>
 							</div>
 						</div>
 					))}
@@ -211,6 +273,33 @@ export default function Transacoes() {
 								Sim, excluir
 							</button>
 							<button onClick={() => setShowDeleteModal(false)}>
+								Cancelar
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
+
+			{showNewTransactionModal && (
+				<div className="modal">
+					<div className="modal-content">
+						<h3>Quer adicionar uma nova transação?</h3>
+						<p>Escolha o tipo abaixo</p>
+						<div className="modal-actions">
+							<button
+								onClick={() => navigate("/newReceita")}
+								style={{ backgroundColor: "#f63535", color: "#fff" }}
+							>
+								Receita
+							</button>
+
+							<button
+								onClick={() => navigate("/newDespesa")}
+								style={{ backgroundColor: "#f63535", color: "#fff" }}
+							>
+								Despesa
+							</button>
+							<button onClick={() => setShowNewTransactionModal(false)}>
 								Cancelar
 							</button>
 						</div>

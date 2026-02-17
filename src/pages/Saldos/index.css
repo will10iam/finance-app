@@ -1,8 +1,8 @@
 .content {
 	background-color: #f1f1e5;
 	height: auto;
-	border-radius: 10px 10px 0px 0px;
-	padding: 30px;
+	border-radius: 7px 7px 0px 0px;
+	padding: 10px;
 }
 
 .content_title {
@@ -13,7 +13,7 @@
 }
 
 .content_form {
-	border-radius: 15px;
+	border-radius: 10px;
 	padding: 20px;
 	background-color: #fff;
 	display: flex;
