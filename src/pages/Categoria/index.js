@@ -6,6 +6,8 @@ import { db } from "../../services/firebaseConection";
 import { addDoc, collection } from "firebase/firestore";
 import { toast } from "react-toastify";
 
+import "./index.css";
+
 export default function Categoria() {
 	const [nome, setNome] = useState("");
 
@@ -34,8 +36,8 @@ export default function Categoria() {
 			<div className="content_title">
 				<Title name="Categorias" />
 			</div>
-			<div className="content">
-				<div className="content_form">
+			<div className="category_content">
+				<div className="category_content_form">
 					<form className="forms" onSubmit={handleRegister}>
 						<label>Nome da Categoria</label>
 						<input

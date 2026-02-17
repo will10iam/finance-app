@@ -1,0 +1,15 @@
+.category_content {
+	background-color: #f1f1e5;
+	height: 58vh;
+	border-radius: 7px 7px 0px 0px;
+	padding: 10px;
+}
+
+.category_content_form {
+	border-radius: 10px;
+	padding: 20px;
+	background-color: #fff;
+	display: flex;
+	justify-content: center;
+	height: 50vh;
+}
