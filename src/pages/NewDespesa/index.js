@@ -209,7 +209,7 @@ export default function New() {
 	}
 
 	return (
-		<div>
+		<div className="new_despesa_page">
 			<div className="content_title">
 				<Title name={id ? "Editando despesa" : "Nova Despesa"} />
 			</div>
@@ -217,85 +217,92 @@ export default function New() {
 			<div className="content">
 				<div className="content_form">
 					<form className="forms" onSubmit={handleRegister}>
-						<label>Tipo</label>
-						<select value={tipo} onChange={handleChangeSelect}>
-							<option value="Receita">Receita</option>
-							<option value="Despesa">Despesa</option>
-						</select>
-
-						<label>Descrição</label>
-						<input
-							type="text"
-							placeholder="Descrição da despesa"
-							value={descricao}
-							onChange={(e) => setDescricao(e.target.value)}
-						/>
-
-						<label>Valor</label>
-						<input
-							type="text"
-							placeholder="R$ 0,00"
-							value={valor}
-							onChange={(e) => setValor(formatarMoeda(e.target.value))}
-						/>
-
-						<label>Categoria</label>
-						{loadCategoria ? (
-							<input type="text" disabled={true} value="Carregando..." />
-						) : (
-							<select
-								value={categoriaSelected}
-								onChange={handleChangeCategoria}
-							>
-								{categorias.map((item, index) => {
-									return (
-										<option key={index} value={index}>
-											{item.nomeCategoria}
-										</option>
-									);
-								})}
+						<div className="field">
+							<label>Tipo</label>
+							<select value={tipo} onChange={handleChangeSelect}>
+								<option value="Receita">Receita</option>
+								<option value="Despesa">Despesa</option>
 							</select>
-						)}
-
-						<label>Data de Pagamento</label>
-						<input
-							type="date"
-							value={dataPagamento}
-							onChange={(e) => setDataPagamento(e.target.value)}
-						/>
-
-						<label>Data de Vencimento</label>
-						<input
-							type="date"
-							value={dataVencimento}
-							onChange={(e) => setDataVencimento(e.target.value)}
-						/>
-
-						<label>Status</label>
-						<div className="status">
-							<label className="status-option">
-								<input
-									type="radio"
-									name="status"
-									value="Em Aberto"
-									onChange={handleOptionChange}
-									checked={status === "Em Aberto"}
-								/>
-								<span>Em Aberto</span>
-							</label>
-
-							<label className="status-option">
-								<input
-									type="radio"
-									name="status"
-									value="Paga"
-									onChange={handleOptionChange}
-									checked={status === "Paga"}
-								/>
-								<span>Paga</span>
-							</label>
 						</div>
+						<div className="field">
+							<label>Descrição</label>
+							<input
+								type="text"
+								placeholder="Descrição da despesa"
+								value={descricao}
+								onChange={(e) => setDescricao(e.target.value)}
+							/>
+						</div>
+						<div className="field">
+							<label>Valor</label>
+							<input
+								type="text"
+								placeholder="R$ 0,00"
+								value={valor}
+								onChange={(e) => setValor(formatarMoeda(e.target.value))}
+							/>
+						</div>
+						<div className="field">
+							<label>Categoria</label>
+							{loadCategoria ? (
+								<input type="text" disabled={true} value="Carregando..." />
+							) : (
+								<select
+									value={categoriaSelected}
+									onChange={handleChangeCategoria}
+								>
+									{categorias.map((item, index) => {
+										return (
+											<option key={index} value={index}>
+												{item.nomeCategoria}
+											</option>
+										);
+									})}
+								</select>
+							)}
+						</div>
+						<div className="field">
+							<label>Data de Pagamento</label>
+							<input
+								type="date"
+								value={dataPagamento}
+								onChange={(e) => setDataPagamento(e.target.value)}
+							/>
+						</div>
+						<div className="field">
+							<label>Data de Vencimento</label>
+							<input
+								type="date"
+								value={dataVencimento}
+								onChange={(e) => setDataVencimento(e.target.value)}
+							/>
+						</div>
+						<div className="field">
+							<label>Status</label>
+							<div className="status">
+								<label className="status-option">
+									<input
+										type="radio"
+										name="status"
+										value="Em Aberto"
+										onChange={handleOptionChange}
+										checked={status === "Em Aberto"}
+									/>
+									<span>Em Aberto</span>
+								</label>
 
+								<label className="status-option">
+									<input
+										type="radio"
+										name="status"
+										value="Paga"
+										onChange={handleOptionChange}
+										checked={status === "Paga"}
+									/>
+									<span>Paga</span>
+								</label>
+							</div>
+						</div>
 						<button type="submit" className="content_form_button">
 							Registrar
 						</button>

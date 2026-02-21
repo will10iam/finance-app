@@ -1,4 +1,4 @@
-.content {
+/* .content {
 	background-color: #f1f1e5;
 	height: 100vh;
 	border-radius: 20px 20px 0px 0px;
@@ -87,10 +87,168 @@
 .status-option input[type="radio"] {
 	width: 14px;
 	height: 14px;
-	accent-color: #071b23; /* cor do radio (moderna) */
+	accent-color: #071b23; /* cor do radio (moderna)
 	cursor: pointer;
 }
 
 .status-option span {
 	margin-bottom: 10px;
+}
+ */
+
+/* --- BASE (mesmo padrão do Saldos) --- */
+.new_despesa_page {
+	min-height: calc(100vh - 70px);
+	background: #f1f1e5;
+	padding: 20px 12px 40px;
+}
+.content {
+	background-color: #f1f1e5;
+	height: auto;
+	border-radius: 7px 7px 0px 0px;
+	padding: 10px;
+}
+
+.content_title {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.content_form {
+	border-radius: 14px;
+	padding: 18px;
+	background-color: #fff;
+	display: flex;
+	justify-content: center;
+	max-width: 780px;
+	margin: 0 auto;
+	box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+	border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.forms {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.field label {
+	font-size: 14px;
+	font-weight: 600;
+	color: #111827;
+}
+
+/* Inputs e Selects com o MESMO estilo */
+.field input,
+.field select {
+	width: 100%;
+	height: 44px;
+	border-radius: 10px;
+	padding: 10px 12px;
+	outline: none;
+	border: 1px solid #d6d6cf;
+	background: #fff;
+	color: #111827;
+	transition:
+		border-color 0.2s ease,
+		box-shadow 0.2s ease;
+}
+
+.field input::placeholder {
+	color: #9aa0a6;
+}
+
+.field input:focus,
+.field select:focus {
+	border-color: rgba(7, 27, 35, 0.55);
+	box-shadow: 0 0 0 4px rgba(7, 27, 35, 0.12);
+}
+
+/* Deixa o select com cara mais moderna */
+.field select {
+	appearance: none;
+	background-image:
+		linear-gradient(45deg, transparent 50%, #6b7280 50%),
+		linear-gradient(135deg, #6b7280 50%, transparent 50%);
+	background-position:
+		calc(100% - 18px) calc(50% - 3px),
+		calc(100% - 12px) calc(50% - 3px);
+	background-size:
+		6px 6px,
+		6px 6px;
+	background-repeat: no-repeat;
+	padding-right: 38px;
+	cursor: pointer;
+}
+
+/* --- STATUS (rádios) --- */
+.status {
+	display: flex;
+	gap: 14px;
+	margin-top: 2px;
+}
+
+.status-option {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 10px;
+	border: 1px solid rgba(0, 0, 0, 0.12);
+	border-radius: 10px;
+	background: #fff;
+	cursor: pointer;
+	user-select: none;
+}
+
+.status-option input {
+	width: 14px;
+	height: 14px;
+	margin: 0;
+	accent-color: #071b23;
+}
+
+.status-option span {
+	font-size: 13px;
+	font-weight: 600;
+	color: #111827;
+}
+
+/* --- BOTÃO --- */
+.content_form_button {
+	height: 44px;
+	border: none;
+	border-radius: 12px;
+	background: #071b23;
+	color: #f1f1e5;
+	font-weight: 700;
+	cursor: pointer;
+	transition:
+		transform 0.05s ease,
+		opacity 0.2s ease;
+	margin-top: 4px;
+}
+
+.content_form_button:active {
+	transform: translateY(1px);
+}
+
+/* --- RESPONSIVO --- */
+@media (max-width: 520px) {
+	.content_form {
+		padding: 14px;
+		border-radius: 12px;
+	}
+
+	.status {
+		flex-direction: column;
+	}
 }
