@@ -1,0 +1,135 @@
+.lasttx {
+	width: 100%;
+	margin-top: 10px;
+}
+
+.lasttx-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+.lasttx-header h4 {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 800;
+	color: rgba(255, 255, 255, 0.85);
+}
+
+.lasttx-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 10px;
+
+	border-radius: 12px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+
+	background: rgba(255, 255, 255, 0.06);
+	color: rgba(255, 255, 255, 0.85);
+	font-weight: 800;
+	font-size: 12px;
+	transition: 0.2s ease;
+}
+
+.lasttx-link:hover {
+	background: rgba(255, 255, 255, 0.1);
+	transform: translateY(-1px);
+}
+
+.lasttx-empty {
+	color: rgba(255, 255, 255, 0.6);
+	font-weight: 600;
+	font-size: 13px;
+	margin-top: 8px;
+}
+
+.lasttx-list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.lasttx-item {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 12px;
+
+	padding: 12px;
+	border-radius: 14px;
+
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lasttx-left {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
+}
+
+.lasttx-title {
+	font-size: 13px;
+	font-weight: 900;
+	color: rgba(255, 255, 255, 0.9);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 220px;
+}
+
+.lasttx-badge {
+	display: inline-flex;
+	width: fit-content;
+	padding: 4px 10px;
+	border-radius: 999px;
+	font-size: 11px;
+	font-weight: 900;
+	white-space: nowrap;
+}
+
+.badge-receita {
+	background: rgba(18, 161, 80, 0.18);
+	color: #6dc956;
+}
+
+.badge-despesa {
+	background: rgba(185, 0, 0, 0.18);
+	color: #ee5d4a;
+}
+
+.lasttx-right {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+.lasttx-date {
+	font-size: 11px;
+	font-weight: 700;
+	color: rgba(255, 255, 255, 0.55);
+}
+
+.lasttx-value {
+	font-size: 13px;
+	font-weight: 900;
+}
+
+.lasttx-value.entrada {
+	color: #6dc956;
+}
+
+.lasttx-value.saida {
+	color: #ee5d4a;
+}
+
+@media (max-width: 520px) {
+	.lasttx-title {
+		max-width: 150px;
+	}
+}

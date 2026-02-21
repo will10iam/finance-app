@@ -14,7 +14,7 @@ export default function Layout({ children }) {
 				</button>
 
 				<img src={logo} alt="" />
-				<p></p>
+				{/* <p></p> */}
 			</div>
 
 			<Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />

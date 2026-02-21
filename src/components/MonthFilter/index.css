@@ -1,53 +1,84 @@
 .month-filter {
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	gap: 32px;
+	gap: 28px;
 
-	margin: 32px auto;
-	padding: 24px 40px;
+	padding: 16px 28px;
+	margin: 18px auto;
 
-	background: #0e0e0e;
-	border-radius: 12px;
-	width: fit-content;
+	border-radius: 16px;
+
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+	backdrop-filter: blur(10px);
 }
 
+/* ---------- BOTÕES ---------- */
 .month-filter button {
-	background: none;
-	border: none;
-	color: #fff;
-	font-size: 28px;
+	width: 42px;
+	height: 42px;
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	border-radius: 14px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+
+	background: rgba(255, 255, 255, 0.06);
+	color: rgba(255, 255, 255, 0.9);
+
+	font-size: 20px;
+	font-weight: 900;
+
 	cursor: pointer;
-	transition: opacity 0.2s;
+	transition: all 0.2s ease;
 }
 
 .month-filter button:hover {
-	opacity: 0.6;
+	background: rgba(255, 255, 255, 0.12);
+	transform: translateY(-1px);
 }
 
+.month-filter button:active {
+	transform: translateY(0);
+}
+
+/* ---------- TEXTO ---------- */
 .month-filter span {
-	color: #fff;
-	font-size: 32px;
-	font-weight: 500;
-	font-family: "Georgia", serif;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	color: rgba(255, 255, 255, 0.92);
+	font-size: 22px;
+	font-weight: 900;
+	letter-spacing: 0.3px;
 }
 
 .month-filter span small {
-	display: block;
-	font-size: 14px;
-	opacity: 0.6;
-	text-align: center;
 	margin-top: 4px;
+	font-size: 13px;
+	font-weight: 700;
+	color: rgba(255, 255, 255, 0.6);
 }
 
-/* Mobile */
+/* ---------- RESPONSIVO ---------- */
 @media (max-width: 600px) {
 	.month-filter {
-		padding: 16px 24px;
-		gap: 20px;
+		gap: 18px;
+		padding: 12px 18px;
 	}
 
 	.month-filter span {
-		font-size: 24px;
+		font-size: 18px;
+	}
+
+	.month-filter button {
+		width: 36px;
+		height: 36px;
+		font-size: 18px;
 	}
 }

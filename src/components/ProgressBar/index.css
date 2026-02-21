@@ -1,74 +1,133 @@
 .progress-container {
-	margin-top: 10px;
+	margin-top: 12px;
 	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
 }
 
+/* ---------- HEADER ---------- */
 .progress-header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	font-size: 10px;
-	color: #8a8a8a;
-	margin-bottom: -15px;
+	font-size: 13px;
+	font-weight: 700;
+	color: rgba(255, 255, 255, 0.72);
 }
 
 .progress-header-right {
 	display: flex;
 	align-items: center;
-	gap: 6px;
+	gap: 8px;
 }
 
+/* ---------- BOTÃO DROPDOWN ---------- */
 .progress-dropdown {
-	background: none;
-	border: none;
+	width: 34px;
+	height: 34px;
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	border-radius: 12px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+
+	background: rgba(255, 255, 255, 0.06);
+	color: rgba(255, 255, 255, 0.85);
+
 	cursor: pointer;
-	color: #aaa;
-	font-size: 25px;
-	margin-bottom: 30px;
-	transition: transform 0.3s ease;
+	transition: all 0.25s ease;
+}
+
+.progress-dropdown:hover {
+	background: rgba(255, 255, 255, 0.1);
+	transform: translateY(-1px);
 }
 
 .progress-dropdown.open {
 	transform: rotate(180deg);
 }
 
+/* ---------- BARRA ---------- */
 .progress-bar {
 	width: 100%;
-	height: 7px;
-	background: #333;
-	border-radius: 5px;
+	height: 10px;
+
+	background: rgba(255, 255, 255, 0.08);
+	border-radius: 999px;
 	overflow: hidden;
+	position: relative;
 }
 
 .progress-fill {
 	height: 100%;
-	border-radius: 5px;
+	border-radius: 999px;
 	transition: width 0.4s ease;
 }
 
+/* efeito leve de brilho */
+.progress-fill::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		90deg,
+		transparent,
+		rgba(255, 255, 255, 0.25),
+		transparent
+	);
+	opacity: 0.3;
+}
+
+/* ---------- DROPDOWN ---------- */
 .progress-remaining {
 	margin-top: 10px;
+	padding: 10px;
+	border-radius: 14px;
+
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+
 	animation: fadeDown 0.25s ease;
-	opacity: 0.9;
+}
+
+.progress-remaining .progress-bar {
+	height: 8px;
+	background: rgba(255, 255, 255, 0.06);
 }
 
 .progress-remaining .progress-fill.remaining {
-	background-color: #d8d8d8;
+	background-color: rgba(255, 255, 255, 0.35);
 }
 
 .remaining-info {
-	margin-top: 4px;
-	font-size: 0.85rem;
-	color: #555;
+	margin-top: 6px;
+	font-size: 12px;
+	font-weight: 700;
+	color: rgba(255, 255, 255, 0.6);
 }
 
+/* ---------- ANIMAÇÃO ---------- */
 @keyframes fadeDown {
 	from {
 		opacity: 0;
-		transform: translateY(-5px);
+		transform: translateY(-6px);
 	}
 	to {
 		opacity: 1;
 		transform: translateY(0);
+	}
+}
+
+/* ---------- RESPONSIVO ---------- */
+@media (max-width: 520px) {
+	.progress-header {
+		font-size: 12px;
+	}
+
+	.progress-bar {
+		height: 8px;
 	}
 }

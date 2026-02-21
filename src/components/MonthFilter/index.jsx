@@ -26,6 +26,14 @@ export default function MonthFilter({ value, onChange }) {
 		value ? Number(value.split("-")[0]) : today.getFullYear(),
 	);
 
+	// ✅ se o value mudar "por fora", atualiza o estado interno
+	useEffect(() => {
+		if (!value) return;
+		const [y, m] = value.split("-");
+		setYear(Number(y));
+		setMonth(Number(m) - 1);
+	}, [value]);
+
 	function prevMonth() {
 		setMonth((prev) => {
 			if (prev === 0) {
@@ -46,20 +54,26 @@ export default function MonthFilter({ value, onChange }) {
 		});
 	}
 
+	// ✅ só dispara onChange se o valor final realmente mudou
 	useEffect(() => {
 		const formattedMonth = String(month + 1).padStart(2, "0");
-		onChange(`${year}-${formattedMonth}`);
-	}, [month, year]);
+		const nextValue = `${year}-${formattedMonth}`;
+		if (nextValue !== value) onChange(nextValue);
+	}, [month, year, value, onChange]);
 
 	return (
 		<div className="month-filter">
-			<button onClick={prevMonth}>&lt;</button>
+			<button type="button" onClick={prevMonth}>
+				&lt;
+			</button>
 
 			<span>
 				{MONTHS[month]} <small>{year}</small>
 			</span>
 
-			<button onClick={nextMonth}>&gt;</button>
+			<button type="button" onClick={nextMonth}>
+				&gt;
+			</button>
 		</div>
 	);
 }

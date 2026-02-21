@@ -1,7 +1,13 @@
-* {
+/* ========================= */
+/* RESET BASE */
+/* ========================= */
+
+*,
+*::before,
+*::after {
 	padding: 0;
 	margin: 0;
-	box-sizing: 0;
+	box-sizing: border-box;
 }
 
 html,
@@ -10,15 +16,48 @@ body,
 	height: 100%;
 }
 
-body {
-	font: 14px;
-	font-family: "Noto Sans", sans-serif;
-	color: #ccc;
-	background-color: #071b23;
+/* ========================= */
+/* DESIGN SYSTEM - DARK */
+/* ========================= */
+
+:root {
+	--bg-primary: #0f172a;
+	--bg-card: #1e293b;
+
+	--text-primary: #f8fafc;
+	--text-secondary: #94a3b8;
+
+	--border-color: #334155;
+
+	--green: #22c55e;
+	--green-hover: #16a34a;
+
+	--red: #ef4444;
+	--red-hover: #dc2626;
+
+	--radius: 12px;
+	--shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
+
+/* ========================= */
+/* BASE BODY */
+/* ========================= */
+
+body {
+	font-family: "Noto Sans", sans-serif;
+	background-color: var(--bg-primary);
+	color: var(--text-primary);
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+/* ========================= */
+/* ELEMENTOS GLOBAIS */
+/* ========================= */
 
 a {
 	text-decoration: none;
+	color: inherit;
 }
 
 ul {
@@ -27,4 +66,27 @@ ul {
 
 button {
 	cursor: pointer;
+	border: none;
+	border-radius: var(--radius);
+	font-family: inherit;
+}
+
+input,
+select,
+textarea {
+	font-family: inherit;
+	border-radius: 8px;
+	border: 1px solid var(--border-color);
+	background-color: var(--bg-card);
+	color: var(--text-primary);
+	padding: 10px;
+	outline: none;
+	transition: 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+	border-color: var(--green);
+	box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
 }

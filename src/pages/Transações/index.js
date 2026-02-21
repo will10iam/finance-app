@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
-import Title from "../../components/Title";
-import NavBar from "../../components/NavBar";
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
-import { db } from "../../services/firebaseConection";
-import { format } from "date-fns";
+import { Link, useNavigate } from "react-router-dom";
 import {
 	FaArrowUp,
 	FaArrowDown,
 	FaRegTrashAlt,
 	FaRegEdit,
 } from "react-icons/fa";
+
+import { db } from "../../services/firebaseConection";
+import Title from "../../components/Title";
 import "./index.css";
-import { Link, useNavigate } from "react-router-dom";
 
 export default function Transacoes() {
 	const [aba, setAba] = useState("todas");
@@ -32,37 +31,36 @@ export default function Transacoes() {
 				const receitaSnap = await getDocs(collection(db, "receitas"));
 				const despesaSnap = await getDocs(collection(db, "despesas"));
 
-				const listaReceitas = receitaSnap.docs.map((doc) => ({
-					id: doc.id,
+				const listaReceitas = receitaSnap.docs.map((d) => ({
+					id: d.id,
 					tipo: "receita",
-					descricao: doc.data().descricao,
-					categoria: doc.data().categoria,
-					valor: doc.data().valor,
-					data: doc.data().dataRecebimento, // ← 📌 DATA USADA PARA ORDENAR
+					descricao: d.data().descricao,
+					categoria: d.data().categoria,
+					valor: d.data().valor,
+					data: d.data().dataRecebimento,
 				}));
 
-				const listaDespesas = despesaSnap.docs.map((doc) => ({
-					id: doc.id,
+				const listaDespesas = despesaSnap.docs.map((d) => ({
+					id: d.id,
 					tipo: "despesa",
-					descricao: doc.data().descricao,
-					categoria: doc.data().categoria,
-					valor: doc.data().valor,
-					data: doc.data().dataVencimento, // ← 📌 DATA USADA PARA ORDENAR
+					descricao: d.data().descricao,
+					categoria: d.data().categoria,
+					valor: d.data().valor,
+					data: d.data().dataVencimento,
 				}));
 
 				setReceitas(listaReceitas);
 				setDespesas(listaDespesas);
 			} catch (error) {
 				console.error("Erro ao carregar transações:", error);
+			} finally {
+				setCarregando(false);
 			}
-
-			setCarregando(false);
 		}
 
 		carregarDados();
 	}, []);
 
-	// ---------- FORMATADORES ----------
 	function formatarDataBR(dataString) {
 		if (!dataString) return "";
 		const [ano, mes, dia] = dataString.split("-");
@@ -70,22 +68,16 @@ export default function Transacoes() {
 	}
 
 	function formatarValorBRL(valor) {
-		return valor.toLocaleString("pt-BR", {
+		return Number(valor || 0).toLocaleString("pt-BR", {
 			style: "currency",
 			currency: "BRL",
 		});
 	}
 
-	// ---------- FUNÇÃO QUE ORDENA POR DATA ----------
 	function ordenarPorData(lista) {
-		return [...lista].sort((a, b) => {
-			const dataA = new Date(a.data);
-			const dataB = new Date(b.data);
-			return dataB - dataA; // mais recente primeiro
-		});
+		return [...lista].sort((a, b) => new Date(b.data) - new Date(a.data));
 	}
 
-	// ---------- LISTAS FILTRADAS ----------
 	const listaTodas = ordenarPorData([...receitas, ...despesas]);
 	const listaReceitas = ordenarPorData(receitas);
 	const listaDespesas = ordenarPorData(despesas);
@@ -96,7 +88,6 @@ export default function Transacoes() {
 		return listaTodas;
 	}
 
-	// ---------- FUNÇÃO PARA EXCLUIR TRANSAÇÃO ----------
 	async function handleDelete() {
 		if (!deleteItem) return;
 
@@ -124,10 +115,6 @@ export default function Transacoes() {
 		setShowDeleteModal(true);
 	}
 
-	function toggleNewTransaction() {
-		setShowNewTransactionModal(true);
-	}
-
 	function getMesAnoAtualPTBR() {
 		const hoje = new Date();
 		return hoje.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
@@ -139,31 +126,32 @@ export default function Transacoes() {
 
 	if (carregando) {
 		return (
-			<>
+			<div className="transacoes-page">
 				<div className="content">
 					<h2>Carregando transações...</h2>
 				</div>
-			</>
+			</div>
 		);
 	}
 
 	return (
-		<>
+		<div className="transacoes-page">
 			<div className="content">
 				<div className="transacoes-header">
 					<div className="transacoes-header-left">
 						<Title name="Transações" />
 					</div>
-					<div
-						onClick={() => toggleNewTransaction()}
+
+					<button
+						type="button"
+						onClick={() => setShowNewTransactionModal(true)}
 						className="btn-nova-transacao"
 					>
 						<span className="btn-plus">+</span>
 						Nova Transação
-					</div>
+					</button>
 				</div>
 
-				{/* ---------- ABAS ---------- */}
 				<div className="abas-transacoes">
 					<button
 						className={aba === "todas" ? "aba ativa" : "aba"}
@@ -187,7 +175,6 @@ export default function Transacoes() {
 
 				<h2 className="mes-titulo">{capitalizar(getMesAnoAtualPTBR())}</h2>
 
-				{/* ---------- LISTAGEM ---------- */}
 				<div className="lista-transacoes">
 					{getListaAtual().map((item) => (
 						<div className="transacao-card" key={item.id}>
@@ -204,7 +191,11 @@ export default function Transacoes() {
 									<div className="transacao-title-row">
 										<p className="transacao-title">{item.descricao}</p>
 										<span
-											className={`badge ${item.tipo === "receita" ? "badge-receita" : "badge-despesa"}`}
+											className={`badge ${
+												item.tipo === "receita"
+													? "badge-receita"
+													: "badge-despesa"
+											}`}
 										>
 											{item.categoria}
 										</span>
@@ -231,7 +222,7 @@ export default function Transacoes() {
 											aria-label="Editar"
 											title="Editar"
 										>
-											<FaRegEdit color="#FFF" size={20} />
+											<FaRegEdit />
 										</Link>
 									</div>
 								</div>
@@ -263,16 +254,21 @@ export default function Transacoes() {
 					<div className="modal-content">
 						<h3>Confirmar exclusão</h3>
 						<p>
-							Tem certeza que deseja excluir esta <b>{deleteItem?.tipo}</b>
+							Tem certeza que deseja excluir esta <b>{deleteItem?.tipo}</b>?
 						</p>
 						<div className="modal-actions">
 							<button
 								onClick={handleDelete}
-								style={{ backgroundColor: "#f63535", color: "#fff" }}
+								className="btn-danger"
+								type="button"
 							>
 								Sim, excluir
 							</button>
-							<button onClick={() => setShowDeleteModal(false)}>
+							<button
+								onClick={() => setShowDeleteModal(false)}
+								className="btn-ghost"
+								type="button"
+							>
 								Cancelar
 							</button>
 						</div>
@@ -283,29 +279,36 @@ export default function Transacoes() {
 			{showNewTransactionModal && (
 				<div className="modal">
 					<div className="modal-content">
-						<h3>Quer adicionar uma nova transação?</h3>
-						<p>Escolha o tipo abaixo</p>
+						<h3>Nova transação</h3>
+						<p>Escolha o tipo abaixo:</p>
 						<div className="modal-actions">
 							<button
 								onClick={() => navigate("/newReceita")}
-								style={{ backgroundColor: "#f63535", color: "#fff" }}
+								className="btn-primary"
+								type="button"
 							>
 								Receita
 							</button>
 
 							<button
 								onClick={() => navigate("/newDespesa")}
-								style={{ backgroundColor: "#f63535", color: "#fff" }}
+								className="btn-primary"
+								type="button"
 							>
 								Despesa
 							</button>
-							<button onClick={() => setShowNewTransactionModal(false)}>
+
+							<button
+								onClick={() => setShowNewTransactionModal(false)}
+								className="btn-ghost"
+								type="button"
+							>
 								Cancelar
 							</button>
 						</div>
 					</div>
 				</div>
 			)}
-		</>
+		</div>
 	);
 }

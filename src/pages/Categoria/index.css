@@ -1,15 +1,98 @@
-.category_content {
-	background-color: #f1f1e5;
-	height: 58vh;
-	border-radius: 7px 7px 0px 0px;
-	padding: 10px;
+.categoria-page {
+	min-height: calc(100vh - 70px);
+	padding: 18px 14px 40px;
 }
 
-.category_content_form {
-	border-radius: 10px;
-	padding: 20px;
-	background-color: #fff;
+.categoria-header {
 	display: flex;
 	justify-content: center;
-	height: 50vh;
+	align-items: center;
+	margin-bottom: 14px;
+}
+
+.categoria-card {
+	width: 100%;
+	max-width: 760px;
+	margin: 0 auto;
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 16px;
+	padding: 18px;
+	box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+	backdrop-filter: blur(10px);
+}
+
+.categoria-form {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.categoria-field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.categoria-field label {
+	color: rgba(255, 255, 255, 0.86);
+	font-weight: 600;
+	font-size: 0.95rem;
+}
+
+.categoria-field input {
+	width: 110%;
+	height: 46px;
+	border-radius: 12px;
+	padding: 10px 12px;
+	outline: none;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	background: rgba(0, 0, 0, 0.25);
+	color: rgba(255, 255, 255, 0.92);
+	transition:
+		border-color 0.2s ease,
+		box-shadow 0.2s ease;
+}
+
+.categoria-field input::placeholder {
+	color: rgba(255, 255, 255, 0.38);
+}
+
+.categoria-field input:focus {
+	border-color: rgba(106, 227, 152, 0.55);
+	box-shadow: 0 0 0 4px rgba(106, 227, 152, 0.12);
+}
+
+.categoria-btn {
+	width: 715px;
+	height: 46px;
+	border: none;
+	border-radius: 12px;
+	background: rgba(106, 227, 152, 0.18);
+	border: 1px solid rgba(106, 227, 152, 0.35);
+	color: rgba(255, 255, 255, 0.92);
+	font-weight: 800;
+	cursor: pointer;
+	transition:
+		transform 0.05s ease,
+		background 0.2s ease;
+	margin-top: 4px;
+}
+
+.categoria-btn:hover {
+	background: rgba(106, 227, 152, 0.24);
+}
+
+.categoria-btn:active {
+	transform: translateY(1px);
+}
+
+@media (max-width: 520px) {
+	.categoria-card {
+		padding: 14px;
+		border-radius: 14px;
+	}
+	.categoria-btn {
+		width: 330px;
+	}
 }

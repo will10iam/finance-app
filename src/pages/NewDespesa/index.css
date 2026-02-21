@@ -1,254 +1,162 @@
-/* .content {
-	background-color: #f1f1e5;
-	height: 100vh;
-	border-radius: 20px 20px 0px 0px;
-	padding: 30px;
-}
-
-.content_title {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-bottom: 20px;
-}
-
-.content_form {
-	border-radius: 15px;
-	padding: 20px;
-	background-color: #fff;
-	display: flex;
-	justify-content: center;
-}
-
-.content_form_button {
-	background-color: #071b23;
-	color: #f1f1e5;
-}
-
-.forms {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-
-.forms input {
-	width: 700px;
-	height: 40px;
-	border-radius: 5px;
-	padding: 5px;
-	outline: none;
-	border: 1px solid #c5c5bf;
-	margin-bottom: 10px;
-}
-
-.forms label {
-	width: 700px;
-	text-align: left;
-	color: #000;
-	margin-bottom: 5px;
-}
-
-.forms input,
-.forms select {
-	width: 700px;
-	height: 40px;
-	border-radius: 5px;
-	padding: 3px 10px;
-	outline: none;
-	border: 1px solid #c5c5bf;
-	margin-bottom: 10px;
-	box-sizing: border-box;
-}
-
-.forms button {
-	width: 710px;
-	height: 40px;
-	margin-bottom: 30px;
-}
-
-.status {
-	width: 700px;
-	display: flex;
-	align-items: center;
-	margin-bottom: 20px;
-	margin-top: 10px;
-}
-
-.status-option {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	cursor: pointer;
-	font-size: 14px;
-	color: #333;
-}
-
-.status-option input[type="radio"] {
-	width: 14px;
-	height: 14px;
-	accent-color: #071b23; /* cor do radio (moderna)
-	cursor: pointer;
-}
-
-.status-option span {
-	margin-bottom: 10px;
-}
- */
-
-/* --- BASE (mesmo padrão do Saldos) --- */
-.new_despesa_page {
+.new-despesa-page {
 	min-height: calc(100vh - 70px);
-	background: #f1f1e5;
-	padding: 20px 12px 40px;
-}
-.content {
-	background-color: #f1f1e5;
-	height: auto;
-	border-radius: 7px 7px 0px 0px;
-	padding: 10px;
+	padding: 18px 14px 40px;
 }
 
-.content_title {
+.new-despesa-header {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-bottom: 20px;
+	margin-bottom: 14px;
 }
 
-.content_form {
-	border-radius: 14px;
-	padding: 18px;
-	background-color: #fff;
-	display: flex;
-	justify-content: center;
-	max-width: 780px;
-	margin: 0 auto;
-	box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
-	border: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.forms {
+.new-despesa-card {
 	width: 100%;
+	max-width: 760px;
+	margin: 0 auto;
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 16px;
+	padding: 18px;
+	box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+	backdrop-filter: blur(10px);
+}
+
+.new-despesa-form {
 	display: flex;
 	flex-direction: column;
 	gap: 14px;
 }
 
-.field {
+.new-despesa-field {
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
 }
 
-.field label {
-	font-size: 14px;
+.new-despesa-field label {
+	color: rgba(255, 255, 255, 0.86);
 	font-weight: 600;
-	color: #111827;
+	font-size: 0.95rem;
 }
 
-/* Inputs e Selects com o MESMO estilo */
-.field input,
-.field select {
-	width: 100%;
-	height: 44px;
-	border-radius: 10px;
+/* Inputs e Selects */
+.new-despesa-field input,
+.new-despesa-field select {
+	width: 110%;
+	height: 46px;
+	border-radius: 12px;
 	padding: 10px 12px;
 	outline: none;
-	border: 1px solid #d6d6cf;
-	background: #fff;
-	color: #111827;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	background: rgba(0, 0, 0, 0.25);
+	color: rgba(255, 255, 255, 0.92);
 	transition:
 		border-color 0.2s ease,
 		box-shadow 0.2s ease;
 }
 
-.field input::placeholder {
-	color: #9aa0a6;
+.new-despesa-field input::placeholder {
+	color: rgba(255, 255, 255, 0.38);
 }
 
-.field input:focus,
-.field select:focus {
-	border-color: rgba(7, 27, 35, 0.55);
-	box-shadow: 0 0 0 4px rgba(7, 27, 35, 0.12);
+.new-despesa-field input:focus,
+.new-despesa-field select:focus {
+	border-color: rgba(106, 227, 152, 0.55);
+	box-shadow: 0 0 0 4px rgba(106, 227, 152, 0.12);
 }
 
-/* Deixa o select com cara mais moderna */
-.field select {
+/* Select com caret moderno */
+.new-despesa-field select {
 	appearance: none;
+	cursor: pointer;
+	padding-right: 40px;
 	background-image:
-		linear-gradient(45deg, transparent 50%, #6b7280 50%),
-		linear-gradient(135deg, #6b7280 50%, transparent 50%);
+		linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.55) 50%),
+		linear-gradient(135deg, rgba(255, 255, 255, 0.55) 50%, transparent 50%);
 	background-position:
-		calc(100% - 18px) calc(50% - 3px),
-		calc(100% - 12px) calc(50% - 3px);
+		calc(100% - 18px) 50%,
+		calc(100% - 12px) 50%;
 	background-size:
 		6px 6px,
 		6px 6px;
 	background-repeat: no-repeat;
-	padding-right: 38px;
-	cursor: pointer;
 }
 
-/* --- STATUS (rádios) --- */
-.status {
+/* Radios */
+.new-despesa-status {
 	display: flex;
-	gap: 14px;
+	gap: 12px;
 	margin-top: 2px;
+	flex-wrap: wrap;
 }
 
-.status-option {
+.new-despesa-status-option {
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
 	padding: 8px 10px;
-	border: 1px solid rgba(0, 0, 0, 0.12);
-	border-radius: 10px;
-	background: #fff;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 12px;
+	background: rgba(255, 255, 255, 0.04);
 	cursor: pointer;
 	user-select: none;
 }
 
-.status-option input {
-	width: 14px;
+.new-despesa-status-option input {
+	width: 20px;
 	height: 14px;
 	margin: 0;
-	accent-color: #071b23;
+	accent-color: rgba(106, 227, 152, 0.9);
 }
 
-.status-option span {
+.new-despesa-status-option span {
 	font-size: 13px;
-	font-weight: 600;
-	color: #111827;
+	font-weight: 700;
+	color: rgba(255, 255, 255, 0.9);
 }
 
-/* --- BOTÃO --- */
-.content_form_button {
-	height: 44px;
+/* Botão */
+.new-despesa-btn {
+	width: 715px;
+	height: 46px;
 	border: none;
 	border-radius: 12px;
-	background: #071b23;
-	color: #f1f1e5;
-	font-weight: 700;
+	background: rgba(106, 227, 152, 0.18);
+	border: 1px solid rgba(106, 227, 152, 0.35);
+	color: rgba(255, 255, 255, 0.92);
+	font-weight: 800;
 	cursor: pointer;
 	transition:
 		transform 0.05s ease,
-		opacity 0.2s ease;
+		background 0.2s ease;
 	margin-top: 4px;
 }
 
-.content_form_button:active {
+.new-despesa-btn:hover {
+	background: rgba(106, 227, 152, 0.24);
+}
+
+.new-despesa-btn:active {
 	transform: translateY(1px);
 }
 
-/* --- RESPONSIVO --- */
+/* Responsivo */
 @media (max-width: 520px) {
-	.content_form {
+	.new-despesa-card {
 		padding: 14px;
-		border-radius: 12px;
+		border-radius: 14px;
 	}
 
-	.status {
+	.new-despesa-status {
 		flex-direction: column;
+		align-items: flex-start;
+	}
+	.new-despesa-btn {
+		width: 330px;
+	}
+
+	.new-despesa-status {
+		flex-direction: row;
 	}
 }

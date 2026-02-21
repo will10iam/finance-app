@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { db } from "../../services/firebaseConection";
 import { collection, getDocs, orderBy, limit, query } from "firebase/firestore";
+import { ArrowRightIcon } from "@phosphor-icons/react";
+
+import "./index.css";
 
 export default function LastTransactions() {
 	const [transacoes, setTransacoes] = useState([]);
@@ -34,7 +38,6 @@ export default function LastTransactions() {
 				categoria: doc.data().categoria,
 				valor: doc.data().valor,
 				data: doc.data().dataRecebimento,
-				created: doc.data().created,
 			}));
 
 			const despesas = despesasSnap.docs.map((doc) => ({
@@ -44,7 +47,6 @@ export default function LastTransactions() {
 				categoria: doc.data().categoria,
 				valor: doc.data().valor,
 				data: doc.data().dataVencimento,
-				created: doc.data().created,
 			}));
 
 			const todas = [...receitas, ...despesas]
@@ -58,35 +60,66 @@ export default function LastTransactions() {
 	}, []);
 
 	function formatarDataBr(data) {
+		if (!data) return "";
 		const [ano, mes, dia] = data.split("-");
 		return `${dia}/${mes}/${ano}`;
 	}
 
 	function formatarValorBRL(valor) {
-		return valor.toLocaleString("pt-BR", {
+		return Number(valor).toLocaleString("pt-BR", {
 			style: "currency",
 			currency: "BRL",
 		});
 	}
 
 	return (
-		<div>
-			{transacoes.map((item) => (
-				<div key={item}>
-					<div>
-						<strong>{item.descricao}</strong>
-						<span>{item.categoria}</span>
-					</div>
+		<div className="lasttx">
+			<div className="lasttx-header">
+				<h4>Últimas transações</h4>
 
-					<div>
-						<small>{formatarDataBr(item.data)}</small>
-						<p className={item.tipo === "Receita" ? "entrada" : "saida"}>
-							{item.tipo === "Receita" ? "+" : "-"}{" "}
-							{formatarValorBRL(item.valor)}
-						</p>
-					</div>
+				<Link to="/transacoes" className="lasttx-link">
+					Ver tudo <ArrowRightIcon size={16} />
+				</Link>
+			</div>
+
+			{transacoes.length === 0 ? (
+				<p className="lasttx-empty">Sem transações por enquanto.</p>
+			) : (
+				<div className="lasttx-list">
+					{transacoes.map((item) => (
+						<div className="lasttx-item" key={item.id}>
+							<div className="lasttx-left">
+								<strong className="lasttx-title">{item.descricao}</strong>
+								<span
+									className={
+										item.tipo === "Receita"
+											? "lasttx-badge badge-receita"
+											: "lasttx-badge badge-despesa"
+									}
+								>
+									{item.categoria}
+								</span>
+							</div>
+
+							<div className="lasttx-right">
+								<small className="lasttx-date">
+									{formatarDataBr(item.data)}
+								</small>
+								<span
+									className={
+										item.tipo === "Receita"
+											? "lasttx-value entrada"
+											: "lasttx-value saida"
+									}
+								>
+									{item.tipo === "Receita" ? "+ " : "- "}
+									{formatarValorBRL(item.valor)}
+								</span>
+							</div>
+						</div>
+					))}
 				</div>
-			))}
+			)}
 		</div>
 	);
 }
