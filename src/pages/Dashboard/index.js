@@ -9,6 +9,7 @@ import ProgressBar from "../../components/ProgressBar";
 import Sidebar from "../../components/Sidebar";
 import MonthFilter from "../../components/MonthFilter";
 import LastTransactions from "../../components/LastTransactions";
+import Layout from "../../components/Layout";
 
 import {
 	CurrencyCircleDollarIcon,
@@ -117,8 +118,6 @@ export default function Dashboard() {
 
 	return (
 		<>
-			<Sidebar />
-
 			<div className="dashboard-page">
 				<div className="dashboard-top">
 					<MonthFilter value={mesFiltro} onChange={setMesFiltro} />

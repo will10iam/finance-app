@@ -42,7 +42,7 @@
 
 .new-receita-field input,
 .new-receita-field select {
-	width: 110%;
+	width: 100%;
 	height: 46px;
 	border-radius: 12px;
 	padding: 10px 12px;
