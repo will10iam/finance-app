@@ -2,7 +2,8 @@
 .sidebar-overlay {
 	position: fixed;
 	inset: 0;
-	background: rgba(0, 0, 0, 0.6);
+	background: rgba(0, 0, 0, 0.55);
+	backdrop-filter: blur(2px);
 	z-index: 998;
 }
 
@@ -12,14 +13,16 @@
 	top: 0;
 	left: 0;
 	height: 100vh;
-	width: 260px;
-	background: #000;
-	color: #fff;
-	transform: translateX(-100%);
-	transition: transform 0.3s ease;
+	width: 280px;
+	background: #0b1116; /* bem próximo do seu #071b23 */
+	color: #e5e7eb;
+	transform: translateX(-102%);
+	transition: transform 0.25s ease;
 	z-index: 999;
 	display: flex;
 	flex-direction: column;
+	border-right: 1px solid rgba(255, 255, 255, 0.06);
+	box-shadow: 12px 0 30px rgba(0, 0, 0, 0.35);
 }
 
 .sidebar.open {
@@ -28,80 +31,158 @@
 
 /* Header */
 .sidebar-header {
-	padding: 20px;
-	border-bottom: 1px solid #222;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 18px 16px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.logo {
-	font-size: 20px;
-	font-weight: bold;
+.sidebar-brand {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.sidebar-logo {
+	font-size: 18px;
+	font-weight: 800;
+	letter-spacing: 0.3px;
+	margin: 0;
+	color: #ffffff;
+}
+
+.sidebar-subtitle {
+	font-size: 12px;
+	color: rgba(255, 255, 255, 0.6);
+}
+
+.sidebar-close {
+	width: 34px;
+	height: 34px;
+	border-radius: 10px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	background: rgba(255, 255, 255, 0.04);
+	color: #fff;
+	cursor: pointer;
+	font-size: 22px;
+	line-height: 1;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.sidebar-close:hover {
+	background: rgba(255, 255, 255, 0.07);
 }
 
 /* Nav */
 .sidebar-nav {
 	display: flex;
 	flex-direction: column;
-	padding: 16px;
-	gap: 12px;
-}
-
-.sidebar-nav a,
-.dropdown-toggle {
-	color: #fff;
-	text-decoration: none;
-	background: none;
-	border: none;
-	text-align: left;
-	font-size: 15px;
-	cursor: pointer;
-	padding: 8px 0;
-}
-
-.sidebar-nav a:hover,
-.dropdown-toggle:hover {
-	opacity: 0.8;
-}
-
-/* Dropdown */
-.dropdown-menu {
-	padding-left: 16px;
-	display: flex;
-	flex-direction: column;
+	padding: 14px 12px;
 	gap: 8px;
 }
 
-.dropdown-menu a {
+.sidebar-link {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+
+	padding: 10px 12px;
+	border-radius: 12px;
+	text-decoration: none;
+
+	color: rgba(255, 255, 255, 0.78);
+	font-weight: 700;
 	font-size: 14px;
-	color: #ccc;
+
+	background: transparent;
+	border: 1px solid transparent;
+	cursor: pointer;
+
+	transition: 0.18s ease;
 }
 
-.arrow {
-	margin-left: 8px;
-	transition: transform 0.2s ease;
+.sidebar-link:hover {
+	background: rgba(255, 255, 255, 0.06);
+	color: #fff;
 }
 
-.arrow.open {
+.sidebar-link.active {
+	background: rgba(109, 201, 86, 0.12); /* verde do teu app */
+	border-color: rgba(109, 201, 86, 0.18);
+	color: #eaffea;
+}
+
+/* Dropdown */
+.sidebar-dropdown-btn {
+	width: 100%;
+	text-align: left;
+}
+
+.sidebar-arrow {
+	margin-left: 10px;
+	transition: transform 0.18s ease;
+	opacity: 0.85;
+}
+
+.sidebar-arrow.open {
 	transform: rotate(180deg);
+}
+
+/* animação suave sem “pular” */
+.sidebar-dropdown {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.22s ease;
+	padding-left: 10px;
+}
+
+.sidebar-dropdown.open {
+	max-height: 220px;
+}
+
+.sidebar-sublink {
+	display: block;
+	margin-top: 6px;
+	padding: 9px 12px;
+	border-radius: 12px;
+	text-decoration: none;
+
+	font-size: 13px;
+	font-weight: 700;
+
+	color: rgba(255, 255, 255, 0.68);
+	background: rgba(255, 255, 255, 0.03);
+
+	transition: 0.18s ease;
+}
+
+.sidebar-sublink:hover {
+	background: rgba(255, 255, 255, 0.06);
+	color: #fff;
+}
+
+.sidebar-sublink.active {
+	background: rgba(66, 135, 245, 0.14); /* azul do app */
+	color: #eaf2ff;
 }
 
 /* Footer */
 .sidebar-footer {
 	margin-top: auto;
-	padding: 16px;
-	border-top: 1px solid #222;
+	padding: 14px 12px;
+	border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.logout {
-	width: 100%;
-	background: #111;
-	color: #fff;
-	border: 1px solid #333;
-	padding: 10px;
-	cursor: pointer;
-}
-
-.logout:hover {
-	background: #222;
+/* Mobile: sidebar ocupa mais largura */
+@media (max-width: 520px) {
+	.sidebar {
+		width: 86vw;
+		max-width: 320px;
+	}
 }
 
 .menu-button {

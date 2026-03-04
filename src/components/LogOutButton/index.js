@@ -1,23 +1,24 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../../contexts/auth";
-import { AiOutlinePoweroff } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./index.css";
 
 export default function LogOutButton() {
 	const { logout } = useContext(AuthContext);
+	const navigate = useNavigate();
 
 	async function handleLogOut() {
-		await logout();
+		try {
+			await logout();
+			navigate("/"); // redireciona após logout
+		} catch (error) {
+			console.error("Erro ao deslogar:", error);
+		}
 	}
 
 	return (
-		<div className="logout-button">
-			<Link to="/">
-				<button onClick={handleLogOut}>
-					<AiOutlinePoweroff color="#FFF" size={24} />
-				</button>
-			</Link>
-		</div>
+		<button type="button" className="logout-btn" onClick={handleLogOut}>
+			Deslogar
+		</button>
 	);
 }

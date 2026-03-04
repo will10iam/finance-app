@@ -292,7 +292,7 @@ export default function Transacoes() {
 
 							<button
 								onClick={() => navigate("/newDespesa")}
-								className="btn-primary"
+								className="btn-danger"
 								type="button"
 							>
 								Despesa

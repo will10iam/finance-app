@@ -14,46 +14,68 @@ export default function SignUp() {
 	async function handleSubmit(e) {
 		e.preventDefault();
 
-		if (name !== "" && (email !== "") & (password !== "")) {
-			await signUp(email, password, name);
+		if (name.trim() !== "" && email.trim() !== "" && password !== "") {
+			await signUp(email.trim(), password, name.trim());
 		}
 	}
 
 	return (
 		<div className="container-center">
-			<div className="login-area">
-				<img src={logo2} alt="Logo" />
-			</div>
 			<div className="login">
-				<form onSubmit={handleSubmit}>
-					<h1>crie sua conta!</h1>
+				<div className="login-area">
+					<img src={logo2} alt="Logo do app" />
+				</div>
+
+				<form onSubmit={handleSubmit} className="login-form">
+					<h1>Criar conta</h1>
+
+					<label className="login-label" htmlFor="name">
+						Nome
+					</label>
 					<input
-						text="name"
-						placeholder="seu nome"
+						id="name"
+						type="text"
+						placeholder="Seu nome"
 						value={name}
 						onChange={(e) => setName(e.target.value)}
+						autoComplete="name"
+						required
 					/>
 
+					<label className="login-label" htmlFor="email">
+						Email
+					</label>
 					<input
-						text="email"
-						placeholder="seu email"
+						id="email"
+						type="email"
+						placeholder="seuemail@exemplo.com"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
+						autoComplete="email"
+						required
 					/>
 
+					<label className="login-label" htmlFor="password">
+						Senha
+					</label>
 					<input
-						text="password"
-						placeholder="sua senha"
+						id="password"
+						type="password"
+						placeholder="Crie uma senha"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
+						autoComplete="new-password"
+						required
 					/>
 
-					<button type="submit">
-						{loadingAuth ? "carregando.." : "cadastrar"}
+					<button type="submit" disabled={loadingAuth}>
+						{loadingAuth ? "Carregando..." : "Cadastrar"}
 					</button>
-				</form>
 
-				<Link to="/">já tenho uma conta!</Link>
+					<Link className="login-link" to="/">
+						Já tenho uma conta
+					</Link>
+				</form>
 			</div>
 		</div>
 	);
