@@ -6,10 +6,9 @@ import { db } from "../../services/firebaseConection";
 import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 
 import ProgressBar from "../../components/ProgressBar";
-import Sidebar from "../../components/Sidebar";
+
 import MonthFilter from "../../components/MonthFilter";
 import LastTransactions from "../../components/LastTransactions";
-import Layout from "../../components/Layout";
 
 import {
 	CurrencyCircleDollarIcon,
