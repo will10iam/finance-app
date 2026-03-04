@@ -33,7 +33,7 @@ export default function Despesas() {
 	const [loadingMore, setLoadingMore] = useState(false);
 
 	const [showPostModal, setShowPostModal] = useState(false);
-	const [detail, setDetail] = useState();
+	const [detail] = useState();
 
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [deleteItem, setDeleteItem] = useState(null);

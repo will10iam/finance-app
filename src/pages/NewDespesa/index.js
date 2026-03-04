@@ -41,6 +41,7 @@ export default function New() {
 
 	useEffect(() => {
 		async function loadCategorias() {
+			// eslint-disable-next-line no-unused-vars
 			const querySnapshot = await getDocs(listRef)
 				.then((snapshot) => {
 					let lista = [];
@@ -73,7 +74,8 @@ export default function New() {
 				});
 		}
 		loadCategorias();
-	}, [id]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	async function loadId(lista) {
 		const docRef = doc(db, "despesas", id);

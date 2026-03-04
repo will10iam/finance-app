@@ -3,7 +3,7 @@ import Title from "../../components/Title";
 import NavBar from "../../components/NavBar";
 import DropdownMes from "../../components/DropdownMes";
 import "./index.css";
-import { FiEdit2, FiPlus, FiSearch, FiTrash } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
 import { GoArrowDownRight } from "react-icons/go";
 import { FaRegTrashAlt, FaRegEdit } from "react-icons/fa";
 import { GiTakeMyMoney } from "react-icons/gi";
@@ -32,7 +32,7 @@ export default function Receitas() {
 	const [loadingMore, setLoadingMore] = useState(false);
 
 	const [showPostModal, setShowPostModal] = useState(false);
-	const [detail, setDetail] = useState();
+	const [detail] = useState();
 
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [deleteItem, setDeleteItem] = useState(null);
@@ -114,10 +114,10 @@ export default function Receitas() {
 		}
 	}
 
-	function toggleModal(item) {
+	/* function toggleModal(item) {
 		setShowPostModal(!showPostModal);
 		setDetail(item);
-	}
+	} */
 
 	function toggleModalDelete(item) {
 		setDeleteItem(item);

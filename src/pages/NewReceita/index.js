@@ -60,7 +60,8 @@ export default function NewReceita() {
 		}
 
 		loadCategorias();
-	}, [id]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	async function loadId(lista) {
 		try {
