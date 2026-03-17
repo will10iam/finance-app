@@ -3,20 +3,17 @@ import { AuthContext } from "../contexts/auth";
 import { Navigate } from "react-router-dom";
 
 export default function Private({ children }) {
-    const { signed, loading } = useContext(AuthContext)
+	const { signed, loading } = useContext(AuthContext);
 
-    if (loading) {
-        return (
-            <div></div>
-        )
-    }
+	if (loading) {
+		return <div></div>;
+	}
 
-    if (!signed) {
-        return <Navigate to="/" />
-    }
+	if (!signed) {
+		return <Navigate to="/login" />;
+	}
 
+	console.log("TESTE");
 
-    console.log("TESTE")
-
-    return children;
+	return children;
 }
