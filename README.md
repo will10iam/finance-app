@@ -38,9 +38,7 @@ O projeto foi desenvolvido com **React e Firebase**, utilizando Hooks para geren
 
 ## 📸 Preview
 
-Adicione aqui um print da aplicação.
-
-Exemplo:
+![demo](./72_final.gif)
 
 ---
 
