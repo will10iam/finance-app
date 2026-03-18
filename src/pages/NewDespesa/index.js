@@ -158,7 +158,7 @@ export default function New() {
 					toast.success("Atualizado com sucesso");
 					setCategoriaSelected(0);
 					//setComplemento("");
-					navigate("/despesas");
+					navigate("/transacoes");
 				})
 				.catch((error) => {
 					toast.error("Opa! Alguma coisa deu errado.");
@@ -185,6 +185,7 @@ export default function New() {
 				toast.success("Despesa registrada com sucesso!");
 				//setComplemento("");
 				setCategoriaSelected(0);
+				navigate("/transacoes");
 			})
 			.catch((error) => {
 				toast.error("Opa! Alguma coisa deu errado. Verifique os campos.");
