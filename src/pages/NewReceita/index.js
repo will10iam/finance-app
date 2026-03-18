@@ -32,6 +32,7 @@ export default function NewReceita() {
 	const [descricao, setDescricao] = useState("");
 	const [valor, setValor] = useState("");
 	const [dataRecebimento, setDataRecebimento] = useState("");
+	const [dataPrevisao, setDataPrevisao] = useState("");
 
 	useEffect(() => {
 		async function loadCategorias() {
@@ -68,18 +69,19 @@ export default function NewReceita() {
 			const docRef = doc(db, "receitas", id);
 			const snapshot = await getDoc(docRef);
 
-			setTipo(snapshot.data().tipo);
-			setStatus(snapshot.data().status);
+			const data = snapshot.data();
 
-			const index = lista.findIndex(
-				(item) => item.id === snapshot.data().categoriaID,
-			);
+			setTipo(data.tipo);
+			setStatus(data.status);
+
+			const index = lista.findIndex((item) => item.id === data.categoriaID);
 			setCategoriaSelected(index >= 0 ? index : 0);
 			setIdCategoria(true);
 
-			setDescricao(snapshot.data().descricao);
-			setValor(formatarMoeda(String(snapshot.data().valor)));
-			setDataRecebimento(snapshot.data().dataRecebimento);
+			setDescricao(data.descricao);
+			setValor(formatarMoeda(String(data.valor)));
+			setDataRecebimento(data.dataRecebimento || "");
+			setDataPrevisao(data.dataPrevisao || "");
 		} catch (error) {
 			console.log(error);
 			setIdCategoria(false);
@@ -87,7 +89,19 @@ export default function NewReceita() {
 	}
 
 	function handleOptionChange(e) {
-		setStatus(e.target.value);
+		const novoStatus = e.target.value;
+		setStatus(novoStatus);
+
+		//Se voltar para "À Receber", limpa data
+		if (novoStatus === "À Receber") {
+			setDataRecebimento("");
+		}
+
+		//Se marcar como recebido e não tiver data, coloca hoje
+		if (novoStatus === "Recebido" && !dataRecebimento) {
+			const hoje = new Date().toISOString().slice(0, 10);
+			setDataRecebimento(hoje);
+		}
 	}
 
 	function handleChangeSelect(e) {
@@ -115,9 +129,21 @@ export default function NewReceita() {
 
 		const valorConvertido = moedaParaNumero(valor);
 
-		if (!descricao || !dataRecebimento || !valorConvertido) {
+		if (!descricao || !valorConvertido) {
 			toast.error("Preencha os campos corretamente.");
 			return;
+		}
+
+		let dataRecebimentoFinal = dataRecebimento;
+
+		//Se ainda não recebeu, não salva data de recebimento
+		if (status === "À Receber") {
+			dataRecebimentoFinal = null;
+		}
+
+		//Se marcou como recebido e não colocou data, marca como hoje
+		if (status === "Recebido" && !dataRecebimento) {
+			dataRecebimentoFinal = new Date().toISOString().slice(0, 10);
 		}
 
 		try {
@@ -131,6 +157,7 @@ export default function NewReceita() {
 					descricao,
 					valor: valorConvertido,
 					dataRecebimento,
+					dataPrevisao,
 					userID: user.uid,
 				});
 
@@ -149,6 +176,7 @@ export default function NewReceita() {
 				descricao,
 				valor: valorConvertido,
 				dataRecebimento,
+				dataPrevisao,
 				userID: user.uid,
 			});
 
@@ -227,6 +255,15 @@ export default function NewReceita() {
 								))}
 							</select>
 						)}
+					</div>
+
+					<div className="new-receita-field">
+						<label>Previsão de Recebimento</label>
+						<input
+							type="date"
+							value={dataPrevisao}
+							onChange={(e) => setDataPrevisao(e.target.value)}
+						/>
 					</div>
 
 					<div className="new-receita-field">

@@ -74,7 +74,10 @@ export default function Dashboard() {
 		hoje.setHours(0, 0, 0, 0);
 
 		const receitasFiltradas = receitas.filter((r) =>
-			isInFilteredMonth(r.dataRecebimento, mesFiltro),
+			isInFilteredMonth(
+				r.status === "Recebido" ? r.dataRecebimento : r.dataPrevisao,
+				mesFiltro,
+			),
 		);
 		const despesasFiltradas = despesas.filter((d) =>
 			isInFilteredMonth(d.dataVencimento, mesFiltro),
@@ -84,15 +87,11 @@ export default function Dashboard() {
 		);
 
 		const totalRecebidas = receitasFiltradas
-			.filter(
-				(r) => r.status === "Recebido" || parseDate(r.dataRecebimento) <= hoje,
-			)
+			.filter((r) => r.status === "Recebido")
 			.reduce((acc, r) => acc + Number(r.valor || 0), 0);
 
 		const totalAReceber = receitasFiltradas
-			.filter(
-				(r) => r.status !== "Recebido" && parseDate(r.dataRecebimento) >= hoje,
-			)
+			.filter((r) => r.status === "À Receber")
 			.reduce((acc, r) => acc + Number(r.valor || 0), 0);
 
 		const totalPagas = despesasFiltradas
@@ -170,13 +169,10 @@ export default function Dashboard() {
 
 						<h3>Receitas</h3>
 						<p className="card-total">
-							{(resumo.totalRecebidas + resumo.totalAReceber).toLocaleString(
-								"pt-BR",
-								{
-									style: "currency",
-									currency: "BRL",
-								},
-							)}
+							{resumo.totalRecebidas.toLocaleString("pt-BR", {
+								style: "currency",
+								currency: "BRL",
+							})}
 						</p>
 
 						<ProgressBar

@@ -123,12 +123,12 @@ function RoutesApp() {
 	return (
 		<Routes>
 			{/* Públicas (sem Layout) */}
-			<Route path="/" element={<SignIn />} />
+			<Route path="/login" element={<SignIn />} />
 			<Route path="/register" element={<SignUp />} />
 
 			{/* Privadas (com Layout automático) */}
 			<Route element={<PrivateLayout />}>
-				<Route path="/dashboard" element={<Dashboard />} />
+				<Route path="/" element={<Dashboard />} />
 				<Route path="/categorias" element={<Categoria />} />
 
 				<Route path="/newReceita" element={<NewReceita />} />
