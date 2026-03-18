@@ -37,7 +37,9 @@ export default function Transacoes() {
 					descricao: d.data().descricao,
 					categoria: d.data().categoria,
 					valor: d.data().valor,
-					data: d.data().dataRecebimento,
+					status: d.data().status,
+					dataRecebimento: d.data().dataRecebimento,
+					dataPrevisao: d.data().dataPrevisao,
 				}));
 
 				const listaDespesas = despesaSnap.docs.map((d) => ({
@@ -46,7 +48,8 @@ export default function Transacoes() {
 					descricao: d.data().descricao,
 					categoria: d.data().categoria,
 					valor: d.data().valor,
-					data: d.data().dataVencimento,
+					status: d.data().status,
+					dataVencimento: d.data().dataVencimento,
 				}));
 
 				setReceitas(listaReceitas);
@@ -124,6 +127,35 @@ export default function Transacoes() {
 		return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
 	}
 
+	function getStatusInfo(item) {
+		const hoje = new Date();
+		hoje.setHours(0, 0, 0, 0);
+
+		if (item.tipo === "receita") {
+			if (item.status === "Recebido") {
+				return { label: "Recebido", color: "green" };
+			}
+			return { label: "À Receber", color: "yellow" };
+		}
+
+		if (item.tipo === "despesa") {
+			if (item.status === "Paga") {
+				return { label: "Paga", color: "green" };
+			}
+			const vencimento = item.dataVencimento
+				? new Date(item.dataVencimento)
+				: null;
+
+			if (vencimento && vencimento < hoje) {
+				return { label: "Atrasada", color: "red" };
+			}
+
+			return { label: "Em Aberto", color: "yellow" };
+		}
+
+		return { label: "", color: "white" };
+	}
+
 	if (carregando) {
 		return (
 			<div className="transacoes-page">
@@ -176,76 +208,90 @@ export default function Transacoes() {
 				<h2 className="mes-titulo">{capitalizar(getMesAnoAtualPTBR())}</h2>
 
 				<div className="lista-transacoes">
-					{getListaAtual().map((item) => (
-						<div className="transacao-card" key={item.id}>
-							<div className="transacao-icon">
-								{item.tipo === "receita" ? (
-									<FaArrowUp className="icon-receita" />
-								) : (
-									<FaArrowDown className="icon-despesa" />
-								)}
-							</div>
+					{getListaAtual().map((item) => {
+						const statusInfo = getStatusInfo(item);
 
-							<div className="transacao-body">
-								<div className="transacao-top">
-									<div className="transacao-title-row">
-										<p className="transacao-title">{item.descricao}</p>
-										<span
-											className={`badge ${
-												item.tipo === "receita"
-													? "badge-receita"
-													: "badge-despesa"
-											}`}
-										>
-											{item.categoria}
-										</span>
+						return (
+							<div className="transacao-card" key={item.id}>
+								<div className="transacao-icon">
+									{item.tipo === "receita" ? (
+										<FaArrowUp className="icon-receita" />
+									) : (
+										<FaArrowDown className="icon-despesa" />
+									)}
+								</div>
+
+								<div className="transacao-body">
+									<div className="transacao-top">
+										<div className="transacao-title-row">
+											<p className="transacao-title">{item.descricao}</p>
+											<span
+												className={`badge ${
+													item.tipo === "receita"
+														? "badge-receita"
+														: "badge-despesa"
+												}`}
+											>
+												{item.categoria}
+											</span>
+
+											<span className={`status-badge ${statusInfo.color}`}>
+												{statusInfo.label}
+											</span>
+										</div>
+
+										<div className="transacao-actions">
+											<button
+												type="button"
+												className="icon-btn"
+												onClick={() => toggleModalDelete(item)}
+												aria-label="Excluir"
+												title="Excluir"
+											>
+												<FaRegTrashAlt />
+											</button>
+
+											<Link
+												className="icon-btn"
+												to={
+													item.tipo === "receita"
+														? `/newReceita/${item.id}`
+														: `/newDespesa/${item.id}`
+												}
+												aria-label="Editar"
+												title="Editar"
+											>
+												<FaRegEdit />
+											</Link>
+										</div>
 									</div>
 
-									<div className="transacao-actions">
-										<button
-											type="button"
-											className="icon-btn"
-											onClick={() => toggleModalDelete(item)}
-											aria-label="Excluir"
-											title="Excluir"
-										>
-											<FaRegTrashAlt />
-										</button>
-
-										<Link
-											className="icon-btn"
-											to={
+									<div className="transacao-meta">
+										<small>
+											{formatarDataBR(
 												item.tipo === "receita"
-													? `/newReceita/${item.id}`
-													: `/newDespesa/${item.id}`
+													? item.dataRecebimento || item.dataPrevisao
+													: item.dataVencimento,
+											)}
+										</small>
+									</div>
+
+									<div className="transacao-value">
+										<strong
+											className={
+												item.tipo === "receita"
+													? "valor-receita"
+													: "valor-despesa"
 											}
-											aria-label="Editar"
-											title="Editar"
 										>
-											<FaRegEdit />
-										</Link>
+											{item.tipo === "receita" ? "+ " : "- "}
+											{formatarValorBRL(item.valor)}
+										</strong>
 									</div>
 								</div>
-
-								<div className="transacao-meta">
-									<small>{formatarDataBR(item.data)}</small>
-								</div>
-
-								<div className="transacao-value">
-									<strong
-										className={
-											item.tipo === "receita"
-												? "valor-receita"
-												: "valor-despesa"
-										}
-									>
-										{item.tipo === "receita" ? "+ " : "- "}
-										{formatarValorBRL(item.valor)}
-									</strong>
-								</div>
 							</div>
-						</div>
-					))}
+						);
+					})}
 				</div>
 			</div>
 

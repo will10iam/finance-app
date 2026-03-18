@@ -143,6 +143,7 @@ export default function NewReceita() {
 
 		//Se marcou como recebido e não colocou data, marca como hoje
 		if (status === "Recebido" && !dataRecebimento) {
+			// eslint-disable-next-line no-unused-vars
 			dataRecebimentoFinal = new Date().toISOString().slice(0, 10);
 		}
 
