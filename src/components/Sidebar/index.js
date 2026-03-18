@@ -103,7 +103,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
 				<nav className="sidebar-nav">
 					<NavLink
-						to="/dashboard"
+						to="/"
 						className={({ isActive }) =>
 							`sidebar-link ${isActive ? "active" : ""}`
 						}
