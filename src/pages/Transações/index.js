@@ -40,6 +40,7 @@ export default function Transacoes() {
 					status: d.data().status,
 					dataRecebimento: d.data().dataRecebimento,
 					dataPrevisao: d.data().dataPrevisao,
+					created: d.data().created,
 				}));
 
 				const listaDespesas = despesaSnap.docs.map((d) => ({
@@ -50,6 +51,7 @@ export default function Transacoes() {
 					valor: d.data().valor,
 					status: d.data().status,
 					dataVencimento: d.data().dataVencimento,
+					created: d.data().created,
 				}));
 
 				setReceitas(listaReceitas);
@@ -78,7 +80,12 @@ export default function Transacoes() {
 	}
 
 	function ordenarPorData(lista) {
-		return [...lista].sort((a, b) => new Date(b.data) - new Date(a.data));
+		return [...lista].sort((a, b) => {
+			const dateA = a.created?.toDate();
+			const dateB = b.created?.toDate();
+
+			return dateB - dateA;
+		});
 	}
 
 	const listaTodas = ordenarPorData([...receitas, ...despesas]);

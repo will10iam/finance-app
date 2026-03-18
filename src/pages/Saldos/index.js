@@ -71,7 +71,7 @@ export default function Saldos() {
 			});
 
 			toast.success("Novo saldo salvo com sucesso!");
-			navigate("/dashboard");
+			navigate("/");
 		} catch (error) {
 			console.error(error);
 			toast.error("Erro ao salvar saldo");

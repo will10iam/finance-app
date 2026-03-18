@@ -16,13 +16,13 @@ export default function LastTransactions() {
 
 			const receitasQuery = query(
 				receitasRef,
-				orderBy("dataRecebimento", "desc"),
+				orderBy("created", "desc"),
 				limit(5),
 			);
 
 			const despesasQuery = query(
 				despesasRef,
-				orderBy("dataVencimento", "desc"),
+				orderBy("created", "desc"),
 				limit(5),
 			);
 
@@ -38,6 +38,7 @@ export default function LastTransactions() {
 				categoria: doc.data().categoria,
 				valor: doc.data().valor,
 				data: doc.data().dataRecebimento,
+				created: doc.data().created,
 			}));
 
 			const despesas = despesasSnap.docs.map((doc) => ({
@@ -47,10 +48,16 @@ export default function LastTransactions() {
 				categoria: doc.data().categoria,
 				valor: doc.data().valor,
 				data: doc.data().dataVencimento,
+				created: doc.data().created,
 			}));
 
 			const todas = [...receitas, ...despesas]
-				.sort((a, b) => new Date(b.data) - new Date(a.data))
+				.sort((a, b) => {
+					const dateA = a.created?.toDate?.() || new Date(0);
+					const dateB = b.created?.toDate?.() || new Date(0);
+
+					return dateB - dateA;
+				})
 				.slice(0, 5);
 
 			setTransacoes(todas);
