@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import "./Sidebar/index.css";
-import logo from "../assets/logo2.png";
+import logo from "../assets/logo4.png";
 
 export default function Layout({ children }) {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
