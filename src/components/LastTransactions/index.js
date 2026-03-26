@@ -1,27 +1,41 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { db } from "../../services/firebaseConection";
-import { collection, getDocs, orderBy, limit, query } from "firebase/firestore";
+import {
+	collection,
+	getDocs,
+	orderBy,
+	limit,
+	query,
+	where,
+} from "firebase/firestore";
 import { ArrowRightIcon } from "@phosphor-icons/react";
+import { AuthContext } from "../../contexts/auth";
 
 import "./index.css";
 
 export default function LastTransactions() {
 	const [transacoes, setTransacoes] = useState([]);
 
+	const { user } = useContext(AuthContext);
+
 	useEffect(() => {
 		async function loadLastTransactions() {
+			if (!user?.uid) return;
+
 			const receitasRef = collection(db, "receitas");
 			const despesasRef = collection(db, "despesas");
 
 			const receitasQuery = query(
 				receitasRef,
+				where("userID", "==", user.uid),
 				orderBy("created", "desc"),
 				limit(5),
 			);
 
 			const despesasQuery = query(
 				despesasRef,
+				where("userID", "==", user.uid),
 				orderBy("created", "desc"),
 				limit(5),
 			);
@@ -64,7 +78,7 @@ export default function LastTransactions() {
 		}
 
 		loadLastTransactions();
-	}, []);
+	}, [user?.uid]);
 
 	function formatarDataBr(data) {
 		if (!data) return "";

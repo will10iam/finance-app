@@ -42,8 +42,17 @@ export default function Dashboard() {
 
 	useEffect(() => {
 		async function loadData() {
-			const receitasSnap = await getDocs(collection(db, "receitas"));
-			const despesasSnap = await getDocs(collection(db, "despesas"));
+			const receitasQuery = query(
+				collection(db, "receitas"),
+				where("userID", "==", user.uid),
+			);
+			const receitasSnap = await getDocs(receitasQuery);
+
+			const despesasQuery = query(
+				collection(db, "despesas"),
+				where("userID", "==", user.uid),
+			);
+			const despesasSnap = await getDocs(despesasQuery);
 
 			// ✅ Firestore query do jeito certo:
 			const saldosQuery = query(
@@ -227,7 +236,7 @@ export default function Dashboard() {
 							<h3>Últimas Transações</h3>
 						</div>
 
-						<LastTransactions />
+						<LastTransactions transacoes={[...receitas, ...despesas]} />
 					</div>
 				</div>
 			</div>

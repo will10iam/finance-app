@@ -1,6 +1,14 @@
-import { useEffect, useState } from "react";
-import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import { useEffect, useState, useContext } from "react";
+import {
+	collection,
+	deleteDoc,
+	doc,
+	getDocs,
+	query,
+	where,
+} from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/auth";
 import {
 	FaArrowUp,
 	FaArrowDown,
@@ -25,11 +33,25 @@ export default function Transacoes() {
 
 	const navigate = useNavigate();
 
+	const { user } = useContext(AuthContext);
+
 	useEffect(() => {
 		async function carregarDados() {
 			try {
-				const receitaSnap = await getDocs(collection(db, "receitas"));
-				const despesaSnap = await getDocs(collection(db, "despesas"));
+				const receitaQuery = query(
+					collection(db, "receitas"),
+					where("userID", "==", user.uid),
+				);
+
+				const despesaQuery = query(
+					collection(db, "despesas"),
+					where("userID", "==", user.uid),
+				);
+
+				const receitaSnap = await getDocs(receitaQuery);
+				const despesaSnap = await getDocs(despesaQuery);
+				/* const receitaSnap = await getDocs(collection(db, "receitas"));
+				const despesaSnap = await getDocs(collection(db, "despesas")); */
 
 				const listaReceitas = receitaSnap.docs.map((d) => ({
 					id: d.id,
@@ -64,7 +86,7 @@ export default function Transacoes() {
 		}
 
 		carregarDados();
-	}, []);
+	}, [user?.uid]);
 
 	function formatarDataBR(dataString) {
 		if (!dataString) return "";
