@@ -236,7 +236,10 @@ export default function Dashboard() {
 							<h3>Últimas Transações</h3>
 						</div>
 
-						<LastTransactions transacoes={[...receitas, ...despesas]} />
+						<LastTransactions
+							transacoes={[...receitas, ...despesas]}
+							mesFiltro={mesFiltro}
+						/>
 					</div>
 				</div>
 			</div>

@@ -18,7 +18,14 @@ import {
 
 import { db } from "../../services/firebaseConection";
 import Title from "../../components/Title";
+import MonthFilter from "../../components/MonthFilter";
+
 import "./index.css";
+
+function isInFilteredMonth(dataString, mesFiltro) {
+	if (!mesFiltro) return true;
+	return dataString?.slice(0, 7) === mesFiltro;
+}
 
 export default function Transacoes() {
 	const [aba, setAba] = useState("todas");
@@ -30,6 +37,8 @@ export default function Transacoes() {
 	const [deleteItem, setDeleteItem] = useState(null);
 
 	const [showNewTransactionModal, setShowNewTransactionModal] = useState(false);
+
+	const [mesFiltro, setMesFiltro] = useState("");
 
 	const navigate = useNavigate();
 
@@ -86,7 +95,7 @@ export default function Transacoes() {
 		}
 
 		carregarDados();
-	}, [user?.uid]);
+	}, [carregando, user?.uid]);
 
 	function formatarDataBR(dataString) {
 		if (!dataString) return "";
@@ -109,14 +118,32 @@ export default function Transacoes() {
 			return dateB - dateA;
 		});
 	}
-
+	/* 
 	const listaTodas = ordenarPorData([...receitas, ...despesas]);
 	const listaReceitas = ordenarPorData(receitas);
-	const listaDespesas = ordenarPorData(despesas);
+	const listaDespesas = ordenarPorData(despesas); */
+
+	const receitasFiltradas = receitas.filter((r) =>
+		isInFilteredMonth(
+			r.status === "Recebido" ? r.dataRecebimento : r.dataPrevisao,
+			mesFiltro,
+		),
+	);
+
+	const despesasFiltradas = despesas.filter((d) =>
+		isInFilteredMonth(d.dataVencimento, mesFiltro),
+	);
+
+	const listaTodas = ordenarPorData([
+		...receitasFiltradas,
+		...despesasFiltradas,
+	]);
+
+	console.log(listaTodas);
 
 	function getListaAtual() {
-		if (aba === "receitas") return listaReceitas;
-		if (aba === "despesas") return listaDespesas;
+		if (aba === "receitas") return receitasFiltradas;
+		if (aba === "despesas") return despesasFiltradas;
 		return listaTodas;
 	}
 
@@ -154,6 +181,20 @@ export default function Transacoes() {
 
 	function capitalizar(str) {
 		return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
+	}
+
+	function getMesFormatado(mesFiltro) {
+		if (!mesFiltro) return capitalizar(getMesAnoAtualPTBR());
+
+		const [ano, mes] = mesFiltro.split("-");
+		const data = new Date(ano, mes - 1);
+
+		return capitalizar(
+			data.toLocaleDateString("pt-BR", {
+				month: "long",
+				year: "numeric",
+			}),
+		);
 	}
 
 	function getStatusInfo(item) {
@@ -213,6 +254,10 @@ export default function Transacoes() {
 					</button>
 				</div>
 
+				<div className="dashboard-top">
+					<MonthFilter value={mesFiltro} onChange={setMesFiltro} />
+				</div>
+
 				<div className="abas-transacoes">
 					<button
 						className={aba === "todas" ? "aba ativa" : "aba"}
@@ -224,104 +269,110 @@ export default function Transacoes() {
 						className={aba === "receitas" ? "aba ativa" : "aba"}
 						onClick={() => setAba("receitas")}
 					>
-						Receitas <span className="aba-count">({listaReceitas.length})</span>
+						Receitas{" "}
+						<span className="aba-count">({receitasFiltradas.length})</span>
 					</button>
 					<button
 						className={aba === "despesas" ? "aba ativa" : "aba"}
 						onClick={() => setAba("despesas")}
 					>
-						Despesas <span className="aba-count">({listaDespesas.length})</span>
+						Despesas{" "}
+						<span className="aba-count">({despesasFiltradas.length})</span>
 					</button>
 				</div>
 
-				<h2 className="mes-titulo">{capitalizar(getMesAnoAtualPTBR())}</h2>
+				<h2 className="mes-titulo">{getMesFormatado(mesFiltro)}</h2>
 
-				<div className="lista-transacoes">
-					{getListaAtual().map((item) => {
-						const statusInfo = getStatusInfo(item);
+				{listaTodas.length === 0 ? (
+					<p className="lasttx-empty">Sem transações por enquanto</p>
+				) : (
+					<div className="lista-transacoes">
+						{getListaAtual().map((item) => {
+							const statusInfo = getStatusInfo(item);
 
-						return (
-							<div className="transacao-card" key={item.id}>
-								<div className="transacao-icon">
-									{item.tipo === "receita" ? (
-										<FaArrowUp className="icon-receita" />
-									) : (
-										<FaArrowDown className="icon-despesa" />
-									)}
-								</div>
+							return (
+								<div className="transacao-card" key={item.id}>
+									<div className="transacao-icon">
+										{item.tipo === "receita" ? (
+											<FaArrowUp className="icon-receita" />
+										) : (
+											<FaArrowDown className="icon-despesa" />
+										)}
+									</div>
 
-								<div className="transacao-body">
-									<div className="transacao-top">
-										<div className="transacao-title-row">
-											<p className="transacao-title">{item.descricao}</p>
-											<span
-												className={`badge ${
-													item.tipo === "receita"
-														? "badge-receita"
-														: "badge-despesa"
-												}`}
-											>
-												{item.categoria}
-											</span>
+									<div className="transacao-body">
+										<div className="transacao-top">
+											<div className="transacao-title-row">
+												<p className="transacao-title">{item.descricao}</p>
+												<span
+													className={`badge ${
+														item.tipo === "receita"
+															? "badge-receita"
+															: "badge-despesa"
+													}`}
+												>
+													{item.categoria}
+												</span>
 
-											<span className={`status-badge ${statusInfo.color}`}>
-												{statusInfo.label}
-											</span>
+												<span className={`status-badge ${statusInfo.color}`}>
+													{statusInfo.label}
+												</span>
+											</div>
+
+											<div className="transacao-actions">
+												<button
+													type="button"
+													className="icon-btn"
+													onClick={() => toggleModalDelete(item)}
+													aria-label="Excluir"
+													title="Excluir"
+												>
+													<FaRegTrashAlt />
+												</button>
+
+												<Link
+													className="icon-btn"
+													to={
+														item.tipo === "receita"
+															? `/newReceita/${item.id}`
+															: `/newDespesa/${item.id}`
+													}
+													aria-label="Editar"
+													title="Editar"
+												>
+													<FaRegEdit />
+												</Link>
+											</div>
 										</div>
 
-										<div className="transacao-actions">
-											<button
-												type="button"
-												className="icon-btn"
-												onClick={() => toggleModalDelete(item)}
-												aria-label="Excluir"
-												title="Excluir"
-											>
-												<FaRegTrashAlt />
-											</button>
-
-											<Link
-												className="icon-btn"
-												to={
+										<div className="transacao-meta">
+											<small>
+												{formatarDataBR(
 													item.tipo === "receita"
-														? `/newReceita/${item.id}`
-														: `/newDespesa/${item.id}`
+														? item.dataRecebimento || item.dataPrevisao
+														: item.dataVencimento,
+												)}
+											</small>
+										</div>
+
+										<div className="transacao-value">
+											<strong
+												className={
+													item.tipo === "receita"
+														? "valor-receita"
+														: "valor-despesa"
 												}
-												aria-label="Editar"
-												title="Editar"
 											>
-												<FaRegEdit />
-											</Link>
+												{item.tipo === "receita" ? "+ " : "- "}
+												{formatarValorBRL(item.valor)}
+											</strong>
 										</div>
 									</div>
-
-									<div className="transacao-meta">
-										<small>
-											{formatarDataBR(
-												item.tipo === "receita"
-													? item.dataRecebimento || item.dataPrevisao
-													: item.dataVencimento,
-											)}
-										</small>
-									</div>
-
-									<div className="transacao-value">
-										<strong
-											className={
-												item.tipo === "receita"
-													? "valor-receita"
-													: "valor-despesa"
-											}
-										>
-											{item.tipo === "receita" ? "+ " : "- "}
-											{formatarValorBRL(item.valor)}
-										</strong>
-									</div>
 								</div>
-							</div>
-						);
-					})}
-				</div>
+							);
+						})}
+					</div>
+				)}
 			</div>
 
 			{showDeleteModal && (

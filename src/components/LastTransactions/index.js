@@ -14,7 +14,7 @@ import { AuthContext } from "../../contexts/auth";
 
 import "./index.css";
 
-export default function LastTransactions() {
+export default function LastTransactions({ mesFiltro }) {
 	const [transacoes, setTransacoes] = useState([]);
 
 	const { user } = useContext(AuthContext);
@@ -45,31 +45,45 @@ export default function LastTransactions() {
 				getDocs(despesasQuery),
 			]);
 
-			const receitas = receitasSnap.docs.map((doc) => ({
-				id: doc.id,
-				tipo: "Receita",
-				descricao: doc.data().descricao,
-				categoria: doc.data().categoria,
-				valor: doc.data().valor,
-				data: doc.data().dataRecebimento,
-				created: doc.data().created,
-			}));
+			const receitas = receitasSnap.docs.map((doc) => {
+				const data = doc.data();
 
-			const despesas = despesasSnap.docs.map((doc) => ({
-				id: doc.id,
-				tipo: "Despesa",
-				descricao: doc.data().descricao,
-				categoria: doc.data().categoria,
-				valor: doc.data().valor,
-				data: doc.data().dataVencimento,
-				created: doc.data().created,
-			}));
+				return {
+					id: doc.id,
+					tipo: "Receita",
+					descricao: data.descricao,
+					categoria: data.categoria,
+					valor: data.valor,
+					data:
+						data.status === "Recebido"
+							? data.dataRecebimento
+							: data.dataPrevisao,
+					created: data.created,
+				};
+			});
 
-			const todas = [...receitas, ...despesas]
+			const despesas = despesasSnap.docs.map((doc) => {
+				const data = doc.data();
+
+				return {
+					id: doc.id,
+					tipo: "Despesa",
+					descricao: data.descricao,
+					categoria: data.categoria,
+					valor: data.valor,
+					data: data.dataVencimento,
+					created: data.created,
+				};
+			});
+
+			const todasFiltradas = [...receitas, ...despesas].filter((item) =>
+				isInFilteredMonth(item.data, mesFiltro),
+			);
+
+			const todas = todasFiltradas
 				.sort((a, b) => {
 					const dateA = a.created?.toDate?.() || new Date(0);
 					const dateB = b.created?.toDate?.() || new Date(0);
-
 					return dateB - dateA;
 				})
 				.slice(0, 5);
@@ -78,7 +92,7 @@ export default function LastTransactions() {
 		}
 
 		loadLastTransactions();
-	}, [user?.uid]);
+	}, [mesFiltro, user?.uid]);
 
 	function formatarDataBr(data) {
 		if (!data) return "";
@@ -91,6 +105,11 @@ export default function LastTransactions() {
 			style: "currency",
 			currency: "BRL",
 		});
+	}
+
+	function isInFilteredMonth(dataString, mesFiltro) {
+		if (!mesFiltro) return true;
+		return dataString?.slice(0, 7) === mesFiltro;
 	}
 
 	return (
