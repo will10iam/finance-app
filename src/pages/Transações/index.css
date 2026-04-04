@@ -15,7 +15,8 @@
 	justify-content: space-between;
 	align-items: flex-start;
 	gap: 14px;
-	margin-bottom: 14px;
+	margin-bottom: 100px;
+	margin-top: -20px;
 }
 
 .btn-nova-transacao {
@@ -269,6 +270,11 @@
 	justify-content: flex-end;
 }
 
+.btns {
+	display: flex;
+	gap: 10px;
+}
+
 .btn-primary,
 .btn-danger,
 .btn-ghost {
@@ -326,6 +332,30 @@
 	color: #ef4444;
 }
 
+.btn-copy {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 14px;
+	border-radius: 12px;
+	cursor: pointer;
+	font-weight: 800;
+	color: rgba(255, 255, 255, 0.92);
+	background: rgba(18, 57, 231, 0.18);
+	border: 1px solid rgba(13, 80, 224, 0.35);
+	box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.btn-copy:hover {
+	background: rgba(106, 227, 152, 0.24);
+}
+
+.modal-content input {
+	margin: 10px 0;
+	padding: 8px;
+	width: 100%;
+}
+
 /* ===== RESPONSIVO ===== */
 @media (max-width: 600px) {
 	.transacoes-header {
@@ -359,5 +389,17 @@
 
 	.abas-transacoes {
 		flex-direction: row;
+		margin-top: -25px;
+	}
+
+	.btns {
+		flex-direction: column;
+		margin-bottom: -15px;
+	}
+
+	.btn-copy {
+		align-items: center;
+		justify-content: center;
+		margin-top: 10px;
 	}
 }

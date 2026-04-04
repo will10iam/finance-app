@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import {
+	addDoc,
 	collection,
 	deleteDoc,
 	doc,
@@ -19,6 +20,7 @@ import {
 import { db } from "../../services/firebaseConection";
 import Title from "../../components/Title";
 import MonthFilter from "../../components/MonthFilter";
+import { CopyIcon } from "@phosphor-icons/react";
 
 import "./index.css";
 
@@ -39,6 +41,10 @@ export default function Transacoes() {
 	const [showNewTransactionModal, setShowNewTransactionModal] = useState(false);
 
 	const [mesFiltro, setMesFiltro] = useState("");
+
+	const [showCopyModal, setShowCopyModal] = useState(false);
+	const [mesOrigem, setMesOrigem] = useState("");
+	const [mesDestino, setMesDestino] = useState("");
 
 	const navigate = useNavigate();
 
@@ -118,10 +124,6 @@ export default function Transacoes() {
 			return dateB - dateA;
 		});
 	}
-	/* 
-	const listaTodas = ordenarPorData([...receitas, ...despesas]);
-	const listaReceitas = ordenarPorData(receitas);
-	const listaDespesas = ordenarPorData(despesas); */
 
 	const receitasFiltradas = receitas.filter((r) =>
 		isInFilteredMonth(
@@ -197,6 +199,75 @@ export default function Transacoes() {
 		);
 	}
 
+	async function copiarTransacoes(mesOrigem, mesDestino) {
+		if (!user?.uid) return;
+
+		const receitasRef = collection(db, "receitas");
+		const despesasRef = collection(db, "despesas");
+
+		const receitasSnap = await getDocs(
+			query(receitasRef, where("userID", "==", user.uid)),
+		);
+
+		const despesasSnap = await getDocs(
+			query(despesasRef, where("userID", "==", user.uid)),
+		);
+
+		function ajustarData(dataString) {
+			if (!dataString) return;
+
+			const [ano, mes, dia] = dataString.split("-");
+			const [novoAno, novoMes] = mesDestino.split("-");
+
+			return `${novoAno}-${novoMes}-${dia}`;
+		}
+
+		const receitasFiltradas = receitasSnap.docs
+			.map((doc) => doc.data())
+			.filter((r) => {
+				const dataBase =
+					r.status === "Recebido" ? r.dataRecebimento : r.dataPrevisao;
+
+				return dataBase?.slice(0, 7) === mesOrigem;
+			});
+
+		const despesasFiltradas = despesasSnap.docs
+			.map((doc) => doc.data())
+			.filter((d) => d.dataVencimento?.slice(0, 7) === mesOrigem);
+
+		const novasReceitas = receitasFiltradas.map((r) => ({
+			created: new Date(),
+			descricao: r.descricao,
+			categoria: r.categoria,
+			categoriaID: r.categoriaID,
+			valor: r.valor,
+			tipo: "Receita",
+			status: "À Receber",
+			dataPrevisao: ajustarData(r.dataPrevisao || r.dataRecebimento),
+			dataRecebimento: "",
+			userID: user.uid,
+		}));
+
+		const novasDespesas = despesasFiltradas.map((d) => ({
+			created: new Date(),
+			descricao: d.descricao,
+			categoria: d.categoria,
+			categoriaID: d.categoriaID,
+			valor: d.valor,
+			tipo: "Despesa",
+			status: "Em aberto",
+			dataVencimento: ajustarData(d.dataVencimento),
+			userID: user.uid,
+		}));
+
+		const promises = [
+			...novasReceitas.map((r) => addDoc(receitasRef, r)),
+			...novasDespesas.map((d) => addDoc(despesasRef, d)),
+		];
+
+		await Promise.all(promises);
+	}
+
 	function getStatusInfo(item) {
 		const hoje = new Date();
 		hoje.setHours(0, 0, 0, 0);
@@ -243,15 +314,23 @@ export default function Transacoes() {
 					<div className="transacoes-header-left">
 						<Title name="Transações" />
 					</div>
+					<div className="btns">
+						<button className="btn-copy" onClick={() => setShowCopyModal(true)}>
+							<span className="btn-plus">
+								<CopyIcon size={32} />
+							</span>
+							Copiar de outro mês
+						</button>
 
-					<button
-						type="button"
-						onClick={() => setShowNewTransactionModal(true)}
-						className="btn-nova-transacao"
-					>
-						<span className="btn-plus">+</span>
-						Nova Transação
-					</button>
+						<button
+							type="button"
+							onClick={() => setShowNewTransactionModal(true)}
+							className="btn-nova-transacao"
+						>
+							<span className="btn-plus">+</span>
+							Nova Transação
+						</button>
+					</div>
 				</div>
 
 				<div className="dashboard-top">
@@ -428,6 +507,48 @@ export default function Transacoes() {
 								onClick={() => setShowNewTransactionModal(false)}
 								className="btn-ghost"
 								type="button"
+							>
+								Cancelar
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
+
+			{showCopyModal && (
+				<div className="modal">
+					<div className="modal-content">
+						<h3>Copiar Transações</h3>
+
+						<label>Mês Origem</label>
+						<input
+							type="month"
+							value={mesOrigem}
+							onChange={(e) => setMesOrigem(e.target.value)}
+						/>
+
+						<label>Mês Destino</label>
+						<input
+							type="month"
+							value={mesDestino}
+							onChange={(e) => setMesDestino(e.target.value)}
+						/>
+
+						<div className="modal-actions">
+							<button
+								className="btn-primary"
+								onClick={async () => {
+									await copiarTransacoes(mesOrigem, mesDestino);
+									setShowCopyModal(false);
+									window.location.reload();
+								}}
+							>
+								Copiar
+							</button>
+
+							<button
+								className="btn-ghost"
+								onClick={() => setShowCopyModal(false)}
 							>
 								Cancelar
 							</button>
