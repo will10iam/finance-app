@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import "./index.css";
+import { ArrowCircleRightIcon } from "@phosphor-icons/react";
+import { ArrowCircleLeftIcon } from "@phosphor-icons/react";
 
 const MONTHS = [
 	"Janeiro",
@@ -64,7 +66,7 @@ export default function MonthFilter({ value, onChange }) {
 	return (
 		<div className="month-filter">
 			<button type="button" onClick={prevMonth}>
-				&lt;
+				<ArrowCircleLeftIcon size={32} />
 			</button>
 
 			<span>
@@ -72,7 +74,7 @@ export default function MonthFilter({ value, onChange }) {
 			</span>
 
 			<button type="button" onClick={nextMonth}>
-				&gt;
+				<ArrowCircleRightIcon size={32} />
 			</button>
 		</div>
 	);

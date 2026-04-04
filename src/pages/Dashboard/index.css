@@ -159,6 +159,11 @@
 	.card.transacoes {
 		grid-column: auto;
 	}
+
+	.dashboard-top {
+		margin-top: 40px;
+		margin-bottom: -20px;
+	}
 }
 
 @media (max-width: 520px) {
