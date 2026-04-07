@@ -216,6 +216,7 @@ export default function Transacoes() {
 		function ajustarData(dataString) {
 			if (!dataString) return;
 
+			// eslint-disable-next-line no-unused-vars
 			const [ano, mes, dia] = dataString.split("-");
 			const [novoAno, novoMes] = mesDestino.split("-");
 
