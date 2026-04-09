@@ -178,10 +178,13 @@ export default function Dashboard() {
 
 						<h3>Receitas</h3>
 						<p className="card-total">
-							{resumo.totalRecebidas.toLocaleString("pt-BR", {
-								style: "currency",
-								currency: "BRL",
-							})}
+							{(resumo.totalRecebidas + resumo.totalAReceber).toLocaleString(
+								"pt-BR",
+								{
+									style: "currency",
+									currency: "BRL",
+								},
+							)}
 						</p>
 
 						<ProgressBar

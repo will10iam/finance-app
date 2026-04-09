@@ -150,7 +150,7 @@ export default function New() {
 				status: status,
 				descricao: descricao,
 				valor: valorConvertido,
-				dataPagamento: dataPagamento,
+				dataPagamento: status === "Paga" ? dataPagamento : null,
 				dataVencimento: dataVencimento,
 				userID: user.uid,
 			})
@@ -269,8 +269,9 @@ export default function New() {
 						<label>Data de Pagamento</label>
 						<input
 							type="date"
-							value={dataPagamento}
+							value={dataPagamento || ""}
 							onChange={(e) => setDataPagamento(e.target.value)}
+							disabled={status !== "Paga"}
 						/>
 					</div>
 
