@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 // eslint-disable-next-line no-unused-vars
-const CACHE_NAME = "seventwofinn-v1";
+const CACHE_NAME = "seventwofinn-v2";
 
 // eslint-disable-next-line no-restricted-globals
 self.addEventListener("install", (event) => {
