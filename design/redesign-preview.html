@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preview do redesign — Dashboard</title>
+<style>
+  :root {
+    --shell-bg: #f5f5f8;
+    --shell-text: #16192b;
+    --shell-text-secondary: #62657c;
+    --shell-border: #e3e3ec;
+    --shell-card: #ffffff;
+    --shell-accent: #a9741f;
+    --shell-shadow: 0 1px 2px rgba(20, 20, 40, 0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --shell-bg: #0e0f18;
+      --shell-text: #f0f0f6;
+      --shell-text-secondary: #9a9ab2;
+      --shell-border: #26273a;
+      --shell-card: #191a29;
+      --shell-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--shell-bg);
+    color: var(--shell-text);
+    padding: 32px 20px 60px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+
+  .page { max-width: 1180px; margin: 0 auto; }
+
+  .intro { max-width: 720px; margin: 0 auto 24px; text-align: center; }
+  .intro .eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--shell-accent); margin-bottom: 10px;
+  }
+  .intro h1 { font-size: 25px; font-weight: 800; margin: 0 0 10px; text-wrap: balance; }
+  .intro p { font-size: 14px; line-height: 1.6; color: var(--shell-text-secondary); margin: 0; }
+
+  .controls { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 20px 0 28px; }
+  .ctrl-group {
+    display: inline-flex; background: var(--shell-card); border: 1px solid var(--shell-border);
+    border-radius: 999px; padding: 4px; box-shadow: var(--shell-shadow); gap: 2px;
+  }
+  .ctrl-btn {
+    border: none; background: transparent; color: var(--shell-text-secondary);
+    font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 999px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px; transition: background 0.15s ease, color 0.15s ease;
+  }
+  .ctrl-btn:hover { color: var(--shell-text); }
+  .ctrl-btn.active { background: var(--shell-accent); color: #fff; }
+  .ctrl-btn:focus-visible { outline: 2px solid var(--shell-accent); outline-offset: 2px; }
+
+  .frame-outer { display: flex; justify-content: center; padding: 4px; }
+
+  /* ================= APP MOCKUP ================= */
+  .app-frame {
+    --font-serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+
+    /* brand (identical across themes) */
+    --brand-navy: #1b2a4e;
+    --accent: #a9741f;
+    --accent-soft-light: rgba(169, 116, 31, 0.12);
+    --accent-soft-dark: rgba(217, 169, 74, 0.16);
+
+    /* categorical chart hues (validated, CVD-safe, all-pairs on first 3) */
+    --cat-1: #2a78d6; /* Moradia */
+    --cat-2: #eb6834; /* Alimentação */
+    --cat-3: #1baf7a; /* Transporte */
+    --cat-other: #c7c5d6; /* Outros — neutral, folded */
+
+    position: relative;
+    width: 100%;
+    max-width: 1040px;
+    height: 680px;
+    display: flex;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--shell-border);
+    box-shadow: 0 24px 60px rgba(20, 20, 45, 0.18);
+    transition: max-width 0.3s ease;
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  .app-frame[data-viewport="mobile"] { max-width: 420px; }
+
+  .app-frame[data-app-theme="light"] {
+    --bg-page: #f4f5fa;
+    --bg-card: #ffffff;
+    --bg-sidebar: #ffffff;
+    --text-primary: #14192b;
+    --text-secondary: #5b6178;
+    --text-faint: #9296ab;
+    --border-color: #e4e6f0;
+    --shadow-card: 0 8px 24px rgba(20, 25, 60, 0.07);
+    --track-bg: #ecebf3;
+    --nav-active-bg: var(--accent-soft-light);
+    --nav-active-text: #8f5e14;
+    --overlay-bg: rgba(15, 18, 35, 0.4);
+    --green: #1f9d6c; --green-soft: rgba(31, 157, 108, 0.12);
+    --red: #d94e37; --red-soft: rgba(217, 78, 55, 0.12);
+    --accent-strong: var(--accent);
+    --btn-primary-bg: var(--brand-navy);
+    --btn-primary-text: #ffffff;
+    --cat-other: #d6d4e2;
+  }
+  .app-frame[data-app-theme="dark"] {
+    --bg-page: #0e1420;
+    --bg-card: #171d2e;
+    --bg-sidebar: #131829;
+    --text-primary: #f2f3fa;
+    --text-secondary: #9ba0be;
+    --text-faint: #666c8a;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --shadow-card: 0 18px 40px rgba(0, 0, 0, 0.5);
+    --track-bg: rgba(255, 255, 255, 0.08);
+    --nav-active-bg: var(--accent-soft-dark);
+    --nav-active-text: #e3bd74;
+    --overlay-bg: rgba(0, 0, 0, 0.6);
+    --green: #33bb85; --green-soft: rgba(51, 187, 133, 0.16);
+    --red: #ea6b54; --red-soft: rgba(234, 107, 84, 0.16);
+    --accent-strong: #d9a94a;
+    --btn-primary-bg: #d9a94a;
+    --btn-primary-text: #14192b;
+    --cat-1: #3987e5; --cat-2: #d95926; --cat-3: #199e70; --cat-other: #454a63;
+  }
+
+  .app-frame { background: var(--bg-page); color: var(--text-primary); }
+
+  .tabular { font-variant-numeric: tabular-nums; }
+  .serif { font-family: var(--font-serif); }
+
+  /* ---- Sidebar ---- */
+  .sidebar {
+    width: 236px; flex-shrink: 0; background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    display: flex; flex-direction: column; padding: 18px 12px; gap: 2px;
+    transition: transform 0.25s ease; z-index: 20;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 8px; padding: 6px 10px 18px;
+    font-weight: 700; font-size: 17px; font-family: var(--font-serif);
+  }
+  .brand .dot { width: 8px; height: 8px; border-radius: 2px; background: var(--accent-strong); }
+  .nav-link {
+    display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: var(--radius-sm);
+    font-size: 13.5px; font-weight: 600; color: var(--text-secondary); text-decoration: none;
+    cursor: pointer; border: none; background: transparent; width: 100%; text-align: left;
+  }
+  .nav-link svg { width: 17px; height: 17px; flex-shrink: 0; }
+  .nav-link:hover { background: var(--track-bg); color: var(--text-primary); }
+  .nav-link.active { background: var(--nav-active-bg); color: var(--nav-active-text); font-weight: 700; }
+  .nav-link:focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 1px; }
+  .nav-caret { margin-left: auto; transition: transform 0.18s ease; }
+  .nav-caret.open { transform: rotate(180deg); }
+  .nav-sub { display: flex; flex-direction: column; gap: 1px; padding: 2px 0 4px 14px; }
+  .nav-sub .nav-link { font-size: 13px; font-weight: 500; padding: 7px 10px; }
+
+  .sidebar-footer {
+    margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border-color);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .icon-btn {
+    width: 32px; height: 32px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);
+    background: var(--bg-card); color: var(--text-secondary); display: inline-flex; align-items: center;
+    justify-content: center; cursor: pointer; flex-shrink: 0;
+  }
+  .icon-btn:hover { color: var(--text-primary); }
+  .icon-btn svg { width: 16px; height: 16px; }
+  .icon-btn:focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 1px; }
+  .logout-link { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+
+  .scrim {
+    position: absolute; inset: 0; background: var(--overlay-bg); opacity: 0; pointer-events: none;
+    transition: opacity 0.2s ease; z-index: 15;
+  }
+
+  /* ---- Main content ---- */
+  .content { flex: 1; min-width: 0; overflow-y: auto; padding: 20px 26px 32px; display: flex; flex-direction: column; gap: 16px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .topbar-left { display: flex; align-items: center; gap: 10px; }
+  .hamburger { display: none; }
+  .month-pill {
+    display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px;
+    border: 1px solid var(--border-color); background: var(--bg-card); font-size: 13px; font-weight: 700;
+  }
+  .user-chip { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
+  .avatar {
+    width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft-light); color: var(--nav-active-text);
+    display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px;
+  }
+
+  h2.page-title { font-size: 21px; font-weight: 700; margin: 0; text-wrap: balance; font-family: var(--font-serif); }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 6px; background: var(--btn-primary-bg); color: var(--btn-primary-text);
+    border: none; border-radius: 999px; padding: 9px 16px; font-size: 13px; font-weight: 700;
+    cursor: pointer; box-shadow: 0 8px 18px rgba(20, 25, 60, 0.22); white-space: nowrap;
+  }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-primary svg { width: 15px; height: 15px; }
+  .btn-primary:focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 2px; }
+
+  .row-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
+
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card); padding: 16px;
+  }
+  .card-label {
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-faint);
+  }
+
+  /* ---- Hero balance ---- */
+  .hero {
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card); padding: 18px 20px;
+  }
+  .hero-value { font-size: 34px; font-weight: 700; margin-top: 6px; line-height: 1; }
+  .hero-delta {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 700;
+    color: var(--green); background: var(--green-soft); padding: 5px 10px; border-radius: 999px;
+  }
+
+  /* ---- Accounts card ---- */
+  .acct-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
+  .acct-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .acct-avatar {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; display: inline-flex; align-items: center;
+    justify-content: center; font-weight: 800; font-size: 12px; color: #fff;
+  }
+  .acct-info { flex: 1; min-width: 0; }
+  .acct-name { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+  .acct-tag {
+    font-size: 10px; font-weight: 700; color: var(--accent-strong); background: var(--accent-soft-light);
+    padding: 2px 6px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.03em;
+  }
+  .app-frame[data-app-theme="dark"] .acct-tag { background: var(--accent-soft-dark); }
+  .acct-sub { font-size: 11.5px; color: var(--text-faint); margin-top: 1px; }
+  .acct-value { font-size: 13.5px; font-weight: 700; white-space: nowrap; }
+
+  /* ---- Progress cards (Receitas/Despesas/Planejamento) ---- */
+  .card-icon {
+    width: 38px; height: 38px; border-radius: var(--radius-sm); display: inline-flex; align-items: center;
+    justify-content: center; margin-bottom: 8px;
+  }
+  .card-icon svg { width: 19px; height: 19px; }
+  .card-icon.green { background: var(--green-soft); color: var(--green); }
+  .card-icon.red { background: var(--red-soft); color: var(--red); }
+  .card-icon.accent { background: var(--accent-soft-light); color: var(--nav-active-text); }
+  .app-frame[data-app-theme="dark"] .card-icon.accent { background: var(--accent-soft-dark); }
+
+  .metric-label { font-size: 12.5px; font-weight: 700; color: var(--text-secondary); }
+  .metric-value { font-size: 21px; font-weight: 700; margin: 6px 0 10px; }
+
+  .track { height: 8px; border-radius: 999px; background: var(--track-bg); overflow: hidden; }
+  .fill { height: 100%; border-radius: 999px; }
+  .fill.green { background: linear-gradient(90deg, var(--green), #35c088); }
+  .fill.red { background: linear-gradient(90deg, var(--red), #ef7860); }
+  .fill.accent { background: linear-gradient(90deg, var(--accent-strong), var(--accent-strong)); }
+  .track-caption { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-faint); margin-top: 6px; }
+
+  /* ---- Donut chart ---- */
+  .donut-wrap { display: flex; align-items: center; gap: 18px; }
+  .donut-figure { position: relative; width: 128px; height: 128px; flex-shrink: 0; }
+  .donut-figure svg { width: 100%; height: 100%; }
+  .donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .donut-center .v { font-size: 15px; font-weight: 700; }
+  .donut-center .l { font-size: 10px; color: var(--text-faint); margin-top: 2px; }
+  .donut-legend { display: flex; flex-direction: column; gap: 9px; flex: 1; min-width: 0; }
+  .legend-row { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+  .legend-dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+  .legend-name { color: var(--text-primary); font-weight: 600; flex: 1; }
+  .legend-pct { color: var(--text-faint); width: 30px; text-align: right; }
+  .legend-val { font-weight: 700; width: 70px; text-align: right; }
+
+  /* ---- Bar chart ---- */
+  .bars-figure { display: flex; align-items: flex-end; gap: 12px; height: 84px; padding: 0 2px; }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
+  .bar-shape { width: 100%; max-width: 34px; border-radius: 6px 6px 3px 3px; background: var(--red); opacity: 0.35; }
+  .bar-col.current .bar-shape { opacity: 1; }
+  .bar-val { font-size: 10.5px; font-weight: 700; color: var(--text-faint); visibility: hidden; }
+  .bar-col.current .bar-val { visibility: visible; color: var(--red); }
+  .bar-week { font-size: 11px; color: var(--text-faint); }
+  .bar-col.current .bar-week { color: var(--text-primary); font-weight: 700; }
+
+  /* ---- Transactions ---- */
+  .tx-list { display: flex; flex-direction: column; }
+  .tx-row { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--border-color); }
+  .tx-row:last-child { border-bottom: none; padding-bottom: 2px; }
+  .tx-avatar {
+    width: 34px; height: 34px; border-radius: var(--radius-sm); flex-shrink: 0; display: inline-flex;
+    align-items: center; justify-content: center; font-weight: 800; font-size: 13px; color: #fff;
+  }
+  .tx-info { flex: 1; min-width: 0; }
+  .tx-desc { font-size: 13.5px; font-weight: 700; }
+  .tx-meta { font-size: 12px; color: var(--text-secondary); margin-top: 1px; }
+  .tx-value { font-size: 13.5px; font-weight: 700; white-space: nowrap; }
+  .tx-value.pos { color: var(--green); }
+  .tx-value.neg { color: var(--red); }
+
+  /* Mobile viewport behavior */
+  .app-frame[data-viewport="mobile"] .sidebar { position: absolute; top: 0; bottom: 0; left: 0; transform: translateX(-100%); }
+  .app-frame[data-viewport="mobile"].sidebar-open .sidebar { transform: translateX(0); }
+  .app-frame[data-viewport="mobile"].sidebar-open .scrim { opacity: 1; pointer-events: auto; }
+  .app-frame[data-viewport="mobile"] .hamburger { display: inline-flex; }
+  .app-frame[data-viewport="mobile"] .grid-3,
+  .app-frame[data-viewport="mobile"] .grid-2 { grid-template-columns: 1fr; }
+  .app-frame[data-viewport="mobile"] .content { padding: 16px; }
+  .app-frame[data-viewport="mobile"] .hero { flex-direction: column; align-items: flex-start; }
+  .app-frame[data-viewport="mobile"] .donut-wrap { flex-direction: column; align-items: stretch; }
+
+  .legend-block { max-width: 760px; margin: 28px auto 0; display: grid; gap: 10px; }
+  .legend-block h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--shell-text-secondary); margin: 0 0 4px; }
+  .legend-block ul { margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.9; color: var(--shell-text); }
+  .legend-block li::marker { color: var(--shell-accent); }
+  .swatches { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 4px; }
+  .swatch { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--shell-text-secondary); }
+  .swatch i { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
+
+  @media (max-width: 640px) {
+    .frame-outer { padding: 0; }
+    .app-frame { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="intro">
+    <div class="eyebrow">Finance App · Preview de redesign (v2)</div>
+    <h1>Dashboard com gráficos, contas e nova paleta</h1>
+    <p>Agora com gráfico de categorias, gastos por semana e cartão de contas bancárias. Paleta trocada de roxo (referência Mobills) para uma dupla marinho + dourado, com números em serifada — mais discreta e "financeira" no meu julgamento. Toque nos controles para comparar tema e formato de tela.</p>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group" role="group" aria-label="Tema">
+      <button class="ctrl-btn" data-action="theme-light" onclick="setTheme('light')">☀ Claro</button>
+      <button class="ctrl-btn" data-action="theme-dark" onclick="setTheme('dark')">☾ Escuro</button>
+    </div>
+    <div class="ctrl-group" role="group" aria-label="Viewport">
+      <button class="ctrl-btn" data-action="vp-desktop" onclick="setViewport('desktop')">🖥 Desktop</button>
+      <button class="ctrl-btn" data-action="vp-mobile" onclick="setViewport('mobile')">📱 Mobile</button>
+    </div>
+  </div>
+
+  <div class="frame-outer">
+    <div class="app-frame" id="appFrame" data-app-theme="light" data-viewport="desktop">
+      <div class="scrim" onclick="closeSidebar()"></div>
+
+      <aside class="sidebar">
+        <div class="brand"><span class="dot"></span>72finn</div>
+
+        <button class="nav-link active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>
+          Dashboard
+        </button>
+        <button class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="14" y2="18"></line></svg>
+          Transações
+        </button>
+        <button class="nav-link" onclick="toggleCadastros()" id="cadastrosBtn" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"></path></svg>
+          Cadastros
+          <svg class="nav-caret" id="cadastrosCaret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="nav-sub" id="cadastrosSub" style="display:none;">
+          <button class="nav-link">Categoria</button>
+          <button class="nav-link">Nova Receita</button>
+          <button class="nav-link">Nova Despesa</button>
+          <button class="nav-link">Saldos</button>
+        </div>
+
+        <div class="sidebar-footer">
+          <button class="icon-btn" onclick="toggleTheme()" aria-label="Alternar tema" title="Alternar tema">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"></circle><line x1="12" y1="2.5" x2="12" y2="5"></line><line x1="12" y1="19" x2="12" y2="21.5"></line><line x1="4.2" y1="4.2" x2="6" y2="6"></line><line x1="18" y1="18" x2="19.8" y2="19.8"></line><line x1="2.5" y1="12" x2="5" y2="12"></line><line x1="19" y1="12" x2="21.5" y2="12"></line><line x1="4.2" y1="19.8" x2="6" y2="18"></line><line x1="18" y1="6" x2="19.8" y2="4.2"></line></svg>
+          </button>
+          <span class="logout-link">Sair</span>
+          <button class="icon-btn" style="margin-left:auto;" aria-label="Sair" title="Sair">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          </button>
+        </div>
+      </aside>
+
+      <main class="content">
+        <div class="topbar">
+          <div class="topbar-left">
+            <button class="icon-btn hamburger" onclick="openSidebar()" aria-label="Abrir menu">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg>
+            </button>
+            <span class="month-pill">Julho 2026
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </span>
+          </div>
+          <div class="user-chip"><span class="avatar">W</span> William</div>
+        </div>
+
+        <div class="row-header">
+          <h2 class="page-title">Dashboard</h2>
+          <button class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Nova transação
+          </button>
+        </div>
+
+        <section class="hero">
+          <div>
+            <div class="card-label">Saldo total</div>
+            <div class="hero-value serif tabular">R$ 4.426,55</div>
+          </div>
+          <span class="hero-delta">▲ 3,2% vs. junho</span>
+        </section>
+
+        <section class="grid-2">
+          <div class="card">
+            <div class="card-label" style="margin-bottom:8px;">Minhas contas</div>
+            <div class="acct-row">
+              <span class="acct-avatar" style="background:#2a78d6;">CC</span>
+              <div class="acct-info">
+                <div class="acct-name">Conta Corrente <span class="acct-tag">Open Finance</span></div>
+                <div class="acct-sub">Saldo previsto R$ 2.480,15</div>
+              </div>
+              <span class="acct-value serif tabular">R$ 2.480,15</span>
+            </div>
+            <div class="acct-row">
+              <span class="acct-avatar" style="background:#1baf7a;">PP</span>
+              <div class="acct-info">
+                <div class="acct-name">Poupança <span class="acct-tag">Open Finance</span></div>
+                <div class="acct-sub">Saldo previsto R$ 1.850,00</div>
+              </div>
+              <span class="acct-value serif tabular">R$ 1.850,00</span>
+            </div>
+            <div class="acct-row">
+              <span class="acct-avatar" style="background:#8b8fa3;">CT</span>
+              <div class="acct-info">
+                <div class="acct-name">Carteira</div>
+                <div class="acct-sub">Saldo previsto R$ 96,40</div>
+              </div>
+              <span class="acct-value serif tabular">R$ 96,40</span>
+            </div>
+          </div>
+
+          <div class="card" style="display:flex; flex-direction:column;">
+            <div class="card-icon accent">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="7" y1="14" x2="11" y2="14"></line></svg>
+            </div>
+            <div class="metric-label">Planejamento mensal</div>
+            <div class="metric-value serif tabular">Restam R$ 849,68</div>
+            <div class="track"><div class="fill accent" style="width:83%;"></div></div>
+            <div class="track-caption"><span>R$ 4.150,32 usados</span><span>de R$ 5.000,00</span></div>
+          </div>
+        </section>
+
+        <section class="grid-2">
+          <div class="card">
+            <div class="card-icon green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v10M8.5 9.5a2.5 2.5 0 0 1 2.5-1.5h1.6a2 2 0 1 1 0 4h-1.2a2 2 0 1 0 0 4H15a2.5 2.5 0 0 0 2.5-1.5"></path></svg>
+            </div>
+            <div class="metric-label">Receitas</div>
+            <div class="metric-value serif tabular">R$ 6.200,00</div>
+            <div class="track"><div class="fill green" style="width:82%;"></div></div>
+            <div class="track-caption"><span>82% da meta</span><span>Faltam R$ 1.360,00</span></div>
+          </div>
+          <div class="card">
+            <div class="card-icon red">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2"></rect><line x1="4" y1="10" x2="20" y2="10"></line><line x1="8" y1="14.5" x2="12" y2="14.5"></line></svg>
+            </div>
+            <div class="metric-label">Despesas</div>
+            <div class="metric-value serif tabular">R$ 4.150,32</div>
+            <div class="track"><div class="fill red" style="width:58%;"></div></div>
+            <div class="track-caption"><span>58% do limite</span><span>Restam R$ 2.999,68</span></div>
+          </div>
+        </section>
+
+        <section class="grid-2">
+          <div class="card">
+            <div class="card-label" style="margin-bottom:12px;">Despesas por categoria</div>
+            <div class="donut-wrap">
+              <div class="donut-figure">
+                <svg viewBox="0 0 120 120">
+                  <g transform="rotate(-90 60 60)">
+                    <circle cx="60" cy="60" r="52" fill="none" stroke="var(--track-bg)" stroke-width="16"></circle>
+                    <circle cx="60" cy="60" r="52" fill="none" stroke="var(--cat-1)" stroke-width="16" stroke-linecap="round" stroke-dasharray="124.29 326.73" stroke-dashoffset="0"></circle>
+                    <circle cx="60" cy="60" r="52" fill="none" stroke="var(--cat-2)" stroke-width="16" stroke-linecap="round" stroke-dasharray="87.00 326.73" stroke-dashoffset="-128.29"></circle>
+                    <circle cx="60" cy="60" r="52" fill="none" stroke="var(--cat-3)" stroke-width="16" stroke-linecap="round" stroke-dasharray="55.93 326.73" stroke-dashoffset="-219.29"></circle>
+                    <circle cx="60" cy="60" r="52" fill="none" stroke="var(--cat-other)" stroke-width="16" stroke-linecap="round" stroke-dasharray="43.50 326.73" stroke-dashoffset="-279.22"></circle>
+                  </g>
+                </svg>
+                <div class="donut-center">
+                  <span class="v serif tabular">R$ 4.150</span>
+                  <span class="l">total</span>
+                </div>
+              </div>
+              <div class="donut-legend">
+                <div class="legend-row"><span class="legend-dot" style="background:var(--cat-1);"></span><span class="legend-name">Moradia</span><span class="legend-pct">40%</span><span class="legend-val tabular">R$ 1.660,13</span></div>
+                <div class="legend-row"><span class="legend-dot" style="background:var(--cat-2);"></span><span class="legend-name">Alimentação</span><span class="legend-pct">28%</span><span class="legend-val tabular">R$ 1.162,09</span></div>
+                <div class="legend-row"><span class="legend-dot" style="background:var(--cat-3);"></span><span class="legend-name">Transporte</span><span class="legend-pct">18%</span><span class="legend-val tabular">R$ 747,06</span></div>
+                <div class="legend-row"><span class="legend-dot" style="background:var(--cat-other);"></span><span class="legend-name">Outros</span><span class="legend-pct">14%</span><span class="legend-val tabular">R$ 581,04</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-label" style="margin-bottom:12px;">Gastos por semana</div>
+            <div class="bars-figure">
+              <div class="bar-col"><span class="bar-val tabular">R$ 980</span><div class="bar-shape" style="height:66%;"></div><span class="bar-week">Sem 1</span></div>
+              <div class="bar-col"><span class="bar-val tabular">R$ 1.120</span><div class="bar-shape" style="height:75%;"></div><span class="bar-week">Sem 2</span></div>
+              <div class="bar-col"><span class="bar-val tabular">R$ 860</span><div class="bar-shape" style="height:58%;"></div><span class="bar-week">Sem 3</span></div>
+              <div class="bar-col current"><span class="bar-val tabular">R$ 1.190</span><div class="bar-shape" style="height:100%;"></div><span class="bar-week">Sem 4</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="row-header" style="margin-bottom: 6px;">
+            <h2 class="page-title" style="font-size:15px; font-family:inherit;">Últimas transações</h2>
+          </div>
+          <div class="tx-list">
+            <div class="tx-row">
+              <span class="tx-avatar" style="background:#1f9d6c;">S</span>
+              <div class="tx-info"><div class="tx-desc">Salário</div><div class="tx-meta">Trabalho · 05 jul</div></div>
+              <span class="tx-value pos serif tabular">+R$ 6.200,00</span>
+            </div>
+            <div class="tx-row">
+              <span class="tx-avatar" style="background:#2a78d6;">S</span>
+              <div class="tx-info"><div class="tx-desc">Supermercado</div><div class="tx-meta">Alimentação · 08 jul</div></div>
+              <span class="tx-value neg serif tabular">-R$ 312,40</span>
+            </div>
+            <div class="tx-row">
+              <span class="tx-avatar" style="background:#8b8fa3;">N</span>
+              <div class="tx-info"><div class="tx-desc">Netflix</div><div class="tx-meta">Assinaturas · 10 jul</div></div>
+              <span class="tx-value neg serif tabular">-R$ 39,90</span>
+            </div>
+            <div class="tx-row">
+              <span class="tx-avatar" style="background:#1f9d6c;">F</span>
+              <div class="tx-info"><div class="tx-desc">Freelance Design</div><div class="tx-meta">Extra · 14 jul</div></div>
+              <span class="tx-value pos serif tabular">+R$ 850,00</span>
+            </div>
+            <div class="tx-row">
+              <span class="tx-avatar" style="background:#eb6834;">U</span>
+              <div class="tx-info"><div class="tx-desc">Uber</div><div class="tx-meta">Transporte · 15 jul</div></div>
+              <span class="tx-value neg serif tabular">-R$ 45,00</span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="legend-block">
+    <h3>O que mudou nesta v2</h3>
+    <ul>
+      <li>Paleta trocada: marinho + dourado no lugar do roxo da referência, com verde/vermelho só para receita/despesa</li>
+      <li>Números grandes (saldo, totais, valores de transação) em fonte serifada — mais "financeiro/premium", contrastando com a interface em sans-serif</li>
+      <li>Novo: "Despesas por categoria" (donut) e "Gastos por semana" (barras) — cores do gráfico validadas para daltonismo, e por isso propositalmente diferentes do verde/vermelho de receita/despesa</li>
+      <li>Novo: card "Minhas contas" no padrão da referência (saldo + selo Open Finance quando aplicável)</li>
+      <li>Novo: card compacto de "Planejamento mensal" com orçamento vs. gasto</li>
+    </ul>
+    <div class="swatches">
+      <div class="swatch"><i style="background:#1b2a4e;"></i>Marinho (ação/estrutura)</div>
+      <div class="swatch"><i style="background:#a9741f;"></i>Dourado (destaque/ativo)</div>
+      <div class="swatch"><i style="background:#1f9d6c;"></i>Verde (receita)</div>
+      <div class="swatch"><i style="background:#d94e37;"></i>Vermelho (despesa)</div>
+      <div class="swatch"><i style="background:#2a78d6;"></i>Categoria 1</div>
+      <div class="swatch"><i style="background:#eb6834;"></i>Categoria 2</div>
+      <div class="swatch"><i style="background:#1baf7a;"></i>Categoria 3</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const frame = document.getElementById('appFrame');
+  const cadastrosSub = document.getElementById('cadastrosSub');
+  const cadastrosCaret = document.getElementById('cadastrosCaret');
+
+  function setTheme(theme) {
+    frame.setAttribute('data-app-theme', theme);
+    document.querySelectorAll('[data-action^="theme-"]').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.action === 'theme-' + theme);
+    });
+  }
+  function toggleTheme() {
+    const next = frame.getAttribute('data-app-theme') === 'light' ? 'dark' : 'light';
+    setTheme(next);
+  }
+  function setViewport(vp) {
+    frame.setAttribute('data-viewport', vp);
+    if (vp === 'desktop') frame.classList.remove('sidebar-open');
+    document.querySelectorAll('[data-action^="vp-"]').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.action === 'vp-' + vp);
+    });
+  }
+  function openSidebar() { frame.classList.add('sidebar-open'); }
+  function closeSidebar() { frame.classList.remove('sidebar-open'); }
+  function toggleCadastros() {
+    const open = cadastrosSub.style.display !== 'none';
+    cadastrosSub.style.display = open ? 'none' : 'flex';
+    cadastrosSub.style.flexDirection = 'column';
+    cadastrosCaret.classList.toggle('open', !open);
+    document.getElementById('cadastrosBtn').setAttribute('aria-expanded', String(!open));
+  }
+
+  setTheme('light');
+  setViewport('desktop');
+</script>
+</body>
+</html>
