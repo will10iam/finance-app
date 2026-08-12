@@ -6,7 +6,8 @@ export default function ProgressBar({
 	label,
 	percentage,
 	color,
-	remainingValue = 0, //valor restante para completar 100%
+	remainingValue = 0,
+	teste, //valor restante para completar 100%
 	open,
 	onToggle,
 }) {
@@ -35,12 +36,12 @@ export default function ProgressBar({
 			</div>
 
 			<div className="progress-bar">
+				{/* <span>R$ {teste}</span> */}
 				<div
 					className="progress-fill"
 					style={{ width: `${percentage}%`, backgroundColor: color }}
 				/>
 			</div>
-
 			{/* Dropdown */}
 			{showRemaining && open && (
 				<div className="progress-remaining">

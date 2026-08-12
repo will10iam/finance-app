@@ -9,6 +9,7 @@ import ProgressBar from "../../components/ProgressBar";
 
 import MonthFilter from "../../components/MonthFilter";
 import LastTransactions from "../../components/LastTransactions";
+import CategoryChart from "../../components/CategoryChart";
 
 import {
 	CurrencyCircleDollarIcon,
@@ -104,7 +105,7 @@ export default function Dashboard() {
 			.reduce((acc, r) => acc + Number(r.valor || 0), 0);
 
 		const totalPagas = despesasFiltradas
-			.filter((d) => getDespesaStatus(d, hoje) === "Paga")
+			.filter((d) => d.status === "Paga")
 			.reduce((acc, d) => acc + Number(d.valor || 0), 0);
 
 		const totalAPagar = despesasFiltradas
@@ -188,12 +189,13 @@ export default function Dashboard() {
 						</p>
 
 						<ProgressBar
-							label="Já recebeu"
+							label={"Já recebeu - R$ " + resumo.totalRecebidas}
 							percentage={
 								(resumo.totalRecebidas /
 									(resumo.totalRecebidas + resumo.totalAReceber || 1)) *
 								100
 							}
+							teste={resumo.totalRecebidas}
 							color="#6DC956"
 							remainingValue={resumo.totalAReceber}
 							open={openReceitas}
@@ -218,12 +220,13 @@ export default function Dashboard() {
 						</p>
 
 						<ProgressBar
-							label="Já foi pago"
+							label={"Já pagou - R$ " + resumo.totalPagas}
 							percentage={
 								(resumo.totalPagas /
 									(resumo.totalPagas + resumo.totalAPagar || 1)) *
 								100
 							}
+							teste={resumo.totalPagas}
 							color="#ee5d4aff"
 							remainingValue={resumo.totalAPagar}
 							open={openDespesas}
@@ -242,6 +245,30 @@ export default function Dashboard() {
 						<LastTransactions
 							transacoes={[...receitas, ...despesas]}
 							mesFiltro={mesFiltro}
+						/>
+					</div>
+
+					<div className="card category-chart">
+						<CategoryChart
+							items={despesas}
+							mesFiltro={mesFiltro}
+							title="Despesas por categoria"
+							getDateString={(d) => d.dataVencimento}
+							accentColor="#ee5d4aff"
+							emptyMessage="Sem despesas neste mês."
+						/>
+					</div>
+
+					<div className="card category-chart">
+						<CategoryChart
+							items={receitas}
+							mesFiltro={mesFiltro}
+							title="Receitas por categoria"
+							getDateString={(r) =>
+								r.status === "Recebido" ? r.dataRecebimento : r.dataPrevisao
+							}
+							accentColor="#6DC956"
+							emptyMessage="Sem receitas neste mês."
 						/>
 					</div>
 				</div>

@@ -1,0 +1,68 @@
+.catchart-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+.catchart-head h3 {
+	margin: 0;
+	font-size: 13px;
+	letter-spacing: 0.2px;
+	font-weight: 800;
+	color: rgba(255, 255, 255, 0.65);
+}
+
+.catchart-toggle {
+	display: inline-flex;
+	gap: 4px;
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 12px;
+	padding: 4px;
+}
+
+.catchart-toggle button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 8px;
+	border: none;
+	background: transparent;
+	color: rgba(255, 255, 255, 0.6);
+	cursor: pointer;
+	transition: 0.2s;
+}
+
+.catchart-toggle button:hover {
+	background: rgba(255, 255, 255, 0.06);
+	color: rgba(255, 255, 255, 0.85);
+}
+
+.catchart-toggle button.active {
+	background: rgba(255, 255, 255, 0.12);
+	color: #fff;
+}
+
+.catchart-chart {
+	width: 100%;
+}
+
+.catchart-empty {
+	color: rgba(255, 255, 255, 0.62);
+	font-weight: 700;
+	font-size: 13px;
+	padding: 24px 0;
+	text-align: center;
+}
+
+@media (max-width: 520px) {
+	.catchart-head {
+		flex-direction: column;
+		align-items: stretch;
+	}
+}
