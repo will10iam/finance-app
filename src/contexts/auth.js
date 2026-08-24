@@ -4,6 +4,7 @@ import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 	signOut,
+	onAuthStateChanged,
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -19,16 +20,44 @@ function AuthProvider({ children }) {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		async function loadUser() {
-			const storageUser = localStorage.getItem("@tickets");
+		// Cache do localStorage só serve pra evitar flash de tela de login;
+		// quem manda de verdade é o onAuthStateChanged logo abaixo.
+		const cachedUser = localStorage.getItem("@tickets");
+		if (cachedUser) {
+			setUser(JSON.parse(cachedUser));
+		}
 
-			if (storageUser) {
-				setUser(JSON.parse(storageUser));
+		const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+			if (!firebaseUser) {
+				setUser(null);
+				localStorage.removeItem("@tickets");
+				setLoading(false);
+				return;
+			}
+
+			try {
+				const docRef = doc(db, "users", firebaseUser.uid);
+				const docSnap = await getDoc(docRef);
+
+				const data = {
+					uid: firebaseUser.uid,
+					nome: docSnap.data()?.nome,
+					email: firebaseUser.email,
+					avatarUrl: docSnap.data()?.avatarUrl,
+				};
+
+				setUser(data);
+				storageUser(data);
+			} catch (error) {
+				console.log("Erro ao carregar dados do usuário:", error);
+				setUser(null);
+				localStorage.removeItem("@tickets");
+			} finally {
 				setLoading(false);
 			}
-			setLoading(false);
-		}
-		loadUser();
+		});
+
+		return () => unsubscribe();
 	}, []);
 
 	async function signIn(email, password) {

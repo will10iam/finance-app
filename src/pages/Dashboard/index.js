@@ -43,29 +43,33 @@ export default function Dashboard() {
 
 	useEffect(() => {
 		async function loadData() {
-			const receitasQuery = query(
-				collection(db, "receitas"),
-				where("userID", "==", user.uid),
-			);
-			const receitasSnap = await getDocs(receitasQuery);
+			try {
+				const receitasQuery = query(
+					collection(db, "receitas"),
+					where("userID", "==", user.uid),
+				);
+				const receitasSnap = await getDocs(receitasQuery);
 
-			const despesasQuery = query(
-				collection(db, "despesas"),
-				where("userID", "==", user.uid),
-			);
-			const despesasSnap = await getDocs(despesasQuery);
+				const despesasQuery = query(
+					collection(db, "despesas"),
+					where("userID", "==", user.uid),
+				);
+				const despesasSnap = await getDocs(despesasQuery);
 
-			// ✅ Firestore query do jeito certo:
-			const saldosQuery = query(
-				collection(db, "saldos"),
-				where("userID", "==", user.uid),
-				orderBy("created", "desc"),
-			);
-			const saldosSnap = await getDocs(saldosQuery);
+				// ✅ Firestore query do jeito certo:
+				const saldosQuery = query(
+					collection(db, "saldos"),
+					where("userID", "==", user.uid),
+					orderBy("created", "desc"),
+				);
+				const saldosSnap = await getDocs(saldosQuery);
 
-			setReceitas(receitasSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
-			setDespesas(despesasSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
-			setSaldos(saldosSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
+				setReceitas(receitasSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
+				setDespesas(despesasSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
+				setSaldos(saldosSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
+			} catch (error) {
+				console.error("Erro ao carregar dados do dashboard:", error);
+			}
 		}
 
 		if (user?.uid) loadData();
